@@ -1,0 +1,182 @@
+[
+    {
+        "User": {
+            "_id": "String",
+            "firstName": "String",
+            "lastName": "String",
+            "email": "String",
+            "phone": "String",
+            "birthDate": "Datetime",
+            "password": "String",
+            "passwordResetToken": "String",
+            "role": "enum('client','admin','other')",
+            "profilePicture": "String",
+            "gender": "enum('male','female','other')",
+            "height": "Number",
+            "lastMeasurement": "Measurement",
+            "currentWaterTarget": "WaterTarget",
+            "currentCaloricTarget": "CaloricTarget",
+            "measurements": "Measurement[]",
+            "waterTargets": "WaterTarget[]",
+            "caloricTargets": "CaloricTarget[]",
+            "gymPlans": "GymPlan[]",
+            "meals": "Meal[]",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "TrackDay": {
+            "_id": "String",
+            "user": "User",
+            "date": "Datetime",
+            "caloricTarget": "CaloricTarget",
+            "waterIntake": "Number",
+            "waterTarget": "Number",
+            "mealEntries": "MealEntry[]",
+            "activityEntries": "ActivityEntry[]",
+            "gymEntries": "GymEntry[]",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "Measurement": {
+            "_id": "String",
+            "user": "User",
+            "weight": "Number",
+            "bodyFatPercentage": "Number",
+            "skeletalMuscleMass": "Number",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "WaterTarget": {
+            "_id": "String",
+            "user": "User",
+            "quantity": "Number",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "CaloricTarget": {
+            "_id": "String",
+            "user": "User",
+            "kcal": "Number",
+            "protein": "Number",
+            "carb": "Number",
+            "fat": "Number",
+            "proteinPerKg": "Number",
+            "carbPerKg": "Number",
+            "fatPerKg": "Number",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "Activity": {
+            "_id": "String",
+            "name": "String",
+            "calories": "Number",
+            "duration": "Number",
+            "visibility": "enum('private','public')",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "ActivityEntry": {
+            "_id": "String",
+            "activity": "Activity",
+            "trackDay": "TrackDay",
+            "calories": "Number",
+            "duration": "Number",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "Meal": {
+            "_id": "String",
+            "user": "User",
+            "name": "String",
+            "kcal": "Number",
+            "protein": "Number",
+            "carb": "Number",
+            "fat": "Number",
+            "fibres": "Number",
+            "salt": "Number",
+            "visibility": "enum('private','public')",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "MealEntry": {
+            "_id": "String",
+            "meal": "Meal",
+            "trackDay": "TrackDay",
+            "mealTime": "enum('breakfast','lunch','dinner','snack')",
+            "kcal": "Number",
+            "protein": "Number",
+            "carb": "Number",
+            "fat": "Number",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "GymPlan": {
+            "_id": "String",
+            "user": "User",
+            "name": "String",
+            "description": "String",
+            "from": "Date",
+            "until": "Date",
+            "gymDays": "GymDay[]",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "GymDay": {
+            "_id": "String",
+            "name": "String",
+            "exercises": "GymExercise[]",
+            "description": "String",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "GymExercise": {
+            "_id": "String",
+            "name": "String",
+            "description": "String",
+            "nrSets": "Number",
+            "nrReps": "Number",
+            "weight": "Number",
+            "restBetweenSets": "Number",
+            "duration": "Number",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    },
+    {
+        "GymEntry": {
+            "_id": "String",
+            "trackDay": "TrackDay",
+            "gymPlan": "GymPlan",
+            "gymDay": "GymDay",
+            "name": "String",
+            "description": "String",
+            "duration": "Number",
+            "calories": "Number",
+            "exercises": "GymExercise[]",
+            "createdAt": "Datetime",
+            "updatedAt": "Datetime"
+        }
+    }
+]
