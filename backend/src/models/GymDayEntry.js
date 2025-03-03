@@ -26,4 +26,4 @@ const gymDayEntrySchema = new mongoose.Schema(
 
 gymDayEntrySchema.index({ trackDay: -1 });
 
-module.exports = mongoose.model('gymDayEntry', gymDayEntrySchema);
+module.exports = mongoose.model('GymDayEntry', gymDayEntrySchema);
