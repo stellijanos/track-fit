@@ -64,6 +64,7 @@
         "CaloricTarget": {
             "_id": "String",
             "user": "User",
+            "name": "String",
             "kcal": "Number",
             "protein": "Number",
             "carb": "Number",
@@ -78,6 +79,7 @@
     {
         "Activity": {
             "_id": "String",
+            "user": "User",
             "name": "String",
             "calories": "Number",
             "duration": "Number",
@@ -89,8 +91,8 @@
     {
         "ActivityEntry": {
             "_id": "String",
-            "activity": "Activity",
             "trackDay": "TrackDay",
+            "activity": "Activity",
             "calories": "Number",
             "duration": "Number",
             "createdAt": "Datetime",
@@ -102,13 +104,14 @@
             "_id": "String",
             "user": "User",
             "name": "String",
-            "kcal": "Number",
-            "protein": "Number",
-            "carb": "Number",
-            "fat": "Number",
-            "fibres": "Number",
-            "salt": "Number",
+            "isCustom": "Boolean",
             "visibility": "enum('private','public')",
+            "kcalPer100G": "Number",
+            "proteinPer100G": "Number",
+            "carbPer100G": "Number",
+            "fatPer100G": "Number",
+            "fibrePer100G": "Number",
+            "saltPer100G": "Number",
             "createdAt": "Datetime",
             "updatedAt": "Datetime"
         }
@@ -116,8 +119,8 @@
     {
         "MealEntry": {
             "_id": "String",
-            "meal": "Meal",
             "trackDay": "TrackDay",
+            "meal": "Meal",
             "mealTime": "enum('breakfast','lunch','dinner','snack')",
             "kcal": "Number",
             "protein": "Number",
@@ -134,6 +137,7 @@
             "name": "String",
             "description": "String",
             "from": "Date",
+            "nrWeeks": "String",
             "until": "Date",
             "gymDays": "GymDay[]",
             "createdAt": "Datetime",
@@ -143,8 +147,8 @@
     {
         "GymDay": {
             "name": "String",
-            "exercises": "GymExercise[]",
-            "description": "String"
+            "description": "String",
+            "exercises": "GymExercise[]"
         }
     },
     {
@@ -153,14 +157,14 @@
             "description": "String",
             "nrSets": "Number",
             "nrReps": "Number",
-            "weight": "Number",
             "restBetweenSets": "Number",
-            "duration": "Number"
+            "duration": "Number",
+            "weight": "Number"
         }
     },
     {
         "GymDayEntry": {
-            "_id":"String",
+            "_id": "String",
             "trackDay": "TrackDay",
             "gymPlan": "GymPlan",
             "name": "String",
@@ -180,7 +184,7 @@
                     "setNumber": "Number",
                     "nrSets": "Number",
                     "nrReps": "Number",
-                    "notes": "String"
+                    "note": "String"
                 }
             ]
         }

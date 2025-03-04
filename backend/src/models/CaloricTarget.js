@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const caloricTargetSchema = new mongoose.Schema(
     {
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        name: {type: String, default: null},
         kcal: { type: Number, min: 0 },
         protein: { type: Number, min: 0 },
         carb: { type: Number, min: 0 },

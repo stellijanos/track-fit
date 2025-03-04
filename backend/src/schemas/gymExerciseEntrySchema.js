@@ -2,18 +2,19 @@ const mongoose = require('mongoose');
 
 const gymExerciseEntrySchema = new mongoose.Schema(
     {
-        exercise: { type: mongoose.Schema.Types.ObjectId, ref: 'GymExercise' },
+        name: { type: String, required: true },
         sets: [
             {
                 setNumber: { type: Number, required: true },
                 nrSets: { type: Number, required: true },
                 nrReps: { type: Number, required: true },
+                note: { type: String, default: null },
             },
         ],
     },
     {
-        timestamps: true,
+        _id: false,
     }
 );
 
-module.exports = mongoose.model('GymExerciseEntry', gymExerciseEntrySchema);
+module.exports = gymExerciseEntrySchema;

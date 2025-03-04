@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const gymExerciseEntrySchema = require('../schemas/GymExerciseEntrySchema');
 
 const gymDayEntrySchema = new mongoose.Schema(
     {
@@ -7,17 +8,11 @@ const gymDayEntrySchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'GymPlan',
         },
-        gymDay: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'GymDay',
-        },
         name: { type: String, default: null },
         description: { type: Strinh, default: null },
-        calories: { type: Number, required: true, min: 0 },
         duration: { type: Number, required: true, min: 0 },
-        exercises: [
-            { type: mongoose.Schema.Types.ObjectId, ref: 'GymExerciseEntry' },
-        ],
+        calories: { type: Number, required: true, min: 0 },
+        exercises: [gymExerciseEntrySchema],
     },
     {
         timestamps: true,
