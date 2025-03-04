@@ -142,41 +142,47 @@
     },
     {
         "GymDay": {
-            "_id": "String",
             "name": "String",
             "exercises": "GymExercise[]",
-            "description": "String",
-            "createdAt": "Datetime",
-            "updatedAt": "Datetime"
+            "description": "String"
         }
     },
     {
         "GymExercise": {
-            "_id": "String",
             "name": "String",
             "description": "String",
             "nrSets": "Number",
             "nrReps": "Number",
             "weight": "Number",
             "restBetweenSets": "Number",
+            "duration": "Number"
+        }
+    },
+    {
+        "GymDayEntry": {
+            "_id":"String",
+            "trackDay": "TrackDay",
+            "gymPlan": "GymPlan",
+            "name": "String",
+            "description": "String",
             "duration": "Number",
+            "calories": "Number",
+            "exercises": "GymExerciseEntry[]",
             "createdAt": "Datetime",
             "updatedAt": "Datetime"
         }
     },
     {
-        "GymEntry": {
-            "_id": "String",
-            "trackDay": "TrackDay",
-            "gymPlan": "GymPlan",
-            "gymDay": "GymDay",
+        "GymExerciseEntry": {
             "name": "String",
-            "description": "String",
-            "duration": "Number",
-            "calories": "Number",
-            "exercises": "GymExercise[]",
-            "createdAt": "Datetime",
-            "updatedAt": "Datetime"
+            "sets": [
+                {
+                    "setNumber": "Number",
+                    "nrSets": "Number",
+                    "nrReps": "Number",
+                    "notes": "String"
+                }
+            ]
         }
     }
 ]
