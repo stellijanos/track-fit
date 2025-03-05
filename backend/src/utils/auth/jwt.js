@@ -20,3 +20,8 @@ const generateToken = (payload, expiresIn) =>
  * @throws {Error} - throws error if the token is invalid or expired
  */
 const verifyToken = (token) => jwt.verify(token, SECRET_KEY);
+
+module.exports = {
+    generateToken,
+    verifyToken,
+};
