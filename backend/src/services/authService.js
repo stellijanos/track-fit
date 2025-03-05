@@ -9,16 +9,33 @@ const REFRESH_TOKEN_EXPIRES_IN = env.auth.jwt.expiresIn.refreshToken;
 const RESET_PASSWORD_TOKEN_EXPIRES_IN =
     env.auth.jwt.expiresIn.resetPasswordToken;
 
+/**
+ * Helper functions
+ */
+
+/**
+ *
+ * @param {Object} payload - Data which is in the token encrypted
+ * @returns {Object} - Access token and refresh token as a single object
+ */
 const getTokens = (payload) => {
     return {
-        accessToken: jwtUtil.generateToken(jwtPayload, ACCESS_TOKEN_EXPIRES_IN),
-        refreshToken: jwtUtil.generateToken(
-            jwtPayload,
-            REFRESH_TOKEN_EXPIRES_IN
-        ),
+        accessToken: jwtUtil.generateToken(payload, ACCESS_TOKEN_EXPIRES_IN),
+        refreshToken: jwtUtil.generateToken(payload, REFRESH_TOKEN_EXPIRES_IN),
     };
 };
 
+/**
+ * Service functions
+ */
+
+/**
+ * @async
+ * @param {*} data
+ * @returns {Object} - Object with access- and refresh tokens
+ * @throws {ErrorResponse} 422 - Unprocessable entity / Validation error
+ * @throws {ErrorResponse} 409 - User already exists.
+ */
 const register = async (data) => {
     const { firstName, lastName, email, phone, birthDate, password, gender } =
         data;
@@ -48,9 +65,17 @@ const register = async (data) => {
         role: savedUser.role,
     };
 
-    return getTokens();
+    return getTokens(jwtPayload);
 };
 
+/**
+ * @async
+ * @param {Object} data - credential (email/phone) and password
+ * @returns {Object} - Object with access- and refresh tokens
+ * @throws {ErrorResponse} 404 - Unprocessable entity / Validation error
+ * @throws {ErrorResponse} 401 - Invalid email or phone.
+ * @throws {ErrorResponse} 401 - Incorrect password.
+ */
 const login = async ({ credential, password }) => {
     const existingUser = await userRepository.getByEmailOrPhone(
         credential,
@@ -64,12 +89,17 @@ const login = async ({ credential, password }) => {
         password,
         existingUser.password
     );
-
     if (!correctPassword) {
         throw new ErrorResponse(401, 'Incorrect password.');
     }
 
-    return getTokens();
+    const jwtPayload = {
+        _id: savedUser._id,
+        email: savedUser.email,
+        role: savedUser.role,
+    };
+
+    return getTokens(jwtPayload);
 };
 
 module.exports = {
