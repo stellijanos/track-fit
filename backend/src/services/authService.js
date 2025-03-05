@@ -94,9 +94,9 @@ const login = async ({ credential, password }) => {
     }
 
     const jwtPayload = {
-        _id: savedUser._id,
-        email: savedUser.email,
-        role: savedUser.role,
+        _id: existingUser._id,
+        email: existingUser.email,
+        role: existingUser.role,
     };
 
     return getTokens(jwtPayload);

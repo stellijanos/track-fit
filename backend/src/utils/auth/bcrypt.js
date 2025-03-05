@@ -1,14 +1,13 @@
 const bcrypt = require('bcrypt');
 const env = require('../../config/env');
 
-const SALT_ROUNDS = env.auth.bcrypt.saltRounds;
+const SALT_ROUNDS = Number(env.auth.bcrypt.saltRounds);
 
 /**
  * Hashes a password with bcrypt
  * @param {string} password - plain password to hash
  * @returns {Promise<string>} - hashed password
  */
-
 const hashPassword = async (password) =>
     await bcrypt.hash(password, SALT_ROUNDS);
 
