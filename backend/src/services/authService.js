@@ -31,7 +31,7 @@ const getTokens = (payload) => {
 
 /**
  * @async
- * @param {*} data
+ * @param {Object} data - contains user personal information and password
  * @returns {Object} - Object with access- and refresh tokens
  * @throws {ErrorResponse} 422 - Unprocessable entity / Validation error
  * @throws {ErrorResponse} 409 - User already exists.
