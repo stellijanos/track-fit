@@ -12,4 +12,9 @@ module.exports = {
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
     },
+    auth: {
+        bcrypt: {
+            saltRounds: process.env.BCRYPT_SALTROUNDS || 10
+        }
+    }
 };
