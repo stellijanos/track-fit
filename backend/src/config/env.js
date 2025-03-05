@@ -14,7 +14,15 @@ module.exports = {
     },
     auth: {
         bcrypt: {
-            saltRounds: process.env.BCRYPT_SALTROUNDS || 10
-        }
-    }
+            saltRounds: process.env.BCRYPT_SALTROUNDS || 10,
+        },
+        jwt: {
+            secret: process.env.JWT_SECRET,
+            expiresIn: {
+                authToken: '15m',
+                refreshToken: '30d',
+                resetPasswordToken: '10m',
+            },
+        },
+    },
 };
