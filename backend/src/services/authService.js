@@ -102,11 +102,20 @@ const login = async ({ credential, password }) => {
     return getTokens(jwtPayload);
 };
 
-const changePassword = async (user, { password }) => {
-    const hashedPassword = await bcryptUtil.hashPassword(password);
+const changePassword = async (user, { currentPassword, newPassword }) => {
+    const isCorrectPassword = await bcryptUtil.comparePasswords(
+        currentPassword,
+        user.password
+    );
+
+    if (!isCorrectPassword) {
+        throw new ErrorResponse(401, 'Incorrect password.');
+    }
+
+    const hashedPassword = await bcryptUtil.hashPassword(newPassword);
 
     user.password = hashedPassword;
-    await existingUser.save();
+    await user.save();
 
     return;
 };
