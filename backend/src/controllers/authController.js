@@ -39,11 +39,16 @@ const login = catchAsync(async (req, res) => {
 const changePassword = catchAsync(async (req, res) => {
     await authService.changePassword(req.user, req.body);
 
-    res.status(200).json;
+    res.status(200).json(new SuccessResponse('Password successfully changed.'));
+});
+
+const resetPassword = catchAsync(async (req, res) => {
+    await authService.resetPassword(req.body);
 });
 
 module.exports = {
     register,
     login,
-    changePassword
+    changePassword,
+    resetPassword,
 };

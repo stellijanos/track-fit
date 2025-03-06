@@ -115,7 +115,26 @@ const changePassword = async (user, { currentPassword, newPassword }) => {
     const hashedPassword = await bcryptUtil.hashPassword(newPassword);
 
     user.password = hashedPassword;
-    await user.save();
+    await userRepository.updateOne(user);
+
+    return;
+};
+
+const resetPassword = async ({ token, password }) => {
+    const payload = jwtUtil.verifyToken(token);
+
+    const user = await userRepository.getByEmail(payload.email);
+    if (!user) {
+        throw new ErrorResponse(404, 'User not found.');
+    }
+
+    if (user.passwordResetToken !== token) {
+        throw new ErrorResponse(401, 'Invalid token provided');
+    }
+
+    user.password = await bcryptUtil.hashPassword(password);
+    user.passwordResetToken = '';
+    await userRepository.updateOne(user);
 
     return;
 };
@@ -124,4 +143,5 @@ module.exports = {
     register,
     login,
     changePassword,
+    resetPassword,
 };
