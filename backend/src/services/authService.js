@@ -102,7 +102,17 @@ const login = async ({ credential, password }) => {
     return getTokens(jwtPayload);
 };
 
+const changePassword = async (user, { password }) => {
+    const hashedPassword = await bcryptUtil.hashPassword(password);
+
+    user.password = hashedPassword;
+    await existingUser.save();
+
+    return;
+};
+
 module.exports = {
     register,
     login,
+    changePassword,
 };
