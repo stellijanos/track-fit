@@ -44,6 +44,14 @@ const changePassword = catchAsync(async (req, res) => {
 
 const resetPassword = catchAsync(async (req, res) => {
     await authService.resetPassword(req.body);
+    res.status(200).json(new SuccessResponse('Password successfully reset.'));
+});
+
+const refreshToken = catchAsync(async (req, res) => {
+    const tokens = await authService.refreshToken(req.body.refreshToken);
+    res.status(200).json(
+        new SuccessResponse('Token successfully refreshed.', tokens)
+    );
 });
 
 module.exports = {
@@ -51,4 +59,5 @@ module.exports = {
     login,
     changePassword,
     resetPassword,
+    refreshToken,
 };

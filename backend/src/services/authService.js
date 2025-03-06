@@ -139,9 +139,27 @@ const resetPassword = async ({ token, password }) => {
     return;
 };
 
+const refreshToken = async (refreshToken) => {
+    const payload = jwtUtil.verifyToken(refreshToken);
+
+    const existingUser = await userRepository.getByEmail(payload.email);
+    if (!existingUser) {
+        throw new ErrorResponse(404, 'User not found.');
+    }
+
+    const jwtPayload = {
+        _id: existingUser._id,
+        email: existingUser.email,
+        role: existingUser.role,
+    };
+
+    return await getTokens(jwtPayload);
+};
+
 module.exports = {
     register,
     login,
     changePassword,
     resetPassword,
+    refreshToken
 };

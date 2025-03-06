@@ -8,5 +8,6 @@ router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.put('/password/change', jwtMiddleware, authController.changePassword);
 router.put('/password/reset', authController.resetPassword);
+router.post('/token/refresh', authController.refreshToken);
 
 module.exports = router;
