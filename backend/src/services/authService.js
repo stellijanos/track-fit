@@ -102,6 +102,13 @@ const login = async ({ credential, password }) => {
     return getTokens(jwtPayload);
 };
 
+/**
+ * @async
+ * @param {User} user - user based on the JWT from Auth header
+ * @param {Object} data - current and new passwords
+ * @returns {void} - returns nothing if it succeeds
+ * @throws {ErrorResponse} 401 - Incorrect password.
+ */
 const changePassword = async (user, { currentPassword, newPassword }) => {
     const isCorrectPassword = await bcryptUtil.comparePasswords(
         currentPassword,
@@ -120,6 +127,14 @@ const changePassword = async (user, { currentPassword, newPassword }) => {
     return;
 };
 
+/**
+ * @async
+ * @param {string} token - password reset JWT
+ * @param {string} password - password to be set
+ * @returns {void} - returns nothing if it succeeds
+ * @throws {ErrorResponse} 404 - User not found.
+ * @throws {ErrorResponse} 401 - Invalid token providedd.
+ */
 const resetPassword = async ({ token, password }) => {
     const payload = jwtUtil.verifyToken(token);
 
@@ -139,6 +154,13 @@ const resetPassword = async ({ token, password }) => {
     return;
 };
 
+/**
+ * @async
+ * @param {string} refreshToken - JWT based on which the refresh happens
+ * @returns {Object} - object with access- and refresh tokens
+ * @throws {ErrorResponse} 404 - User not found.
+ * @throws {ErrorResponse} 500 - Invalid JWT
+ */
 const refreshToken = async (refreshToken) => {
     const payload = jwtUtil.verifyToken(refreshToken);
 
@@ -161,5 +183,5 @@ module.exports = {
     login,
     changePassword,
     resetPassword,
-    refreshToken
+    refreshToken,
 };
