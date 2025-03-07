@@ -16,5 +16,6 @@ router.post(
     upload.single('image'),
     userController.changeProfilePicture
 );
+router.delete('/me/profile-picture', userController.deleteProfilePicture);
 
 module.exports = router;

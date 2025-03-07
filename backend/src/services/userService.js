@@ -67,6 +67,14 @@ const changeProfilePicture = async (userId, oldProfilePicture, filename) => {
     return user;
 };
 
+const deleteProfilePicture = async (userId, oldProfilePicture) => {
+    const user = await userRepository.updateOne(userId, {
+        profilePicture: defaults.PROFILE_PICTURE,
+    });
+    removeIfExists(oldProfilePicture);
+    return user;
+};
+
 module.exports = {
     getByEmail,
     getById,
@@ -74,4 +82,5 @@ module.exports = {
     updateMe,
     deleteMe,
     changeProfilePicture,
+    deleteProfilePicture
 };

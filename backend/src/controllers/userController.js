@@ -35,9 +35,20 @@ const changeProfilePicture = catchAsync(async (req, res) => {
     );
 });
 
+const deleteProfilePicture = catchAsync(async (req, res) => {
+    const user = await userService.deleteProfilePicture(
+        req.user._id,
+        req.user.profilePicture
+    );
+    res.status(200).json(
+        new SuccessResponse('Profil picture successfully removed.', { user })
+    );
+});
+
 module.exports = {
     getMe,
     updateMe,
     deleteMe,
     changeProfilePicture,
+    deleteProfilePicture
 };
