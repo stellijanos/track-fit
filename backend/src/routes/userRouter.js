@@ -8,5 +8,6 @@ router.use(jwtMiddleware);
 
 router.get('/me', userController.getMe);
 router.patch('/me', userController.updateMe);
+router.delete('/me', userController.deleteMe);
 
 module.exports = router;

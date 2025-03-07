@@ -16,7 +16,13 @@ const updateMe = catchAsync(async (req, res) => {
         .json(new SuccessResponse('User successfully updated.', { user }));
 });
 
+const deleteMe = catchAsync(async (req, res) => {
+    await userService.deleteMe(req.user._id);
+    res.status(204).send();
+});
+
 module.exports = {
     getMe,
     updateMe,
+    deleteMe,
 };

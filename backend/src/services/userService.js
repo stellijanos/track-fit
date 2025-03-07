@@ -28,9 +28,14 @@ const updateMe = async (userId, data) => {
     return updated;
 };
 
+const deleteMe = async (userId) => {
+    const deleted = await userRepository.deleteById(userId);
+};
+
 module.exports = {
     getByEmail,
     getById,
     getMe,
     updateMe,
+    deleteMe
 };

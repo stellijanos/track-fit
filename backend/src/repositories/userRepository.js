@@ -11,6 +11,8 @@ const findByEmailOrPhone = async (email, phone) =>
 const updateOne = async (id, data) =>
     await User.findByIdAndUpdate(id, data, { new: true });
 
+const deleteById = async (_id) => await User.deleteOne({ _id });
+
 module.exports = {
     createOne,
     findById,
@@ -18,4 +20,5 @@ module.exports = {
     findByPhone,
     findByEmailOrPhone,
     updateOne,
+    deleteById,
 };
