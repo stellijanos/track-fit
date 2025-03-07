@@ -102,7 +102,7 @@ const deleteMe = catchAsync(async (req, res) => {
  */
 const changeMyProfilePicture = catchAsync(async (req, res) => {
     if (!req.file) throw new ErrorResponse(422, 'No image file provided');
-    console.log(req.file);
+    
     const user = await userService.changeProfilePicture(
         req.user._id,
         req.user.profilePicture,
