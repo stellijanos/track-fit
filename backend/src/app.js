@@ -8,7 +8,7 @@ const constants = require('./config/constants');
 const apiRoutes = require('./routes');
 const requestLoggerMiddleware = require('./middleware/requestLoggerMiddleware');
 
-createDirIfNotExists(constants.logsBaseDir);
+createDirIfNotExists(constants.LOGS_BASE_DIR);
 
 const app = express();
 

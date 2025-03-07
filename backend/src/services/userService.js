@@ -1,4 +1,24 @@
+const fs = require('fs');
+const sharp = require('sharp');
+const constants = require('../config/constants');
+const defaults = require('../config/dbDefaults');
 const userRepository = require('../repositories/userRepository');
+
+/**
+ * Helper Functions
+ */
+
+const removeIfExists = (image) => {
+    const imagePath = `${constants.PROFILE_PICTURE_DIR}/${image}`;
+
+    if (image !== defaults.PROFILE_PICTURE && fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+    }
+};
+
+/**
+ * Service Functions
+ */
 
 const getByEmail = async (email) => await userRepository.findByEmail(email);
 
@@ -32,10 +52,26 @@ const deleteMe = async (userId) => {
     const deleted = await userRepository.deleteById(userId);
 };
 
+const changeProfilePicture = async (userId, oldProfilePicture, filename) => {
+    const profilePicture = `${userId}-${Date.now()}.png`;
+    const source = `${constants.TEMP_UPLOAD_DIR}/${filename}`;
+    const destination = `${constants.PROFILE_PICTURE_DIR}/${profilePicture}`;
+
+    await sharp(source).resize(512, 512).toFormat('png').toFile(destination);
+    fs.unlinkSync(source);
+
+    const user = await userRepository.updateOne(userId, { profilePicture });
+    if (user.profilePicture !== oldProfilePicture) {
+        removeIfExists(oldProfilePicture);
+    }
+    return user;
+};
+
 module.exports = {
     getByEmail,
     getById,
     getMe,
     updateMe,
-    deleteMe
+    deleteMe,
+    changeProfilePicture,
 };
