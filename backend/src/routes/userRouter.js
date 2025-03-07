@@ -7,15 +7,15 @@ const router = express.Router();
 
 router.use(jwtMiddleware);
 
-router.get('/me', userController.getMe);
-router.patch('/me', userController.updateMe);
-router.delete('/me', userController.deleteMe);
+router
+    .route('/me')
+    .get(userController.getMe)
+    .patch(userController.updateMe)
+    .delete(userController.deleteMe);
 
-router.post(
-    '/me/profile-picture',
-    upload.single('image'),
-    userController.changeProfilePicture
-);
-router.delete('/me/profile-picture', userController.deleteProfilePicture);
+router
+    .route('/me/profile-picture')
+    .post(upload.single('image'), userController.changeMyProfilePicture)
+    .delete(userController.deleteMyProfilePicture);
 
 module.exports = router;
