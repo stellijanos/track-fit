@@ -1,18 +1,20 @@
 const User = require('../models/User');
 
 const createOne = async (data) => await User.create(data);
-const getByEmail = async (email) => await User.findOne({ email });
-const getByPhone = async (phone) => await User.findOne({ phone });
+const findById = async (id) => await User.findById(id);
+const findByEmail = async (email) => await User.findOne({ email });
+const findByPhone = async (phone) => await User.findOne({ phone });
 
-const getByEmailOrPhone = async (email, phone) =>
+const findByEmailOrPhone = async (email, phone) =>
     await User.findOne({ $or: [{ email }, { phone }] });
 
 const updateOne = async (user) => await user.save();
 
 module.exports = {
     createOne,
-    getByEmail,
-    getByPhone,
-    getByEmailOrPhone,
+    findById,
+    findByEmail,
+    findByPhone,
+    findByEmailOrPhone,
     updateOne,
 };

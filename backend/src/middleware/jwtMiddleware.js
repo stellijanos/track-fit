@@ -12,7 +12,7 @@ const jwtMiddleware = catchAsync(async (req, res, next) => {
     const token = authHeader.split(' ')[1];
     const payload = jwtUtil.verifyToken(token);
 
-    const user = await userService.getByEmail(payload.email);
+    const user = await userService.getById(payload._id);
     if (!user) {
         throw new ErrorResponse(401, 'User not found.');
     }

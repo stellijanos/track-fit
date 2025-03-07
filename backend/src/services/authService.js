@@ -40,7 +40,7 @@ const register = async (data) => {
     const { firstName, lastName, email, phone, birthDate, password, gender } =
         data;
 
-    const existingUser = await userRepository.getByEmailOrPhone(email, phone);
+    const existingUser = await userRepository.findByEmailOrPhone(email, phone);
     if (existingUser) {
         throw new ErrorResponse(409, 'User already exists.');
     }
@@ -77,7 +77,7 @@ const register = async (data) => {
  * @throws {ErrorResponse} 401 - Incorrect password.
  */
 const login = async ({ credential, password }) => {
-    const existingUser = await userRepository.getByEmailOrPhone(
+    const existingUser = await userRepository.findByEmailOrPhone(
         credential,
         credential
     );
@@ -138,7 +138,7 @@ const changePassword = async (user, { currentPassword, newPassword }) => {
 const resetPassword = async ({ token, password }) => {
     const payload = jwtUtil.verifyToken(token);
 
-    const user = await userRepository.getByEmail(payload.email);
+    const user = await userRepository.findById(payload._id);
     if (!user) {
         throw new ErrorResponse(404, 'User not found.');
     }
@@ -164,7 +164,7 @@ const resetPassword = async ({ token, password }) => {
 const refreshToken = async (refreshToken) => {
     const payload = jwtUtil.verifyToken(refreshToken);
 
-    const existingUser = await userRepository.getByEmail(payload.email);
+    const existingUser = await userRepository.findById(payload._id);
     if (!existingUser) {
         throw new ErrorResponse(404, 'User not found.');
     }
