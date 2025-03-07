@@ -10,8 +10,27 @@ const getMe = (user) => {
     return user;
 };
 
+const updateMe = async (userId, data) => {
+    const updatedData = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        birthDate: data.birthDate,
+        gender: data.gender,
+        height: data.height,
+    };
+
+    const updated = await userRepository.updateOne(userId, updatedData);
+    updated.password = undefined;
+    updated.passwordResetToken = undefined;
+
+    return updated;
+};
+
 module.exports = {
     getByEmail,
     getById,
     getMe,
+    updateMe,
 };

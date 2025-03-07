@@ -8,7 +8,8 @@ const findByPhone = async (phone) => await User.findOne({ phone });
 const findByEmailOrPhone = async (email, phone) =>
     await User.findOne({ $or: [{ email }, { phone }] });
 
-const updateOne = async (user) => await user.save();
+const updateOne = async (id, data) =>
+    await User.findByIdAndUpdate(id, data, { new: true });
 
 module.exports = {
     createOne,

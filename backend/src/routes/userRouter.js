@@ -7,5 +7,6 @@ const router = express.Router();
 router.use(jwtMiddleware);
 
 router.get('/me', userController.getMe);
+router.patch('/me', userController.updateMe);
 
 module.exports = router;
