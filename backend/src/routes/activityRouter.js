@@ -8,5 +8,6 @@ router.use(jwtMiddleware);
 
 router.post('/', activityController.create);
 router.get('/', activityController.getAllByUserorPublic);
+router.patch('/:activityId', activityController.updateByUserAndId);
 
 module.exports = router;

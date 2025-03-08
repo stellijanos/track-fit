@@ -29,7 +29,21 @@ const getAllByUserorPublic = catchAsync(async (req, res) => {
     );
 });
 
+const updateByUserAndId = catchAsync(async (req, res) => {
+    const userId = req.user._id;
+    const { activityId } = req.params;
+    const data = req.body;
+    const updated = await activityService.updateOne(userId, activityId, data);
+
+    res.status(200).json(
+        new SuccessResponse('Activity successfully updated.', {
+            activity: activityResponseDTO(updated),
+        })
+    );
+});
+
 module.exports = {
     create,
     getAllByUserorPublic,
+    updateByUserAndId,
 };

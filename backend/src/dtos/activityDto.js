@@ -11,7 +11,7 @@ const activityResponseDTO = (activity) => {
     return {
         id: activity._id,
         name: activity.name,
-        caloriesPerHour: activity.calories,
+        caloriesPerHour: activity.caloriesPerHour,
         visibility: activity.visibility,
         createdAt: activity.createdAt,
         updatedAt: activity.updatedAt,

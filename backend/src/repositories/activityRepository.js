@@ -7,7 +7,14 @@ const findByUserOrPublic = async (userId) =>
         $or: [{ user: userId }, { visibility: visibility.PUBLIC }],
     });
 
+const updateOneByUserAndId = async (userId, activityId, data) =>
+    await Activity.findOneAndUpdate({ user: userId, _id: activityId }, data, {
+        new: true,
+        runValidators: true,
+    });
+
 module.exports = {
     createOne,
     findByUserOrPublic,
+    updateOneByUserAndId,
 };
