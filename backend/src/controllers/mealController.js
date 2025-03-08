@@ -29,7 +29,22 @@ const getAllByUserOrPublic = catchAsync(async (req, res) => {
     );
 });
 
+const updateByUserAndId = catchAsync(async (req, res) => {
+    const userId = req.user._id;
+    const { mealId } = req.params;
+    const data = req.body;
+
+    const updated = await mealService.updateByUserAndId(userId, mealId, data);
+
+    res.status(200).json(
+        new SuccessResponse('Meal successfully updated.', {
+            meal: mealResponseDTO(updated),
+        })
+    );
+});
+
 module.exports = {
     create,
     getAllByUserOrPublic,
+    updateByUserAndId,
 };
