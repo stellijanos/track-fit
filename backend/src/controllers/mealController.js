@@ -43,8 +43,18 @@ const updateByUserAndId = catchAsync(async (req, res) => {
     );
 });
 
+const deleteByUserAndId = catchAsync(async (req, res) => {
+    const userId = req.user._id;
+    const { mealId } = req.params;
+
+    await mealService.deleteByUserAndId(userId, mealId);
+
+    res.status(204).send();
+});
+
 module.exports = {
     create,
     getAllByUserOrPublic,
     updateByUserAndId,
+    deleteByUserAndId,
 };

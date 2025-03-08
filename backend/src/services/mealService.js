@@ -1,4 +1,5 @@
 const mealRepository = require('../repositories/mealRepository');
+const ErrorResponse = require('../utils/classes/ErrorResponse');
 
 const createOne = async (userId, data) => {
     const meal = {
@@ -33,8 +34,18 @@ const updateByUserAndId = async (userId, mealId, data) => {
     return await mealRepository.updateByUserAndId(userId, mealId, updated);
 };
 
+const deleteByUserAndId = async (userId, mealId) => {
+    const deleted = await mealRepository.deleteByUserAndId(userId, mealId);
+    if (!deleted)
+        throw new ErrorResponse(
+            400,
+            'Failed to delete meal: not found or missing permissions'
+        );
+};
+
 module.exports = {
     createOne,
     getAllByUserOrPublic,
     updateByUserAndId,
+    deleteByUserAndId,
 };

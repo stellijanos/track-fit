@@ -13,8 +13,12 @@ const updateByUserAndId = async (userId, mealId, data) =>
         new: true,
     });
 
+const deleteByUserAndId = async (userId, mealId) =>
+    await Meal.findOneAndDelete({ _id: mealId, user: userId });
+
 module.exports = {
     createOne,
     findAllByUserOrPublic,
     updateByUserAndId,
+    deleteByUserAndId,
 };
