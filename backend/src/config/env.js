@@ -6,6 +6,7 @@ module.exports = {
         host: process.env.HOST,
         port: process.env.PORT || 3000,
         env: process.env.NODE_ENV,
+        name: process.env.APP_NAME,
     },
     db: {
         name: process.env.DB_NAME,
