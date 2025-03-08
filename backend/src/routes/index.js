@@ -2,6 +2,7 @@ const express = require('express');
 const activityRouter = require('./activityRouter');
 const authRouter = require('./authRouter');
 const userRouter = require('./userRouter');
+const jwtMiddleware = require('../middleware/jwtMiddleware');
 
 const router = express.Router();
 

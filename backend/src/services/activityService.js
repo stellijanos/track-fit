@@ -11,6 +11,10 @@ const createOne = async (userId, data) => {
     return await activityRepository.createOne(activity);
 };
 
+const getAllByUserorPublic = async (userId) =>
+    await activityRepository.findByUserOrPublic(userId);
+
 module.exports = {
     createOne,
+    getAllByUserorPublic,
 };

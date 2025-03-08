@@ -7,5 +7,6 @@ const router = express.Router();
 router.use(jwtMiddleware);
 
 router.post('/', activityController.create);
+router.get('/', activityController.getAllByUserorPublic);
 
 module.exports = router;
