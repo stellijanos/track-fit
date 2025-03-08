@@ -92,7 +92,7 @@
         "ActivityEntry": {
             "_id": "String",
             "trackDay": "TrackDay",
-            "activity": "Activity",
+            "name": "String",
             "calories": "Number",
             "duration": "Number",
             "createdAt": "Datetime",
@@ -120,12 +120,25 @@
         "MealEntry": {
             "_id": "String",
             "trackDay": "TrackDay",
-            "meal": "Meal",
+            "name": "String",
             "mealTime": "enum('breakfast','lunch','dinner','snack')",
-            "kcal": "Number",
-            "protein": "Number",
-            "carb": "Number",
-            "fat": "Number",
+            "per100G": {
+                "kcal": "Number",
+                "protein": "Number",
+                "carb": "Number",
+                "fat": "Number",
+                "fibre": "Number",
+                "salt": "Number"
+            },
+            "totalConsumed": {
+                "quantityInG": "Number",
+                "kcal": "Number",
+                "protein": "Number",
+                "carb": "Number",
+                "fat": "Number",
+                "fibre": "Number",
+                "salt": "Number"
+            },
             "createdAt": "Datetime",
             "updatedAt": "Datetime"
         }
@@ -170,7 +183,7 @@
             "name": "String",
             "description": "String",
             "duration": "Number",
-            "calories": "Number",
+            "caloriesBurned": "Number",
             "exercises": "GymExerciseEntry[]",
             "createdAt": "Datetime",
             "updatedAt": "Datetime"

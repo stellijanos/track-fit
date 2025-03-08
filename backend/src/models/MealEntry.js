@@ -4,17 +4,29 @@ const mealTimes = require('../enums/mealTimes');
 const mealEntrySchema = new mongoose.Schema(
     {
         trackDay: { type: mongoose.Schema.Types.ObjectId, ref: 'TrackDay' },
-        meal: { type: mongoose.Schema.Types.ObjectId, ref: 'Meal' },
+        name: { type: String, required: true },
         mealTime: {
             type: String,
             enum: Object.values(mealTimes),
             default: mealTimes.SNACK,
         },
-        totalQuantity: { type: Number, default: 100 },
-        totalKcal: { type: Number, required: true },
-        totalProtein: { type: Number, required: true },
-        totalCarb: { type: Number, required: true },
-        totalFat: { type: Number, required: true },
+        per100G: {
+            kcal: { type: Number, required: true },
+            protein: { type: Number, required: true },
+            carb: { type: Number, required: true },
+            fat: { type: Number, required: true },
+            fibre: { type: Number, required: true },
+            salt: { type: Number, required: true },
+        },
+        totalConsumed: {
+            quantityInG: { type: Number, required: true },
+            kcal: { type: Number, required: true },
+            protein: { type: Number, required: true },
+            carb: { type: Number, required: true },
+            fat: { type: Number, required: true },
+            fibre: { type: Number, required: true },
+            salt: { type: Number, required: true },
+        },
     },
     {
         timestamps: true,

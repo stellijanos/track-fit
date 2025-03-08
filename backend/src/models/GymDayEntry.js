@@ -11,7 +11,7 @@ const gymDayEntrySchema = new mongoose.Schema(
         name: { type: String, default: null },
         description: { type: Strinh, default: null },
         duration: { type: Number, required: true, min: 0 },
-        calories: { type: Number, required: true, min: 0 },
+        caloriesBurned: { type: Number, required: true, min: 0 },
         exercises: [gymExerciseEntrySchema],
     },
     {
