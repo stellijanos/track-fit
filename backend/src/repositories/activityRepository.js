@@ -13,8 +13,12 @@ const updateOneByUserAndId = async (userId, activityId, data) =>
         runValidators: true,
     });
 
+const deleteByUserAndId = async (userId, activityId) =>
+    await Activity.findOneAndDelete({ _id: activityId, user: userId });
+
 module.exports = {
     createOne,
     findByUserOrPublic,
     updateOneByUserAndId,
+    deleteByUserAndId,
 };

@@ -1,4 +1,5 @@
 const activityRepository = require('../repositories/activityRepository');
+const ErrorResponse = require('../utils/classes/ErrorResponse');
 
 const createOne = async (userId, data) => {
     const activity = {
@@ -28,8 +29,17 @@ const updateOne = async (userId, activityId, data) => {
     );
 };
 
+const deleteByUserAndId = async (userId, activityId) => {
+    const deleted = await activityRepository.deleteByUserAndId(
+        userId,
+        activityId
+    );
+    if (!deleted) throw new ErrorResponse(400, 'Failed or missing permissions to delete activity.');
+};
+
 module.exports = {
     createOne,
     getAllByUserorPublic,
     updateOne,
+    deleteByUserAndId,
 };

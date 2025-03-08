@@ -42,8 +42,16 @@ const updateByUserAndId = catchAsync(async (req, res) => {
     );
 });
 
+const deleteByUserIdAndId = catchAsync(async (req, res) => {
+    const userId = req.user._id;
+    const { activityId } = req.params;
+    await activityService.deleteByUserAndId(userId, activityId);
+    res.status(204).send();
+});
+
 module.exports = {
     create,
     getAllByUserorPublic,
     updateByUserAndId,
+    deleteByUserIdAndId,
 };
