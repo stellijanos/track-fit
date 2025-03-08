@@ -81,8 +81,7 @@
             "_id": "String",
             "user": "User",
             "name": "String",
-            "calories": "Number",
-            "duration": "Number",
+            "caloriesPerHour": "Number",
             "visibility": "enum('private','public')",
             "createdAt": "Datetime",
             "updatedAt": "Datetime"
@@ -93,7 +92,8 @@
             "_id": "String",
             "trackDay": "TrackDay",
             "name": "String",
-            "calories": "Number",
+            "caloriesPerHour": "Number",
+            "totalCalories": "Number",
             "duration": "Number",
             "createdAt": "Datetime",
             "updatedAt": "Datetime"

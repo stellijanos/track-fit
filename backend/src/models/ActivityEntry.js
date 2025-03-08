@@ -4,7 +4,8 @@ const activityEntrySchema = new mongoose.Schema(
     {
         trackDay: { type: mongoose.Schema.Types.ObjectId, ref: 'TrackDay' },
         name: { type: String, required: true },
-        calories: { type: Number, required: true, min: 0 },
+        caloriesPerHour: { type: Number, required: true, min: 0 },
+        totalCalories: { type: Number, required: true, min: 0 },
         duration: { type: Number, required: true, min: 0 },
     },
     {
