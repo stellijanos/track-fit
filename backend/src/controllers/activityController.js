@@ -13,7 +13,7 @@ const create = catchAsync(async (req, res) => {
 
     const activity = await activityService.createOne(req.user._id, value);
     res.status(201).json(
-        new SuccessResponse('Activity successfully created', {
+        new SuccessResponse('Activity successfully created.', {
             activity: activityResponseDTO(activity),
         })
     );
@@ -22,7 +22,8 @@ const create = catchAsync(async (req, res) => {
 const getAllByUserorPublic = catchAsync(async (req, res) => {
     const activities = await activityService.getAllByUserorPublic(req.user._id);
     return res.status(200).json(
-        new SuccessResponse('Activities successfully received', {
+        new SuccessResponse(`Activitites successfully retrieved activities.`, {
+            total: activities.length,
             activities: activities.map(activityResponseDTO),
         })
     );
@@ -30,5 +31,5 @@ const getAllByUserorPublic = catchAsync(async (req, res) => {
 
 module.exports = {
     create,
-    getAllByUserorPublic
+    getAllByUserorPublic,
 };
