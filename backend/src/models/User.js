@@ -42,17 +42,6 @@ const userSchema = new mongoose.Schema(
             ref: 'CaloricTarget',
             default: null,
         },
-        measurements: [
-            { type: mongoose.Schema.Types.ObjectId, ref: 'Measurement' },
-        ],
-        waterTargets: [
-            { type: mongoose.Schema.Types.ObjectId, ref: 'WaterTarget' },
-        ],
-        caloricTargets: [
-            { type: mongoose.Schema.Types.ObjectId, ref: 'CaloricTarget' },
-        ],
-        gymPlans: [{ type: mongoose.Schema.Types.ObjectId, ref: 'GymPlan' }],
-        meals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Meal' }],
     },
     {
         timestamps: true,

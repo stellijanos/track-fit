@@ -16,11 +16,6 @@
             "lastMeasurement": "Measurement",
             "currentWaterTarget": "WaterTarget",
             "currentCaloricTarget": "CaloricTarget",
-            "measurements": "Measurement[]",
-            "waterTargets": "WaterTarget[]",
-            "caloricTargets": "CaloricTarget[]",
-            "gymPlans": "GymPlan[]",
-            "meals": "Meal[]",
             "createdAt": "Datetime",
             "updatedAt": "Datetime"
         }
@@ -33,9 +28,6 @@
             "caloricTarget": "CaloricTarget",
             "waterIntake": "Number",
             "waterTarget": "Number",
-            "mealEntries": "MealEntry[]",
-            "activityEntries": "ActivityEntry[]",
-            "gymEntries": "GymEntry[]",
             "createdAt": "Datetime",
             "updatedAt": "Datetime"
         }

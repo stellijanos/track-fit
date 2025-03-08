@@ -13,13 +13,6 @@ const trackDaySchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'WaterTarget',
         },
-        mealEntries: [
-            { type: mongoose.Schema.Types.ObjectId, ref: 'MealEntry' },
-        ],
-        activityEntries: [
-            { type: mongoose.Schema.Types.ObjectId, ref: 'ActivityEntry' },
-        ],
-        gymEntries: [{ type: mongoose.Schema.Types.ObjectId, ref: 'GymEntry' }],
     },
     {
         timestamps: true,
