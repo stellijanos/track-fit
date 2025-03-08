@@ -5,7 +5,7 @@ const activitySchema = new mongoose.Schema(
     {
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         name: { type: String, required: true },
-        caloriesPerHour: { type: String, required: true, min: 0 },
+        caloriesPerHour: { type: Number, required: true, min: 0 },
         visibility: {
             type: String,
             enum: Object.values(visibility),
