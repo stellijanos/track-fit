@@ -1,12 +1,13 @@
 const nodemailer = require('nodemailer');
 const env = require('../../config/env');
 
+const name = env.app.name;
 const host = env.smtp.host;
 const port = env.smtp.port;
 const user = env.smtp.user;
 const pass = env.smtp.pass;
 
-const sendMail = async (to, subject, text) => {
+const sendMail = async (to, subject, html) => {
     const transporter = nodemailer.createTransport({
         host,
         port,
@@ -15,10 +16,11 @@ const sendMail = async (to, subject, text) => {
     });
 
     const mailOptions = {
-        from: user,
+        from: `"${name}" <${user}>`,
+        replyTo: user,
         to,
         subject,
-        text,
+        html,
     };
 
     return await transporter.sendMail(mailOptions);

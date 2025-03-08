@@ -36,6 +36,11 @@ const login = catchAsync(async (req, res) => {
     );
 });
 
+const forgotPassword = catchAsync(async (req, res) => {
+    await authService.forgotPassword(req.body.email);
+    res.status(200).json(new SuccessResponse('Email successfully sent.'));
+});
+
 const changePassword = catchAsync(async (req, res) => {
     await authService.changePassword(req.user, req.body);
 
@@ -57,6 +62,7 @@ const refreshToken = catchAsync(async (req, res) => {
 module.exports = {
     register,
     login,
+    forgotPassword,
     changePassword,
     resetPassword,
     refreshToken,

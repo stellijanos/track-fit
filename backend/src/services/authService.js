@@ -1,6 +1,7 @@
 const env = require('./../config/env');
 const bcryptUtil = require('../utils/auth/bcrypt');
 const jwtUtil = require('../utils/auth/jwt');
+const sendEmail = require('../utils/functions/sendEmail');
 const ErrorResponse = require('../utils/classes/ErrorResponse');
 const userRepository = require('../repositories/userRepository');
 
@@ -102,6 +103,30 @@ const login = async ({ credential, password }) => {
     return getTokens(jwtPayload);
 };
 
+const forgotPassword = async (email) => {
+    const existingUser = await userRepository.findByEmail(email);
+    if (!existingUser) {
+        throw new ErrorResponse(404, 'User not found.');
+    }
+
+    const jwtPayload = {
+        _id: existingUser._id,
+        email: existingUser.email,
+        role: existingUser.role,
+    };
+
+    const token = jwtUtil.generateToken(
+        jwtPayload,
+        RESET_PASSWORD_TOKEN_EXPIRES_IN
+    );
+
+    const subject = 'Reset password';
+    const html = `Hello, ${existingUser.firstName}! reset your password here: /${token}. Valid for ${RESET_PASSWORD_TOKEN_EXPIRES_IN}.`;
+
+    await sendEmail(email, subject, html);
+    return;
+};
+
 /**
  * @async
  * @param {User} user - user based on the JWT from Auth header
@@ -181,6 +206,7 @@ const refreshToken = async (refreshToken) => {
 module.exports = {
     register,
     login,
+    forgotPassword,
     changePassword,
     resetPassword,
     refreshToken,
