@@ -33,7 +33,6 @@ const updateByIdAndUserId = catchAsync(async (req, res) => {
     const { measurementId } = req.params;
     const userId = req.user._id;
     const data = req.body;
-    console.log(userId, data, measurementId);
     const updated = await measurementService.updateByIdAndUserId(
         measurementId,
         userId,
@@ -46,8 +45,16 @@ const updateByIdAndUserId = catchAsync(async (req, res) => {
     );
 });
 
+const deleteByIdAndUserId = catchAsync(async (req, res) => {
+    const { measurementId } = req.params;
+    const userId = req.user._id;
+    await measurementService.deleteByIdAndUserId(measurementId, userId);
+    res.status(204).send();
+});
+
 module.exports = {
     create,
     getAllByUserId,
     updateByIdAndUserId,
+    deleteByIdAndUserId,
 };
