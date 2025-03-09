@@ -29,7 +29,25 @@ const getAllByUserId = catchAsync(async (req, res) => {
     );
 });
 
+const updateByIdAndUserId = catchAsync(async (req, res) => {
+    const { measurementId } = req.params;
+    const userId = req.user._id;
+    const data = req.body;
+    console.log(userId, data, measurementId);
+    const updated = await measurementService.updateByIdAndUserId(
+        measurementId,
+        userId,
+        data
+    );
+    res.status(200).json(
+        new SuccessResponse('Measurement successfully updated.', {
+            measurement: measurementResponseDTO(updated),
+        })
+    );
+});
+
 module.exports = {
     create,
     getAllByUserId,
+    updateByIdAndUserId,
 };
