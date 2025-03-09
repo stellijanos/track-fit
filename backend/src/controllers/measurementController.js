@@ -18,6 +18,18 @@ const create = catchAsync(async (req, res) => {
     );
 });
 
+const getAllByUserId = catchAsync(async (req, res) => {
+    const userId = req.user._id;
+    const measurements = await measurementService.getAllByUserId(userId);
+    res.status(200).json(
+        new SuccessResponse('Measurements successfully retrieved.', {
+            total: measurements.length,
+            measurements: measurements.map(measurementResponseDTO),
+        })
+    );
+});
+
 module.exports = {
     create,
+    getAllByUserId,
 };

@@ -11,6 +11,10 @@ const create = async (userId, data) => {
     return await measurementRepository.createOne(measurement);
 };
 
+const getAllByUserId = async (userId) =>
+    await measurementRepository.findAllByUserId(userId);
+
 module.exports = {
     create,
+    getAllByUserId,
 };
