@@ -1,4 +1,5 @@
 const measurementRepository = require('../repositories/measurementRepository');
+const ErrorResponse = require('../utils/classes/ErrorResponse');
 
 const create = async (userId, data) => {
     const measurement = {
@@ -24,8 +25,19 @@ const updateByIdAndUserId = async (id, userId, data) => {
     return await measurementRepository.updateByIdAndUserId(id, userId, updated);
 };
 
+const deleteByIdAndUserId = async (id, userId) => {
+    const deleted = await measurementRepository.deleteByIdAndUserId(id, userId);
+    if (!deleted) {
+        throw new ErrorResponse(
+            400,
+            'Failed to delete measurement: not found or missing permissions.'
+        );
+    }
+};
+
 module.exports = {
     create,
     getAllByUserId,
     updateByIdAndUserId,
+    deleteByIdAndUserId,
 };

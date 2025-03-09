@@ -12,8 +12,15 @@ const updateByIdAndUserId = async (id, userId, data) =>
         { new: true }
     );
 
+const deleteByIdAndUserId = async (id, userId) =>
+    await Measurement.findOneAndDelete({
+        _id: id,
+        user: userId,
+    });
+
 module.exports = {
     createOne,
     findAllByUserId,
     updateByIdAndUserId,
+    deleteByIdAndUserId,
 };
