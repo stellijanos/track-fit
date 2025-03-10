@@ -20,6 +20,18 @@ const create = catchAsync(async (req, res) => {
     );
 });
 
+const getAllByUserId = catchAsync(async (req, res) => {
+    const userId = req.user._id;
+    const waterTargets = await waterTargetService.getAllByUserId(userId);
+    res.status(200).json(
+        new SuccessResponse('Water targets successfully received.', {
+            total: waterTargets.length,
+            waterTargets: waterTargets.map(waterTargetDto.response),
+        })
+    );
+});
+
 module.exports = {
     create,
+    getAllByUserId,
 };

@@ -9,6 +9,10 @@ const create = async (userId, data) => {
     return await waterTargetRepository.create(waterTarget);
 };
 
+const getAllByUserId = async (userId) =>
+    await waterTargetRepository.findAllByUserId(userId);
+
 module.exports = {
     create,
+    getAllByUserId,
 };
