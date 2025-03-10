@@ -5,6 +5,7 @@ const authRouter = require('./authRouter');
 const userRouter = require('./userRouter');
 const mealRouter = require('./mealRouter');
 const measurementRouter = require('./measurementRouter');
+const waterTargetRouter = require('./waterTargetRouter');
 
 const router = express.Router();
 
@@ -13,5 +14,6 @@ router.use('/users', userRouter);
 router.use('/users/me/activitites', activityRouter);
 router.use('/users/me/meals', mealRouter);
 router.use('/users/me/measurements', jwtMiddleware, measurementRouter);
+router.use('/users/me/water-targets', jwtMiddleware, waterTargetRouter);
 
 module.exports = router;
