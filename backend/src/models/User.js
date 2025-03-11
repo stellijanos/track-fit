@@ -23,6 +23,8 @@ const userSchema = new mongoose.Schema(
             enum: Object.values(userRoles),
             default: userRoles.CLIENT,
         },
+        isEmailVerified: { type: Boolean, default: false },
+        isPhoneVerified: { type: Boolean, default: false },
 
         profilePicture: {
             type: String,
