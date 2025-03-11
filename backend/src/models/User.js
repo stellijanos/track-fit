@@ -18,7 +18,6 @@ const userSchema = new mongoose.Schema(
         height: { type: Number, default: null },
 
         password: { type: String, required: true },
-        passwordResetToken: { type: String, default: null },
         role: {
             type: String,
             enum: Object.values(userRoles),

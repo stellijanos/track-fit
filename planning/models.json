@@ -1,5 +1,16 @@
 [
     {
+        "PasswordResets": {
+            "_id": "String",
+            "code": "String",
+            "user": "User",
+            "sentTo": "String (email|phone)",
+            "status": "String ('pending' | 'validated' | 'expired')",
+            "createdAt": "Date",
+            "expiresAt": "Date"
+        }
+    },
+    {
         "User": {
             "_id": "String",
             "firstName": "String",
@@ -10,7 +21,6 @@
             "gender": "enum('male','female','other')",
             "height": "Number",
             "password": "String",
-            "passwordResetToken": "String",
             "role": "enum('client','admin','other')",
             "profilePicture": "String",
             "lastMeasurement": "Measurement",
