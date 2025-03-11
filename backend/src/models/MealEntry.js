@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
-const mealTimes = require('../enums/mealTimes');
+const mealTypes = require('../enums/mealTypes');
 
 const mealEntrySchema = new mongoose.Schema(
     {
         trackDay: { type: mongoose.Schema.Types.ObjectId, ref: 'TrackDay' },
         name: { type: String, required: true },
-        mealTime: {
+        mealType: {
             type: String,
-            enum: Object.values(mealTimes),
-            default: mealTimes.SNACK,
+            enum: Object.values(mealTypes),
+            default: mealTypes.SNACK,
         },
         per100G: {
             kcal: { type: Number, required: true },
@@ -33,6 +33,6 @@ const mealEntrySchema = new mongoose.Schema(
     }
 );
 
-mealEntrySchema.index({ trackDay: -1, meal: 1, mealTime: 1 }, { unique: true });
+mealEntrySchema.index({ trackDay: -1, meal: 1, mealType: 1 }, { unique: true });
 
 module.exports = mongoose.model('MealEntry', mealEntrySchema);

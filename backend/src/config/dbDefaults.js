@@ -17,6 +17,8 @@ const dbDefaults = Object.freeze({
     WATER_TARGET: {
         quantity: 2000,
     },
+    WATER_UNIT: 'ml',
+    WATER_ENTRIES: [250, 500, 750],
 });
 
 module.exports = dbDefaults;

@@ -10,6 +10,13 @@ const userSchema = new mongoose.Schema(
         email: { type: String, required: true, unique: true },
         phone: { type: String, required: true, unique: true },
         birthDate: { type: Date, required: true },
+        gender: {
+            type: String,
+            enum: Object.values(genders),
+            default: genders.OTHER,
+        },
+        height: { type: Number, default: null },
+
         password: { type: String, required: true },
         passwordResetToken: { type: String, default: null },
         role: {
@@ -17,25 +24,24 @@ const userSchema = new mongoose.Schema(
             enum: Object.values(userRoles),
             default: userRoles.CLIENT,
         },
+
         profilePicture: {
             type: String,
             default: dbDefaults.PROFILE_PICTURE,
         },
-        gender: {
-            type: String,
-            enum: Object.values(genders),
-            default: genders.OTHER,
-        },
-        height: { type: Number, default: null },
+
         lastMeasurement: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Measurement',
             default: null,
         },
         currentWaterTarget: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'WaterTarget',
-            default: null,
+            value: { type: Number, min: 0, default: dbDefaults.WATER_TARGET },
+            unit: { type: String, default: dbDefaults.WATER_UNIT },
+            entryOptions: {
+                type: [{ type: Number, min: 10 }],
+                default: dbDefaults.WATER_ENTRIES,
+            },
         },
         currentCaloricTarget: {
             type: mongoose.Schema.Types.ObjectId,

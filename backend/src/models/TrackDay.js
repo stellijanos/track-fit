@@ -9,10 +9,7 @@ const trackDaySchema = new mongoose.Schema(
             ref: 'CaloricTarget',
         },
         waterIntake: { type: Number, default: 0 },
-        waterTarget: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'WaterTarget',
-        },
+        waterTarget: { type: Number, min: 0, required: true },
     },
     {
         timestamps: true,
