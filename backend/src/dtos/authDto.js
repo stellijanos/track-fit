@@ -37,8 +37,14 @@ const resetPassword = Joi.object({
     }),
 });
 
+
+const forgotPassword = Joi.object({
+    email: Joi.string().required(),
+})
+
 module.exports = {
     register,
     login,
+    forgotPassword,
     resetPassword,
 };

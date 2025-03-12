@@ -35,17 +35,33 @@ const register = catchAsync(async (req, res) => {
  */
 const login = catchAsync(async (req, res) => {
     const { error, value } = authDto.login.validate(req.body);
-    if(error) {
+    if (error) {
         throw new ErrorResponse(422, error.message);
     }
 
-    const {email, phone, password} = value;
+    const { email, phone, password } = value;
     const tokens = await authService.login(email, phone, password);
     res.status(200).json(new SuccessResponse(`Successfully logged in.`, tokens));
 });
 
+/**
+ * @route POST /auth/password/forgot
+ * @desc Send email to reset password
+ * @access Public
+ * @param {Object} req - Express request object
+ * @param {Object} req - Express response object
+ * @returns {JSON} 200 - Success message with access- and refresh tokens
+ * @throws {ErrorResponse} 422 - Unprocessable entity / Validation error
+ * @throws {ErrorResponse} 404 - User not found.
+ * @throws {ErrorResponse} 500 - Internel Server Error.
+ */
 const forgotPassword = catchAsync(async (req, res) => {
-    await authService.forgotPassword(req.body.email);
+    const { error, value } = authDto.forgotPassword.validate(req.body);
+    if (error) throw new ErrorResponse(422, error.message);
+
+    const { email } = value;
+    await authService.forgotPassword(email);
+
     res.status(200).json(new SuccessResponse('Email successfully sent.'));
 });
 

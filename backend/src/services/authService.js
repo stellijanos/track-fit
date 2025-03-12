@@ -104,11 +104,17 @@ const login = async (email, phone, password) => {
     return getTokens(jwtPayload);
 };
 
+/**
+ * @async
+ * @desc Sends email with password reset code
+ * @param {String} email - credential (email/phone)
+ * @returns {void} - Returns nothing.
+ * @throws {ErrorResponse} 404 - Unprocessable entity / Validation error
+ * @throws {ErrorResponse} 500 - Internal Server Error
+ */
 const forgotPassword = async (email) => {
     const existingUser = await userRepository.findByEmail(email);
-    if (!existingUser) {
-        throw new ErrorResponse(404, 'User not found.');
-    }
+    if (!existingUser) throw new ErrorResponse(404, 'User not found.');
 
     const data = {
         code: generateRandomString(16),
@@ -126,7 +132,6 @@ const forgotPassword = async (email) => {
 
     await passwordResetRepository.create(data);
     await emailService.sendResetPassword(emailContent);
-    return;
 };
 
 const validatePasswordResetCode = async (code) => {
