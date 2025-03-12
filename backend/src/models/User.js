@@ -37,11 +37,11 @@ const userSchema = new mongoose.Schema(
             default: null,
         },
         currentWaterTarget: {
-            value: { type: Number, min: 0, default: dbDefaults.WATER_TARGET },
-            unit: { type: String, default: dbDefaults.WATER_UNIT },
+            value: { type: Number, min: 0, default: dbDefaults.WATER.TARGET },
+            unit: { type: String, default: dbDefaults.WATER.UNIT },
             entryOptions: {
                 type: [{ type: Number, min: 10 }],
-                default: dbDefaults.WATER_ENTRIES,
+                default: dbDefaults.WATER.ENTRIES,
             },
         },
         currentCaloricTarget: {

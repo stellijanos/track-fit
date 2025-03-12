@@ -14,11 +14,11 @@ const dbDefaults = Object.freeze({
         bodyFatPercentage: 0,
         skeletalMuscleMass: 0,
     },
-    WATER_TARGET: {
-        quantity: 2000,
+    WATER: {
+        TARGET: 2000,
+        UNIT: 'ml',
+        ENTRIES: [250, 500, 750],
     },
-    WATER_UNIT: 'ml',
-    WATER_ENTRIES: [250, 500, 750],
 });
 
 module.exports = dbDefaults;

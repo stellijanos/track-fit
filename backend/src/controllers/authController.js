@@ -11,11 +11,15 @@ const ErrorResponse = require('../utils/classes/ErrorResponse');
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
  * @returns {JSON} 201 - Euccess message with access- and refresh tokens
- * @throws {ErrorResponse} 422 - Unprocessable entity / vValidation error
+ * @throws {ErrorResponse} 422 - Unprocessable entity / Validation error
  * @throws {ErrorResponse} 409 - User already exists.
  */
 const register = catchAsync(async (req, res) => {
-    const tokens = await authService.register(req.body);
+    const { error, value } = authDto.register.validate(req.body);
+    if (error) {
+        throw new ErrorResponse(422, error.message);
+    }
+    const tokens = await authService.register(value);
     res.status(201).json(new SuccessResponse(`Successfully registered.`, tokens));
 });
 
