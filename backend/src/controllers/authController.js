@@ -1,6 +1,8 @@
 const catchAsync = require('../utils/functions/catchAsync');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
+const authDto = require('../dtos/authDto');
 const authService = require('../services/authService');
+const ErrorResponse = require('../utils/classes/ErrorResponse');
 
 /**
  * @route POST /auth/register
@@ -43,14 +45,21 @@ const validatePasswordResetCode = catchAsync(async (req, res) => {
     res.status(200).json(new SuccessResponse('Code successfully validated.'));
 });
 
+const resetPassword = catchAsync(async (req, res) => {
+    const { error, value } = authDto.resetPassword.validate(req.body);
+    if (error) {
+        throw new ErrorResponse(422, error.message);
+    }
+
+    const { code, password } = value;
+    await authService.resetPassword(code, password);
+
+    res.status(200).json(new SuccessResponse('Password successfully reset.'));
+});
+
 const changePassword = catchAsync(async (req, res) => {
     await authService.changePassword(req.user, req.body);
     res.status(200).json(new SuccessResponse('Password successfully changed.'));
-});
-
-const resetPassword = catchAsync(async (req, res) => {
-    await authService.resetPassword(req.body);
-    res.status(200).json(new SuccessResponse('Password successfully reset.'));
 });
 
 const refreshToken = catchAsync(async (req, res) => {

@@ -151,6 +151,42 @@ const validatePasswordResetCode = async (code) => {
 
 /**
  * @async
+ * @param {string} token - password reset JWT
+ * @param {string} password - password to be set
+ * @returns {void} - returns nothing if it succeeds
+ * @throws {ErrorResponse} 404 - User not found.
+ * @throws {ErrorResponse} 401 - Invalid token providedd.
+ */
+const resetPassword = async (code, password) => {
+    const passwordReset = await passwordResetRepository.findByCode(code);
+    if (!passwordReset) throw new ErrorResponse(404, 'Code not found.');
+
+    if (isCodeExpired(passwordReset)) {
+        await passwordResetRepository.update(passwordReset._id, {
+            status: resetPasswordStatuses.EXPIRED,
+        });
+        throw new ErrorResponse(422, 'Code expired.');
+    }
+
+    if (passwordReset.status === resetPasswordStatuses.PENDING) {
+        throw new ErrorResponse(422, 'Code not validated.');
+    }
+
+    const user = await userRepository.findById(passwordReset.user);
+    if (!user) {
+        throw new ErrorResponse(404, 'User not found.');
+    }
+
+    const hasedPassword = await bcryptUtil.hashPassword(password);
+    await userRepository.updateOne(user._id, { password: hasedPassword });
+
+    await passwordResetRepository.update(passwordReset._id, {
+        status: resetPasswordStatuses.EXPIRED,
+    });
+};
+
+/**
+ * @async
  * @param {User} user - user based on the JWT from Auth header
  * @param {Object} data - current and new passwords
  * @returns {void} - returns nothing if it succeeds
@@ -166,33 +202,6 @@ const changePassword = async (user, { currentPassword, newPassword }) => {
     const hashedPassword = await bcryptUtil.hashPassword(newPassword);
 
     user.password = hashedPassword;
-    await userRepository.updateOne(user);
-
-    return;
-};
-
-/**
- * @async
- * @param {string} token - password reset JWT
- * @param {string} password - password to be set
- * @returns {void} - returns nothing if it succeeds
- * @throws {ErrorResponse} 404 - User not found.
- * @throws {ErrorResponse} 401 - Invalid token providedd.
- */
-const resetPassword = async ({ token, password }) => {
-    const payload = jwtUtil.verifyToken(token);
-
-    const user = await userRepository.findById(payload._id);
-    if (!user) {
-        throw new ErrorResponse(404, 'User not found.');
-    }
-
-    if (user.passwordResetToken !== token) {
-        throw new ErrorResponse(401, 'Invalid token provided');
-    }
-
-    user.password = await bcryptUtil.hashPassword(password);
-    user.passwordResetToken = '';
     await userRepository.updateOne(user);
 
     return;
