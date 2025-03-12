@@ -7,7 +7,10 @@ const register = Joi.object({
     email: Joi.string().email().required(),
     phone: Joi.string()
         .pattern(/^\+40\d{9}$/)
-        .required(),
+        .required()
+        .messages({
+            'string.pattern.base': 'Phone number must start with +40 and have exactly 9 digits after.',
+        }),
     birthDate: Joi.date().required(),
     gender: Joi.string()
         .valid(...Object.values(genders))
