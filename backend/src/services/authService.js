@@ -1,7 +1,9 @@
 const env = require('./../config/env');
+const resetPasswordStatuses = require('../enums/resetPasswordStatuses');
 const bcryptUtil = require('../utils/auth/bcrypt');
 const jwtUtil = require('../utils/auth/jwt');
 const generateRandomString = require('../utils/functions/generateRandomString');
+const isDateExpired = require('../utils/functions/isDateExpired');
 const ErrorResponse = require('../utils/classes/ErrorResponse');
 const userRepository = require('../repositories/userRepository');
 const passwordResetRepository = require('../repositories/passwordResetRepository');
@@ -16,6 +18,9 @@ const APP_URI = env.app.uri;
 /**
  * Helper functions
  */
+
+const isCodeExpired = (passwordReset) =>
+    isDateExpired(passwordReset.expiresAt) || passwordReset.status === resetPasswordStatuses.EXPIRED;
 
 /**
  *
@@ -41,8 +46,7 @@ const getTokens = (payload) => {
  * @throws {ErrorResponse} 409 - User already exists.
  */
 const register = async (data) => {
-    const { firstName, lastName, email, phone, birthDate, password, gender } =
-        data;
+    const { firstName, lastName, email, phone, birthDate, password, gender } = data;
 
     const existingUser = await userRepository.findByEmailOrPhone(email, phone);
     if (existingUser) {
@@ -81,18 +85,12 @@ const register = async (data) => {
  * @throws {ErrorResponse} 401 - Incorrect password.
  */
 const login = async ({ credential, password }) => {
-    const existingUser = await userRepository.findByEmailOrPhone(
-        credential,
-        credential
-    );
+    const existingUser = await userRepository.findByEmailOrPhone(credential, credential);
     if (!existingUser) {
         throw new ErrorResponse(401, 'Invalid email or phone.');
     }
 
-    const correctPassword = await bcryptUtil.comparePasswords(
-        password,
-        existingUser.password
-    );
+    const correctPassword = await bcryptUtil.comparePasswords(password, existingUser.password);
     if (!correctPassword) {
         throw new ErrorResponse(401, 'Incorrect password.');
     }
@@ -131,6 +129,26 @@ const forgotPassword = async (email) => {
     return;
 };
 
+const validatePasswordResetCode = async (code) => {
+    const passwordReset = await passwordResetRepository.findByCode(code);
+    if (!passwordReset) throw new ErrorResponse(404, 'Code not found.');
+
+    if (isCodeExpired(passwordReset)) {
+        await passwordResetRepository.update(passwordReset._id, {
+            status: resetPasswordStatuses.EXPIRED,
+        });
+        throw new ErrorResponse(422, 'Code expired.');
+    }
+
+    if (passwordReset.status === resetPasswordStatuses.VALIDATED) {
+        throw new ErrorResponse(422, 'Code already validated.');
+    }
+
+    await passwordResetRepository.update(passwordReset._id, {
+        status: resetPasswordStatuses.VALIDATED,
+    });
+};
+
 /**
  * @async
  * @param {User} user - user based on the JWT from Auth header
@@ -139,10 +157,7 @@ const forgotPassword = async (email) => {
  * @throws {ErrorResponse} 401 - Incorrect password.
  */
 const changePassword = async (user, { currentPassword, newPassword }) => {
-    const isCorrectPassword = await bcryptUtil.comparePasswords(
-        currentPassword,
-        user.password
-    );
+    const isCorrectPassword = await bcryptUtil.comparePasswords(currentPassword, user.password);
 
     if (!isCorrectPassword) {
         throw new ErrorResponse(401, 'Incorrect password.');
@@ -211,6 +226,7 @@ module.exports = {
     register,
     login,
     forgotPassword,
+    validatePasswordResetCode,
     changePassword,
     resetPassword,
     refreshToken,

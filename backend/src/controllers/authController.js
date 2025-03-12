@@ -14,9 +14,7 @@ const authService = require('../services/authService');
  */
 const register = catchAsync(async (req, res) => {
     const tokens = await authService.register(req.body);
-    res.status(201).json(
-        new SuccessResponse(`Successfully registered.`, tokens)
-    );
+    res.status(201).json(new SuccessResponse(`Successfully registered.`, tokens));
 });
 
 /**
@@ -31,9 +29,7 @@ const register = catchAsync(async (req, res) => {
  */
 const login = catchAsync(async (req, res) => {
     const tokens = await authService.login(req.body);
-    res.status(200).json(
-        new SuccessResponse(`Successfully logged in.`, tokens)
-    );
+    res.status(200).json(new SuccessResponse(`Successfully logged in.`, tokens));
 });
 
 const forgotPassword = catchAsync(async (req, res) => {
@@ -41,9 +37,14 @@ const forgotPassword = catchAsync(async (req, res) => {
     res.status(200).json(new SuccessResponse('Email successfully sent.'));
 });
 
+const validatePasswordResetCode = catchAsync(async (req, res) => {
+    const { code } = req.body;
+    await authService.validatePasswordResetCode(code);
+    res.status(200).json(new SuccessResponse('Code successfully validated.'));
+});
+
 const changePassword = catchAsync(async (req, res) => {
     await authService.changePassword(req.user, req.body);
-
     res.status(200).json(new SuccessResponse('Password successfully changed.'));
 });
 
@@ -54,15 +55,14 @@ const resetPassword = catchAsync(async (req, res) => {
 
 const refreshToken = catchAsync(async (req, res) => {
     const tokens = await authService.refreshToken(req.body.refreshToken);
-    res.status(200).json(
-        new SuccessResponse('Token successfully refreshed.', tokens)
-    );
+    res.status(200).json(new SuccessResponse('Token successfully refreshed.', tokens));
 });
 
 module.exports = {
     register,
     login,
     forgotPassword,
+    validatePasswordResetCode,
     changePassword,
     resetPassword,
     refreshToken,
