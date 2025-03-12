@@ -7,6 +7,7 @@ const passwordResetSchema = new mongoose.Schema(
         user: { type: mongoose.Schema.Types.ObjectId },
         sentTo: { type: String, required: true },
         status: { type: String, enum: Object.values(resetPasswordStatuses) },
+        expiresAt: { type: Date, required: true },
     },
     {
         timestamps: true,
