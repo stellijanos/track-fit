@@ -25,7 +25,7 @@ const register = catchAsync(async (req, res) => {
 
 /**
  * @route POST /auth/login
- * @desc Login an existing user
+ * @desc Log in an existing user
  * @access Public
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
@@ -34,7 +34,13 @@ const register = catchAsync(async (req, res) => {
  * @throws {ErrorResponse} 404 - User not found.
  */
 const login = catchAsync(async (req, res) => {
-    const tokens = await authService.login(req.body);
+    const { error, value } = authDto.login.validate(req.body);
+    if(error) {
+        throw new ErrorResponse(422, error.message);
+    }
+
+    const {email, phone, password} = value;
+    const tokens = await authService.login(email, phone, password);
     res.status(200).json(new SuccessResponse(`Successfully logged in.`, tokens));
 });
 

@@ -84,8 +84,8 @@ const register = async (data) => {
  * @throws {ErrorResponse} 401 - Invalid email or phone.
  * @throws {ErrorResponse} 401 - Incorrect password.
  */
-const login = async ({ credential, password }) => {
-    const existingUser = await userRepository.findByEmailOrPhone(credential, credential);
+const login = async (email, phone, password) => {
+    const existingUser = await userRepository.findByEmailOrPhone(email, phone);
     if (!existingUser) {
         throw new ErrorResponse(401, 'Invalid email or phone.');
     }
