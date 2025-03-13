@@ -2,6 +2,7 @@ const jwtUtil = require('../utils/auth/jwt');
 const catchAsync = require('../utils/functions/catchAsync');
 const ErrorResponse = require('../utils/classes/ErrorResponse');
 const userService = require('../services/userService');
+const jwtTypes = require('../enums/jwtTypes');
 
 const jwtMiddleware = catchAsync(async (req, res, next) => {
     const authHeader = req.header('Authorization');
@@ -11,6 +12,10 @@ const jwtMiddleware = catchAsync(async (req, res, next) => {
 
     const token = authHeader.split(' ')[1];
     const payload = jwtUtil.verifyToken(token);
+
+    if (payload.type !== jwtTypes.ACCESS) {
+        throw new ErrorResponse(401, 'Invalid token type provided.');
+    }
 
     const user = await userService.getById(payload._id);
     if (!user) {

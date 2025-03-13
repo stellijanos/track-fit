@@ -93,7 +93,7 @@ const validatePasswordResetCode = catchAsync(async (req, res) => {
  * @param {Object} req - Express response object
  * @returns {JSON} 200 - Password successfully reset.
  * @throws {ErrorResponse} 404 - User not found.
- * @throws {ErrorResponse} 401 - Invalid token providedd.
+ * @throws {ErrorResponse} 422 - Unprocessable entitiy / Validation Error.
  * @throws {ErrorResponse} 500 - Internel Server Error.
  */
 const resetPassword = catchAsync(async (req, res) => {
@@ -108,13 +108,13 @@ const resetPassword = catchAsync(async (req, res) => {
 
 /**
  * @route PUT /auth/password/change
- * @desc Changes password of the current authenticated user
+ * @desc Changes password of the current authenticated user.
  * @access Private
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
  * @returns {JSON} 200 - Password successfully changed.
  * @throws {ErrorResponse} 404 - User not found.
- * @throws {ErrorResponse} 401 - Invalid token providedd.
+ * @throws {ErrorResponse} 401 - Invalid token provided.
  * @throws {ErrorResponse} 500 - Internel Server Error.
  */
 const changePassword = catchAsync(async (req, res) => {
@@ -125,8 +125,23 @@ const changePassword = catchAsync(async (req, res) => {
     res.status(200).json(new SuccessResponse('Password successfully changed.'));
 });
 
+/**
+ * @route POST /auth/token/refresh
+ * @desc Generates new access- and refresh tokens
+ * @access Public
+ * @param {Object} req - Express request object
+ * @param {Object} req - Express response object
+ * @returns {JSON} 200 - Token successfully refreshed.
+ * @throws {ErrorResponse} 404 - User not found.
+ * @throws {ErrorResponse} 500 - Internel Server Error.
+ */
 const refreshToken = catchAsync(async (req, res) => {
-    const tokens = await authService.refreshToken(req.body.refreshToken);
+    const { error, value } = authDto.refreshToken.validate(req.body);
+    if (error) throw new ErrorResponse(422, error.message);
+
+    const { refreshToken } = value;
+    const tokens = await authService.refreshToken(refreshToken);
+
     res.status(200).json(new SuccessResponse('Token successfully refreshed.', tokens));
 });
 

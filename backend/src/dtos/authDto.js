@@ -55,6 +55,10 @@ const changePassword = Joi.object({
     }),
 });
 
+const refreshToken = Joi.object({
+    refreshToken: Joi.string().required(),
+});
+
 module.exports = {
     register,
     login,
@@ -62,4 +66,5 @@ module.exports = {
     validatePasswordResetCode,
     resetPassword,
     changePassword,
+    refreshToken,
 };

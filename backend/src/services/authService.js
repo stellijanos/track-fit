@@ -1,5 +1,6 @@
 const env = require('./../config/env');
 const resetPasswordStatuses = require('../enums/resetPasswordStatuses');
+const jwtTypes = require('../enums/jwtTypes');
 const bcryptUtil = require('../utils/auth/bcrypt');
 const jwtUtil = require('../utils/auth/jwt');
 const generateRandomString = require('../utils/functions/generateRandomString');
@@ -63,8 +64,8 @@ const setUserPassword = async (userId, password) => {
  */
 const getTokens = (payload) => {
     return {
-        accessToken: jwtUtil.generateToken(payload, ACCESS_TOKEN_EXPIRES_IN),
-        refreshToken: jwtUtil.generateToken(payload, REFRESH_TOKEN_EXPIRES_IN),
+        accessToken: jwtUtil.generateToken({ ...payload, type: jwtTypes.ACCESS }, ACCESS_TOKEN_EXPIRES_IN),
+        refreshToken: jwtUtil.generateToken({ ...payload, type: jwtTypes.REFRESH }, REFRESH_TOKEN_EXPIRES_IN),
     };
 };
 
@@ -229,18 +230,19 @@ const changePassword = async (user, { currentPassword, newPassword }) => {
 
 /**
  * @async
+ * @desc Generates new access- and refresh tokens
  * @param {string} refreshToken - JWT based on which the refresh happens
- * @returns {Object} - object with access- and refresh tokens
+ * @returns {Object} - Object with access- and refresh tokens
  * @throws {ErrorResponse} 404 - User not found.
- * @throws {ErrorResponse} 500 - Invalid JWT
+ * @throws {ErrorResponse} 500 - Internel Server Error.
  */
 const refreshToken = async (refreshToken) => {
     const payload = jwtUtil.verifyToken(refreshToken);
 
+    if (payload.type !== jwtTypes.REFRESH) throw new ErrorResponse(401, 'Invalid refresh token provided.');
+
     const existingUser = await userRepository.findById(payload._id);
-    if (!existingUser) {
-        throw new ErrorResponse(404, 'User not found.');
-    }
+    if (!existingUser) throw new ErrorResponse(404, 'User not found.');
 
     const jwtPayload = {
         _id: existingUser._id,
