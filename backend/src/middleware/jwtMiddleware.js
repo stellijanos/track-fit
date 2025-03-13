@@ -11,11 +11,7 @@ const jwtMiddleware = catchAsync(async (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    const payload = jwtUtil.verifyToken(token);
-
-    if (payload.type !== jwtTypes.ACCESS) {
-        throw new ErrorResponse(401, 'Invalid token type provided.');
-    }
+    const payload = jwtUtil.verify(token, jwtTypes.ACCESS);
 
     const user = await userService.getById(payload._id);
     if (!user) {

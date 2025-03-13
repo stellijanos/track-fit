@@ -237,9 +237,7 @@ const changePassword = async (user, { currentPassword, newPassword }) => {
  * @throws {ErrorResponse} 500 - Internel Server Error.
  */
 const refreshToken = async (refreshToken) => {
-    const payload = jwtUtil.verifyToken(refreshToken);
-
-    if (payload.type !== jwtTypes.REFRESH) throw new ErrorResponse(401, 'Invalid refresh token provided.');
+    const payload = jwtUtil.verify(refreshToken, jwtTypes.REFRESH);
 
     const existingUser = await userRepository.findById(payload._id);
     if (!existingUser) throw new ErrorResponse(404, 'User not found.');
