@@ -213,24 +213,18 @@ const resetPassword = async (code, password) => {
 
 /**
  * @async
- * @param {User} user - user based on the JWT from Auth header
- * @param {Object} data - current and new passwords
- * @returns {void} - returns nothing if it succeeds
+ * @param {User} user - User to change the password for
+ * @param {Object} data - Current and new passwords
+ * @returns {void} - Returns nothing
  * @throws {ErrorResponse} 401 - Incorrect password.
+ * @throws {ErrorResponse} 500 - Internel Server Error.
  */
 const changePassword = async (user, { currentPassword, newPassword }) => {
     const isCorrectPassword = await bcryptUtil.comparePasswords(currentPassword, user.password);
-
-    if (!isCorrectPassword) {
-        throw new ErrorResponse(401, 'Incorrect password.');
-    }
+    if (!isCorrectPassword) throw new ErrorResponse(401, 'Incorrect password.');
 
     const hashedPassword = await bcryptUtil.hashPassword(newPassword);
-
-    user.password = hashedPassword;
-    await userRepository.updateOne(user);
-
-    return;
+    await userRepository.updateOne(user._id, { password: hashedPassword });
 };
 
 /**

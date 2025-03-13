@@ -45,10 +45,21 @@ const resetPassword = Joi.object({
     }),
 });
 
+const changePassword = Joi.object({
+    currentPassword: Joi.string().required(),
+    newPassword: Joi.string().required().invalid(Joi.ref('currentPassword')).messages({
+        'any.invalid': 'New password cannot be the same as the current one.',
+    }),
+    newPasswordConfirm: Joi.string().valid(Joi.ref('newPassword')).required().messages({
+        'any.only': 'Passwords do not match.',
+    }),
+});
+
 module.exports = {
     register,
     login,
     forgotPassword,
     validatePasswordResetCode,
     resetPassword,
+    changePassword,
 };
