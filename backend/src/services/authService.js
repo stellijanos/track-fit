@@ -1,14 +1,17 @@
 const env = require('./../config/env');
-const resetPasswordStatuses = require('../enums/resetPasswordStatuses');
-const jwtTypes = require('../enums/jwtTypes');
 const bcryptUtil = require('../utils/auth/bcrypt');
 const jwtUtil = require('../utils/auth/jwt');
+const jwtTypes = require('../enums/jwtTypes');
+const resetPasswordStatuses = require('../enums/resetPasswordStatuses');
 const generateRandomString = require('../utils/functions/generateRandomString');
 const isDateExpired = require('../utils/functions/isDateExpired');
-const ErrorResponse = require('../utils/classes/ErrorResponse');
 const userRepository = require('../repositories/userRepository');
 const passwordResetRepository = require('../repositories/passwordResetRepository');
 const emailService = require('./emailService');
+const NotFoundError = require('../errors/NotFoundError');
+const UnauthorizedError = require('../errors/UnauthorizedError');
+const BadRequestError = require('../errors/BadRequestError');
+const ConflictError = require('../errors/ConflictError');
 
 const ACCESS_TOKEN_EXPIRES_IN = env.auth.jwt.expiresIn.accessToken;
 const REFRESH_TOKEN_EXPIRES_IN = env.auth.jwt.expiresIn.refreshToken;
@@ -20,47 +23,73 @@ const APP_URI = env.app.uri;
  * Helper functions
  */
 
+/**
+ * @desc Check if the password reset code is expired.
+ * @param {PasswordReset} passwordReset - The password reset object.
+ * @returns {Boolean} - Returns true if the reset code or the status itself is expired.
+ */
 const isCodeExpired = (passwordReset) =>
     isDateExpired(passwordReset.expiresAt) || passwordReset.status === resetPasswordStatuses.EXPIRED;
 
+/**
+ * @async
+ * @desc Check if the password reset code is pending.
+ * @param {PasswordReset} passwordReset - The password reset object.
+ * @returns {void} - Returns nothing.
+ * @throws{BadRequestError} - Password reset code expired.
+ * @throws{BadRequestError} - Password reset code already validated.
+ */
 const checkIsPending = async (passwordReset) => {
     if (isCodeExpired(passwordReset)) {
         await passwordResetRepository.update(passwordReset._id, {
             status: resetPasswordStatuses.EXPIRED,
         });
-        throw new ErrorResponse(422, 'Code expired.');
+        throw new BadRequestError('Password reset code expired.');
     }
 
-    if (passwordReset.status === resetPasswordStatuses.VALIDATED) {
-        throw new ErrorResponse(422, 'Code already validated.');
-    }
+    if (passwordReset.status === resetPasswordStatuses.VALIDATED)
+        throw new BadRequestError('Password reset code already validated.');
 };
 
+/**
+ * @async
+ * @desc Check if the password reset code is validated.
+ * @param {PasswordReset} passwordReset - The password reset object.
+ * @returns {void} - Returns nothing.
+ * @throws{BadRequestError} - Password reset code expired.
+ * @throws{BadRequestError} - Password reset code already validated.
+ */
 const checkIsValidated = async (passwordReset) => {
     if (isCodeExpired(passwordReset)) {
         await passwordResetRepository.update(passwordReset._id, {
             status: resetPasswordStatuses.EXPIRED,
         });
-        throw new ErrorResponse(422, 'Code expired.');
+        throw new BadRequestError('Password reset code expired.');
     }
 
-    if (passwordReset.status === resetPasswordStatuses.PENDING) {
-        throw new ErrorResponse(422, 'Code not validated.');
-    }
+    if (passwordReset.status === resetPasswordStatuses.PENDING)
+        throw new BadRequestError('Password reset code not validated.');
 };
 
+/**
+ * @async
+ * @desc Set the password of the user based on its ID.
+ * @param {PasswordReset} passwordReset - The password reset object.
+ * @returns {void} - Returns nothing.
+ * @throws{NotFoundError} - User not found.
+ */
 const setUserPassword = async (userId, password) => {
     const user = await userRepository.findById(userId);
-    if (!user) throw new ErrorResponse(404, 'User not found.');
+    if (!user) throw new NotFoundError('User');
 
     const hasedPassword = await bcryptUtil.hashPassword(password);
     await userRepository.updateOne(user._id, { password: hasedPassword });
 };
 
 /**
- *
- * @param {Object} payload - Data which is in the token encrypted
- * @returns {Object} - Access token and refresh token as a single object
+ * @descr Generate access- and refresh tokens.
+ * @param {Object} payload - Data which is in the token encrypted.
+ * @returns {Object} -  Object with access- and refresh tokens.
  */
 const getTokens = (payload) => {
     return {
@@ -75,18 +104,16 @@ const getTokens = (payload) => {
 
 /**
  * @async
- * @param {Object} data - contains user personal information and password
- * @returns {Object} - Object with access- and refresh tokens
- * @throws {ErrorResponse} 422 - Unprocessable entity / Validation error
- * @throws {ErrorResponse} 409 - User already exists.
+ * @desc Register / sign up a new user,
+ * @param {Object} data - Contains user personal information and password.
+ * @returns {Object} - Object with access- and refresh tokens.
+ * @throws {ConflictError} - User already exists.
  */
 const register = async (data) => {
     const { firstName, lastName, email, phone, birthDate, password, gender } = data;
 
     const existingUser = await userRepository.findByEmailOrPhone(email, phone);
-    if (existingUser) {
-        throw new ErrorResponse(409, 'User already exists.');
-    }
+    if (existingUser) throw new ConflictError('User already exists.');
 
     const hashedPassword = await bcryptUtil.hashPassword(password);
 
@@ -113,22 +140,20 @@ const register = async (data) => {
 
 /**
  * @async
- * @param {Object} data - credential (email/phone) and password
- * @returns {Object} - Object with access- and refresh tokens
- * @throws {ErrorResponse} 404 - Unprocessable entity / Validation error
- * @throws {ErrorResponse} 401 - Invalid email or phone.
- * @throws {ErrorResponse} 401 - Incorrect password.
+ * @desc Log in / sign in an existing user.
+ * @param {String} email - Email the user provided.
+ * @param {String} phone - Phone number the user provided.
+ * @param {String} password - Password the user provided.
+ * @returns {Object} - Object with access- and refresh tokens.
+ * @throws {UnauthorizedError} - Invalid email or phone.
+ * @throws {UnauthorizedError} - Incorrect password.
  */
 const login = async (email, phone, password) => {
     const existingUser = await userRepository.findByEmailOrPhone(email, phone);
-    if (!existingUser) {
-        throw new ErrorResponse(401, 'Invalid email or phone.');
-    }
+    if (!existingUser) throw new UnauthorizedError('Invalid email or phone.');
 
     const correctPassword = await bcryptUtil.comparePasswords(password, existingUser.password);
-    if (!correctPassword) {
-        throw new ErrorResponse(401, 'Incorrect password.');
-    }
+    if (!correctPassword) throw new UnauthorizedError('Incorrect password.');
 
     const jwtPayload = {
         _id: existingUser._id,
@@ -141,15 +166,14 @@ const login = async (email, phone, password) => {
 
 /**
  * @async
- * @desc Sends email with password reset code
- * @param {String} email - credential (email/phone)
+ * @desc Send email with password reset code.
+ * @param {String} email - Credential (email/phone).
  * @returns {void} - Returns nothing.
- * @throws {ErrorResponse} 404 - Unprocessable entity / Validation error
- * @throws {ErrorResponse} 500 - Internal Server Error
+ * @throws {NotFoundError} - User not found.
  */
 const forgotPassword = async (email) => {
     const existingUser = await userRepository.findByEmail(email);
-    if (!existingUser) throw new ErrorResponse(404, 'User not found.');
+    if (!existingUser) throw new NotFoundError('User');
 
     const data = {
         code: generateRandomString(16),
@@ -170,19 +194,17 @@ const forgotPassword = async (email) => {
 };
 
 /**
- * @route POST /auth/password/reset-code/validate
- * @desc Validate password reset code
- * @access Public
- * @param {Object} req - Express request object
- * @param {Object} req - Express response object
- * @returns {JSON} 200 - Code successfully validated.
- * @throws {ErrorResponse} 422 - Unprocessable entity | Validation error
- * @throws {ErrorResponse} 404 - Code not found. | Code expired. | Code already validated.
- * @throws {ErrorResponse} 500 - Internel Server Error.
+ * @async
+ * @desc Validate password reset code.
+ * @param {String} code - Password reset code to be valideted.
+ * @returns {void} - Returns nothing.
+ * @throws {NotFoundError}- Code not found.
+ * @throws {BadRequestError} - Password reset code expired.
+ * @throws {BadRequestError} - Password reset code already validated.
  */
 const validatePasswordResetCode = async (code) => {
     const passwordReset = await passwordResetRepository.findByCode(code);
-    if (!passwordReset) throw new ErrorResponse(404, 'Code not found.');
+    if (!passwordReset) throw new NotFoundError('Code');
 
     await checkIsPending(passwordReset);
 
@@ -193,16 +215,17 @@ const validatePasswordResetCode = async (code) => {
 
 /**
  * @async
- * @param {string} code - Password reset code
- * @param {string} password - Password to be set
- * @returns {void} - Returns nothing
- * @throws {ErrorResponse} 404 - User not found.
- * @throws {ErrorResponse} 401 - Invalid token provided.
- * @throws {ErrorResponse} 500 - Internel Server Error.
+ * @desc Reset users password based on validated and not expired code.
+ * @param {String} code - Password reset code.
+ * @param {String} password - Password to be set.
+ * @returns {void} - Returns nothing.
+ * @throws {NotFoundError} - User not found.
+ * @throws{BadRequestError} - Password reset code expired.
+ * @throws{BadRequestError} - Password reset code already validated.
  */
 const resetPassword = async (code, password) => {
     const passwordReset = await passwordResetRepository.findByCode(code);
-    if (!passwordReset) throw new ErrorResponse(404, 'Code not found.');
+    if (!passwordReset) throw new NotFoundError('Code');
 
     await checkIsValidated(passwordReset);
     await setUserPassword(passwordReset.user, password);
@@ -214,15 +237,15 @@ const resetPassword = async (code, password) => {
 
 /**
  * @async
- * @param {User} user - User to change the password for
- * @param {Object} data - Current and new passwords
- * @returns {void} - Returns nothing
- * @throws {ErrorResponse} 401 - Incorrect password.
- * @throws {ErrorResponse} 500 - Internel Server Error.
+ * @desc Change user password.
+ * @param {User} user - User to change the password for.
+ * @param {Object} data - Current and new passwords.
+ * @returns {void} - Returns nothing.
+ * @throws {UnauthorizedError} - Incorrect password.
  */
 const changePassword = async (user, { currentPassword, newPassword }) => {
     const isCorrectPassword = await bcryptUtil.comparePasswords(currentPassword, user.password);
-    if (!isCorrectPassword) throw new ErrorResponse(401, 'Incorrect password.');
+    if (!isCorrectPassword) throw new UnauthorizedError('Incorrect password.');
 
     const hashedPassword = await bcryptUtil.hashPassword(newPassword);
     await userRepository.updateOne(user._id, { password: hashedPassword });
@@ -230,17 +253,16 @@ const changePassword = async (user, { currentPassword, newPassword }) => {
 
 /**
  * @async
- * @desc Generates new access- and refresh tokens
- * @param {string} refreshToken - JWT based on which the refresh happens
+ * @desc Generate new access- and refresh tokens
+ * @param {String} refreshToken - JWT based on which the refresh happens
  * @returns {Object} - Object with access- and refresh tokens
- * @throws {ErrorResponse} 404 - User not found.
- * @throws {ErrorResponse} 500 - Internel Server Error.
+ * @throws {NotFoundError} User not found.
  */
 const refreshToken = async (refreshToken) => {
     const payload = jwtUtil.verify(refreshToken, jwtTypes.REFRESH);
 
     const existingUser = await userRepository.findById(payload._id);
-    if (!existingUser) throw new ErrorResponse(404, 'User not found.');
+    if (!existingUser) throw new NotFoundError('User');
 
     const jwtPayload = {
         _id: existingUser._id,

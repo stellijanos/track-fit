@@ -31,7 +31,7 @@ const register = catchAsync(async (req, res) => {
  * @param {Object} req - Express response object
  * @returns {JSON} 200 - Success message with access- and refresh tokens
  * @throws {ErrorResponse} 422 - Unprocessable entity / Validation error
- * @throws {ErrorResponse} 404 - User not found.
+ * @throws {NotFoundError} 404 - User not found.
  */
 const login = catchAsync(async (req, res) => {
     const { error, value } = authDto.login.validate(req.body);

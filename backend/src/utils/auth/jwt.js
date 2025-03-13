@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const env = require('../../config/env');
-const JwtVerificationError = require('../../errors/JwtVerificationError');
+const UnauthorizedError = require('../../errors/UnauthorizedError');
 
 const SECRET_KEY = env.auth.jwt.secret;
 
@@ -26,10 +26,10 @@ const verify = (token, type) => {
 
         return payload;
     } catch (error) {
-        if (error instanceof jwt.TokenExpiredError) throw new JwtVerificationError('Token has expired.');
-        if (error instanceof jwt.JsonWebTokenError) throw new JwtVerificationError('Invalid token provided.');
-        if (error instanceof jwt.NotBeforeError) throw new JwtVerificationError('Token is not yet active.');
-        throw new JwtVerificationError(error.message || 'An unknown error occurred while verifying the token.');
+        if (error instanceof jwt.TokenExpiredError) throw new UnauthorizedError('Token has expired.');
+        if (error instanceof jwt.JsonWebTokenError) throw new UnauthorizedError('Invalid token provided.');
+        if (error instanceof jwt.NotBeforeError) throw new UnauthorizedError('Token is not yet active.');
+        throw new UnauthorizedError(error.message || 'An unknown error occurred while verifying the token.');
     }
 };
 
