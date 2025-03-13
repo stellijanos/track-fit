@@ -35,6 +35,27 @@ const checkIsPending = async (passwordReset) => {
     }
 };
 
+const checkIsValidated = async (passwordReset) => {
+    if (isCodeExpired(passwordReset)) {
+        await passwordResetRepository.update(passwordReset._id, {
+            status: resetPasswordStatuses.EXPIRED,
+        });
+        throw new ErrorResponse(422, 'Code expired.');
+    }
+
+    if (passwordReset.status === resetPasswordStatuses.PENDING) {
+        throw new ErrorResponse(422, 'Code not validated.');
+    }
+};
+
+const setUserPassword = async (userId, password) => {
+    const user = await userRepository.findById(userId);
+    if (!user) throw new ErrorResponse(404, 'User not found.');
+
+    const hasedPassword = await bcryptUtil.hashPassword(password);
+    await userRepository.updateOne(user._id, { password: hasedPassword });
+};
+
 /**
  *
  * @param {Object} payload - Data which is in the token encrypted
@@ -171,34 +192,19 @@ const validatePasswordResetCode = async (code) => {
 
 /**
  * @async
- * @param {string} token - password reset JWT
- * @param {string} password - password to be set
- * @returns {void} - returns nothing if it succeeds
+ * @param {string} code - Password reset code
+ * @param {string} password - Password to be set
+ * @returns {void} - Returns nothing
  * @throws {ErrorResponse} 404 - User not found.
- * @throws {ErrorResponse} 401 - Invalid token providedd.
+ * @throws {ErrorResponse} 401 - Invalid token provided.
+ * @throws {ErrorResponse} 500 - Internel Server Error.
  */
 const resetPassword = async (code, password) => {
     const passwordReset = await passwordResetRepository.findByCode(code);
     if (!passwordReset) throw new ErrorResponse(404, 'Code not found.');
 
-    if (isCodeExpired(passwordReset)) {
-        await passwordResetRepository.update(passwordReset._id, {
-            status: resetPasswordStatuses.EXPIRED,
-        });
-        throw new ErrorResponse(422, 'Code expired.');
-    }
-
-    if (passwordReset.status === resetPasswordStatuses.PENDING) {
-        throw new ErrorResponse(422, 'Code not validated.');
-    }
-
-    const user = await userRepository.findById(passwordReset.user);
-    if (!user) {
-        throw new ErrorResponse(404, 'User not found.');
-    }
-
-    const hasedPassword = await bcryptUtil.hashPassword(password);
-    await userRepository.updateOne(user._id, { password: hasedPassword });
+    await checkIsValidated(passwordReset);
+    await setUserPassword(passwordReset.user, password);
 
     await passwordResetRepository.update(passwordReset._id, {
         status: resetPasswordStatuses.EXPIRED,

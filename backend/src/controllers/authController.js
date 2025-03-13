@@ -85,11 +85,20 @@ const validatePasswordResetCode = catchAsync(async (req, res) => {
     res.status(200).json(new SuccessResponse('Code successfully validated.'));
 });
 
+/**
+ * @route POST /auth/password/reset
+ * @desc Resets password based on validated code.
+ * @access Public
+ * @param {Object} req - Express request object
+ * @param {Object} req - Express response object
+ * @returns {JSON} 200 - Password successfully reset.
+ * @throws {ErrorResponse} 404 - User not found.
+ * @throws {ErrorResponse} 401 - Invalid token providedd.
+ * @throws {ErrorResponse} 500 - Internel Server Error.
+ */
 const resetPassword = catchAsync(async (req, res) => {
     const { error, value } = authDto.resetPassword.validate(req.body);
-    if (error) {
-        throw new ErrorResponse(422, error.message);
-    }
+    if (error) throw new ErrorResponse(422, error.message);
 
     const { code, password } = value;
     await authService.resetPassword(code, password);
