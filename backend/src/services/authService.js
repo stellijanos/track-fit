@@ -22,6 +22,19 @@ const APP_URI = env.app.uri;
 const isCodeExpired = (passwordReset) =>
     isDateExpired(passwordReset.expiresAt) || passwordReset.status === resetPasswordStatuses.EXPIRED;
 
+const checkIsPending = async (passwordReset) => {
+    if (isCodeExpired(passwordReset)) {
+        await passwordResetRepository.update(passwordReset._id, {
+            status: resetPasswordStatuses.EXPIRED,
+        });
+        throw new ErrorResponse(422, 'Code expired.');
+    }
+
+    if (passwordReset.status === resetPasswordStatuses.VALIDATED) {
+        throw new ErrorResponse(422, 'Code already validated.');
+    }
+};
+
 /**
  *
  * @param {Object} payload - Data which is in the token encrypted
@@ -134,20 +147,22 @@ const forgotPassword = async (email) => {
     await emailService.sendResetPassword(emailContent);
 };
 
+/**
+ * @route POST /auth/password/reset-code/validate
+ * @desc Validate password reset code
+ * @access Public
+ * @param {Object} req - Express request object
+ * @param {Object} req - Express response object
+ * @returns {JSON} 200 - Code successfully validated.
+ * @throws {ErrorResponse} 422 - Unprocessable entity | Validation error
+ * @throws {ErrorResponse} 404 - Code not found. | Code expired. | Code already validated.
+ * @throws {ErrorResponse} 500 - Internel Server Error.
+ */
 const validatePasswordResetCode = async (code) => {
     const passwordReset = await passwordResetRepository.findByCode(code);
     if (!passwordReset) throw new ErrorResponse(404, 'Code not found.');
 
-    if (isCodeExpired(passwordReset)) {
-        await passwordResetRepository.update(passwordReset._id, {
-            status: resetPasswordStatuses.EXPIRED,
-        });
-        throw new ErrorResponse(422, 'Code expired.');
-    }
-
-    if (passwordReset.status === resetPasswordStatuses.VALIDATED) {
-        throw new ErrorResponse(422, 'Code already validated.');
-    }
+    await checkIsPending(passwordReset);
 
     await passwordResetRepository.update(passwordReset._id, {
         status: resetPasswordStatuses.VALIDATED,

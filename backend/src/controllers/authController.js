@@ -50,7 +50,7 @@ const login = catchAsync(async (req, res) => {
  * @access Public
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
- * @returns {JSON} 200 - Success message with access- and refresh tokens
+ * @returns {JSON} 200 - Email successfully sent.
  * @throws {ErrorResponse} 422 - Unprocessable entity / Validation error
  * @throws {ErrorResponse} 404 - User not found.
  * @throws {ErrorResponse} 500 - Internel Server Error.
@@ -65,8 +65,22 @@ const forgotPassword = catchAsync(async (req, res) => {
     res.status(200).json(new SuccessResponse('Email successfully sent.'));
 });
 
+/**
+ * @route POST /auth/password/reset-code/validate
+ * @desc Validate password reset code
+ * @access Public
+ * @param {Object} req - Express request object
+ * @param {Object} req - Express response object
+ * @returns {JSON} 200 - Code successfully validated.
+ * @throws {ErrorResponse} 422 - Unprocessable entity | Validation error
+ * @throws {ErrorResponse} 404 - Code not found. | Code expired. | Code already validated.
+ * @throws {ErrorResponse} 500 - Internel Server Error.
+ */
 const validatePasswordResetCode = catchAsync(async (req, res) => {
-    const { code } = req.body;
+    const { error, value } = authDto.validatePasswordResetCode.validate(req.body);
+    if (error) throw new ErrorResponse(422, error.message);
+
+    const { code } = value;
     await authService.validatePasswordResetCode(code);
     res.status(200).json(new SuccessResponse('Code successfully validated.'));
 });

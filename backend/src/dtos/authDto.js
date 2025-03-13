@@ -29,6 +29,14 @@ const login = Joi.object({
     .or('email', 'phone')
     .messages({ 'object.missing': 'Email or phone is required.' });
 
+const forgotPassword = Joi.object({
+    email: Joi.string().required(),
+});
+
+const validatePasswordResetCode = Joi.object({
+    code: Joi.string().required(),
+});
+
 const resetPassword = Joi.object({
     code: Joi.string().required(),
     password: Joi.string().required(),
@@ -37,14 +45,10 @@ const resetPassword = Joi.object({
     }),
 });
 
-
-const forgotPassword = Joi.object({
-    email: Joi.string().required(),
-})
-
 module.exports = {
     register,
     login,
     forgotPassword,
+    validatePasswordResetCode,
     resetPassword,
 };
