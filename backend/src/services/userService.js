@@ -2,6 +2,7 @@ const fs = require('fs');
 const sharp = require('sharp');
 const constants = require('../config/constants');
 const defaults = require('../config/dbDefaults');
+const NotFoundError = require('../errors/NotFoundError');
 const userRepository = require('../repositories/userRepository');
 
 /**
@@ -9,12 +10,9 @@ const userRepository = require('../repositories/userRepository');
  */
 
 /**
- * @function removeIfExists
- * @summary Removes image if it exists.
- * @description This method removes user image if it exists and is not the default profile picutre for a user.
- *
- * @param   {String} image - The image to be removed
- * @returns {void} This function does not return anything
+ * @desc Removes user image if it exists and is not the default profile picutre for a user.
+ * @param {String} image - The image to be removed
+ * @returns {void} - Returns nothing
  */
 const removeIfExists = (image) => {
     const imagePath = `${constants.PROFILE_PICTURE_DIR}/${image}`;
@@ -29,52 +27,40 @@ const removeIfExists = (image) => {
  */
 
 /**
- * @function getByEmail
- * @summary Retrieves the user by email.
- * @description This method retrieves the user by given email address.
- *
- * @param   {String} email - The email of the user.
+ * @async
+ * @desc Retrieve the user by email address.
+ * @param {String} email - The email of the user.
  * @returns {User} This function returns the found user based on email.
- * @throws  {Error} If the retrieval fails due to database issues or invalid user email.
+ * @throws {NotFoundError} If the retrieval fails due to database issues or invalid user email.
  */
-const getByEmail = async (email) => await userRepository.findByEmail(email);
-
-/**
- * @function getById
- * @summary Retrieves the user by id.
- * @description This method retrieves the user by given id address.
- *
- * @param   {ObjectId} id - The id of the user.
- * @returns {User} This function returns the found user based on it's unique ID.
- * @throws  {Error} If the retrieval fails due to database issues or invalid user ID.
- */
-const getById = async (id) => await userRepository.findById(id);
-
-/**
- * @function getById
- * @summary Retrieves the passed in user without security related fields.
- * @description This method retrieves the user by given id address.
- *
- * @param   {User} user - the user
- * @returns {User} This function returns the user withpout ecurity related fields.
- */
-const getMe = (user) => {
-    user.password = undefined;
-    user.passwordResetToken = undefined;
+const getByEmail = async (email) => {
+    const user = await userRepository.findByEmail(email);
+    if (!user) throw new NotFoundError('User');
     return user;
 };
 
 /**
- * @function updateMe
- * @summary Updates the user by the provided ID.
- * @description This method updates the user by given id address.
- *
- * @param   {ObjectId} id - The ID of the user.
- * @param   {Object} data - The data to be updated.
- * @returns {User} This function returns the updated user.
- * @throws  {Error} If the update fails due to database issues or invalid user ID.
+ * @async
+ * @desc Retrieve user by its ID.
+ * @param {String} id - The ID of the user.
+ * @returns {User} - The found user.
+ * @throws {NotFoundError} User not found.
  */
-const updateMe = async (userId, data) => {
+const getById = async (id) => {
+    const user = await userRepository.findById(id);
+    if (!user) throw new NotFoundError('User');
+    return user;
+};
+
+/**
+ * @async
+ * @desc Update user by its ID.
+ * @param {String} id - The ID of the user.
+ * @param {Object} data - The data to be updated.
+ * @returns {User} - The updated user.
+ * @throws {NotFoundError} User not found.
+ */
+const updateMe = async (Id, data) => {
     const updatedData = {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -85,37 +71,29 @@ const updateMe = async (userId, data) => {
         height: data.height,
     };
 
-    const updated = await userRepository.updateOne(userId, updatedData);
-    updated.password = undefined;
-    updated.passwordResetToken = undefined;
-
+    const updated = await userRepository.updateById(Id, updatedData);
+    if (!updated) throw new NotFoundError('User');
     return updated;
 };
 
 /**
- * @function updateMe
- * @summary Deletes the user by the provided ID.
- * @description This method deletes the user by given id address.
- *
- * @param   {ObjectId} id - The ID of the user.
- * @returns {void} This function returns nothing.
- * @throws  {Error} If the deletion fails due to database issues or invalid user ID.
+ * @async
+ * @desc Delete user by its ID.
+ * @param {String} id - The ID of the user.
+ * @returns {void} - Return nothing.
  */
-const deleteMe = async (userId) => {
-    await userRepository.deleteById(userId);
+const deleteMe = async (id) => {
+    await userRepository.deleteById(id);
 };
 
 /**
- * @function changeProfilePicture
- * @summary Updates the users profile picture
- * @description This method updates the user profile picture and in the meanwhile
- * removes the current one if that is not the default picture for the user.
- *
- * @param   {ObjectId} id - The id of the user.
- * @param   {String} currentImage - The current profile picture of the user
- * @param   {String} filename - The filename of the temporary uploaded image to be edited with sharp
- * @returns {User} This function returns the updated user by it's changed profile picture.
- * @throws  {Error} If the update fails due to database issues or invalid user ID.
+ * @async
+ * @desc This method updates the user profile picture and in the meanwhile removes
+ *          the current one if that is not the default picture for the user.
+ * @param {String} id - The ID of the user.
+ * @param {String} currentImage - The current profile picture of the user.
+ * @param {String} filename - The filename of the temporary uploaded image to be edited with sharp
+ * @returns {User} - User with updated profile picture.
  */
 const changeProfilePicture = async (userId, currentImage, filename) => {
     const profilePicture = `${userId}-${Date.now()}.png`;
@@ -125,7 +103,7 @@ const changeProfilePicture = async (userId, currentImage, filename) => {
     await sharp(source).resize(512, 512).toFormat('png').toFile(destination);
     fs.unlinkSync(source);
 
-    const user = await userRepository.updateOne(userId, { profilePicture });
+    const user = await userRepository.updateById(userId, { profilePicture });
     if (user.profilePicture !== currentImage) {
         removeIfExists(currentImage);
     }
@@ -133,18 +111,15 @@ const changeProfilePicture = async (userId, currentImage, filename) => {
 };
 
 /**
- * @function changeProfilePicture
- * @summary Deletes the users profile picture
- * @description This method deletes the user profile picture and in the meanwhile
- * removes it if that is not the default picture for the user.
- *
- * @param   {ObjectId} id - The id of the user.
- * @param   {String} currentImage - The current profile picture of the user
- * @returns {User} This function returns the updated user by it's changed profile picture.
- * @throws  {Error} If the update fails due to database issues or invalid user ID.
+ * @async
+ * @desc This method deletes the user profile picture and in the meanwhile
+ *          removes it if that is not the default picture for the user.
+ * @param {ObjectId} id - The id of the user.
+ * @param {String} currentImage - The current profile picture of the user
+ * @returns {User} - User with deleted profile picture.
  */
 const deleteProfilePicture = async (userId, currentImage) => {
-    const user = await userRepository.updateOne(userId, {
+    const user = await userRepository.updateById(userId, {
         profilePicture: defaults.PROFILE_PICTURE,
     });
     removeIfExists(currentImage);
@@ -154,7 +129,6 @@ const deleteProfilePicture = async (userId, currentImage) => {
 module.exports = {
     getByEmail,
     getById,
-    getMe,
     updateMe,
     deleteMe,
     changeProfilePicture,

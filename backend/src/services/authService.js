@@ -97,7 +97,7 @@ const setUserPassword = async (userId, password) => {
     if (!user) throw new NotFoundError('User');
 
     const hasedPassword = await bcryptUtil.hashPassword(password);
-    await userRepository.updateOne(user._id, { password: hasedPassword });
+    await userRepository.updateById(user._id, { password: hasedPassword });
 };
 
 /**
@@ -259,7 +259,7 @@ const resetPassword = async (code, password) => {
 const changePassword = async (user, { currentPassword, newPassword }) => {
     await checkPasswords(currentPassword, user.password);
     const hashedPassword = await bcryptUtil.hashPassword(newPassword);
-    await userRepository.updateOne(user._id, { password: hashedPassword });
+    await userRepository.updateById(user._id, { password: hashedPassword });
 };
 
 /**
