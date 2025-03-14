@@ -25,7 +25,10 @@ module.exports = {
                 resetPasswordToken: '10m',
             },
         },
-        resetPasswordCodeExpiresInM: 15
+        resetPasswordCode: {
+            expiresInM: 15,
+            length: 16,
+        },
     },
     smtp: {
         host: process.env.SMTP_HOST,

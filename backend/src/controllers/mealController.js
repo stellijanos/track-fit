@@ -6,7 +6,7 @@ const { mealRequestDTO, mealResponseDTO } = require('../dtos/mealDto');
 
 const create = catchAsync(async (req, res) => {
     const { error, value } = mealRequestDTO.validate(req.body);
-    if (error) throw new ErrorResponse(422, error.message);
+    if (error) throw new UnprocessableEntityError(error.message);
 
     const userId = req.user._id;
 

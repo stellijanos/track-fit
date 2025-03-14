@@ -1,8 +1,12 @@
 const catchAsync = require('../utils/functions/catchAsync');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
+const BadRequestError = require('../errors/BadRequestError');
+const UnauthorizedError = require('../errors/UnauthorizedError');
+const NotFoundError = require('../errors/NotFoundError');
+const ConflictError = require('../errors/ConflictError');
+const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
 const authDto = require('../dtos/authDto');
 const authService = require('../services/authService');
-const ErrorResponse = require('../utils/classes/ErrorResponse');
 
 /**
  * @route POST /auth/register
@@ -11,14 +15,13 @@ const ErrorResponse = require('../utils/classes/ErrorResponse');
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
  * @returns {JSON} 201 - Euccess message with access- and refresh tokens
- * @throws {ErrorResponse} 422 - Unprocessable entity / Validation error
- * @throws {ErrorResponse} 409 - User already exists.
+ * @throws {UnprocessableEntityError} 422 - Requests body validation failed
+ * @throws {ConflictError} 409 - User already exists.
  */
 const register = catchAsync(async (req, res) => {
     const { error, value } = authDto.register.validate(req.body);
-    if (error) {
-        throw new ErrorResponse(422, error.message);
-    }
+    if (error) throw new UnprocessableEntityError(error.message);
+
     const tokens = await authService.register(value);
     res.status(201).json(new SuccessResponse(`Successfully registered.`, tokens));
 });
@@ -30,14 +33,12 @@ const register = catchAsync(async (req, res) => {
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
  * @returns {JSON} 200 - Success message with access- and refresh tokens
- * @throws {ErrorResponse} 422 - Unprocessable entity / Validation error
+ * @throws {UnprocessableEntityError} 422 - Requests body validation failed
  * @throws {NotFoundError} 404 - User not found.
  */
 const login = catchAsync(async (req, res) => {
     const { error, value } = authDto.login.validate(req.body);
-    if (error) {
-        throw new ErrorResponse(422, error.message);
-    }
+    if (error) throw new UnprocessableEntityError(error.message);
 
     const { email, phone, password } = value;
     const tokens = await authService.login(email, phone, password);
@@ -51,13 +52,12 @@ const login = catchAsync(async (req, res) => {
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
  * @returns {JSON} 200 - Email successfully sent.
- * @throws {ErrorResponse} 422 - Unprocessable entity / Validation error
- * @throws {ErrorResponse} 404 - User not found.
- * @throws {ErrorResponse} 500 - Internel Server Error.
+ * @throws {UnprocessableEntityError} 422 - Requests body validation failed
+ * @throws {NotFoundError} 404 - User not found.
  */
 const forgotPassword = catchAsync(async (req, res) => {
     const { error, value } = authDto.forgotPassword.validate(req.body);
-    if (error) throw new ErrorResponse(422, error.message);
+    if (error) throw new UnprocessableEntityError(error.message);
 
     const { email } = value;
     await authService.forgotPassword(email);
@@ -72,13 +72,14 @@ const forgotPassword = catchAsync(async (req, res) => {
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
  * @returns {JSON} 200 - Code successfully validated.
- * @throws {ErrorResponse} 422 - Unprocessable entity | Validation error
- * @throws {ErrorResponse} 404 - Code not found. | Code expired. | Code already validated.
- * @throws {ErrorResponse} 500 - Internel Server Error.
+ * @throws {UnprocessableEntityError} 422 - Requests body validation failed
+ * @throws {NotFoundError} 404 - Code not found.
+ * @throws {BadRequestError} 400 - Password reset code expired.
+ * @throws {BadRequestError} 400 - Password reset code already validated.
  */
 const validatePasswordResetCode = catchAsync(async (req, res) => {
     const { error, value } = authDto.validatePasswordResetCode.validate(req.body);
-    if (error) throw new ErrorResponse(422, error.message);
+    if (error) throw new UnprocessableEntityError(error.message);
 
     const { code } = value;
     await authService.validatePasswordResetCode(code);
@@ -92,13 +93,14 @@ const validatePasswordResetCode = catchAsync(async (req, res) => {
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
  * @returns {JSON} 200 - Password successfully reset.
- * @throws {ErrorResponse} 404 - User not found.
- * @throws {ErrorResponse} 422 - Unprocessable entitiy / Validation Error.
- * @throws {ErrorResponse} 500 - Internel Server Error.
+ * @throws {UnprocessableEntityError} 422 - Requests body validation failed
+ * @throws {NotFoundError} 404 - User not found.
+ * @throws {BadRequestError} 400 - Password reset code expired.
+ * @throws {BadRequestError} 400 - Password reset code already validated.
  */
 const resetPassword = catchAsync(async (req, res) => {
     const { error, value } = authDto.resetPassword.validate(req.body);
-    if (error) throw new ErrorResponse(422, error.message);
+    if (error) throw new UnprocessableEntityError(error.message);
 
     const { code, password } = value;
     await authService.resetPassword(code, password);
@@ -113,13 +115,12 @@ const resetPassword = catchAsync(async (req, res) => {
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
  * @returns {JSON} 200 - Password successfully changed.
- * @throws {ErrorResponse} 404 - User not found.
- * @throws {ErrorResponse} 401 - Invalid token provided.
- * @throws {ErrorResponse} 500 - Internel Server Error.
+ * @throws {UnprocessableEntityError} 422 - Requests body validation failed
+ * @throws {UnauthorizedError} 401 - Incorrect password.
  */
 const changePassword = catchAsync(async (req, res) => {
     const { error, value } = authDto.changePassword.validate(req.body);
-    if (error) throw new ErrorResponse(422, error.message);
+    if (error) throw new UnprocessableEntityError(error.message);
 
     await authService.changePassword(req.user, value);
     res.status(200).json(new SuccessResponse('Password successfully changed.'));
@@ -132,12 +133,12 @@ const changePassword = catchAsync(async (req, res) => {
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
  * @returns {JSON} 200 - Token successfully refreshed.
- * @throws {ErrorResponse} 404 - User not found.
- * @throws {ErrorResponse} 500 - Internel Server Error.
+ * @throws {UnprocessableEntityError} 422 - Requests body validation failed
+ * @throws {NotFoundError} 404 - User not found.
  */
 const refreshToken = catchAsync(async (req, res) => {
     const { error, value } = authDto.refreshToken.validate(req.body);
-    if (error) throw new ErrorResponse(422, error.message);
+    if (error) throw new UnprocessableEntityError(error.message);
 
     const { refreshToken } = value;
     const tokens = await authService.refreshToken(refreshToken);

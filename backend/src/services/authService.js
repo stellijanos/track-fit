@@ -16,12 +16,26 @@ const ConflictError = require('../errors/ConflictError');
 const ACCESS_TOKEN_EXPIRES_IN = env.auth.jwt.expiresIn.accessToken;
 const REFRESH_TOKEN_EXPIRES_IN = env.auth.jwt.expiresIn.refreshToken;
 
-const RESET_PASSWORD_CODE_EXPIRES_IN_M = env.auth.resetPasswordCodeExpiresInM;
+const RESET_PASSWORD_CODE_EXPIRES_IN_M = env.auth.resetPasswordCode.expiresInM;
+const RESET_PASSWORD_CODE_LENGTH = env.auth.resetPasswordCode.length;
 const APP_URI = env.app.uri;
 
 /**
  * Helper functions
  */
+
+/**
+ * @async
+ * @desc Check if the password is correct or not.
+ * @param {String} password - The password to check.
+ * @param {String} hashedPassword - The hashed value to compare with.
+ * @returns {void} - Returns nothing.
+ * @throws {UnauthorizedError} - Incorrect password.
+ */
+const checkPasswords = async (password, hashedPassword) => {
+    const correctPassword = await bcryptUtil.comparePasswords(password, hashedPassword);
+    if (!correctPassword) throw new UnauthorizedError('Incorrect password.');
+};
 
 /**
  * @desc Check if the password reset code is expired.
@@ -152,8 +166,7 @@ const login = async (email, phone, password) => {
     const existingUser = await userRepository.findByEmailOrPhone(email, phone);
     if (!existingUser) throw new UnauthorizedError('Invalid email or phone.');
 
-    const correctPassword = await bcryptUtil.comparePasswords(password, existingUser.password);
-    if (!correctPassword) throw new UnauthorizedError('Incorrect password.');
+    await checkPasswords(password, existingUser.password);
 
     const jwtPayload = {
         _id: existingUser._id,
@@ -176,7 +189,7 @@ const forgotPassword = async (email) => {
     if (!existingUser) throw new NotFoundError('User');
 
     const data = {
-        code: generateRandomString(16),
+        code: generateRandomString(RESET_PASSWORD_CODE_LENGTH),
         user: existingUser._id,
         sentTo: email,
         expiresAt: Date.now() + RESET_PASSWORD_CODE_EXPIRES_IN_M * 60 * 1000,
@@ -220,8 +233,8 @@ const validatePasswordResetCode = async (code) => {
  * @param {String} password - Password to be set.
  * @returns {void} - Returns nothing.
  * @throws {NotFoundError} - User not found.
- * @throws{BadRequestError} - Password reset code expired.
- * @throws{BadRequestError} - Password reset code already validated.
+ * @throws {BadRequestError} - Password reset code expired.
+ * @throws {BadRequestError} - Password reset code already validated.
  */
 const resetPassword = async (code, password) => {
     const passwordReset = await passwordResetRepository.findByCode(code);
@@ -244,9 +257,7 @@ const resetPassword = async (code, password) => {
  * @throws {UnauthorizedError} - Incorrect password.
  */
 const changePassword = async (user, { currentPassword, newPassword }) => {
-    const isCorrectPassword = await bcryptUtil.comparePasswords(currentPassword, user.password);
-    if (!isCorrectPassword) throw new UnauthorizedError('Incorrect password.');
-
+    await checkPasswords(currentPassword, user.password);
     const hashedPassword = await bcryptUtil.hashPassword(newPassword);
     await userRepository.updateOne(user._id, { password: hashedPassword });
 };

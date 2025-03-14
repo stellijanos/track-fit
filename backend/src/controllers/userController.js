@@ -24,9 +24,7 @@ const ErrorResponse = require('../utils/classes/ErrorResponse');
  */
 const getMe = (req, res) => {
     const user = userService.getMe(req.user);
-    return res
-        .status(200)
-        .json(new SuccessResponse('User successfully received.', { user }));
+    return res.status(200).json(new SuccessResponse('User successfully received.', { user }));
 };
 
 /**
@@ -51,9 +49,7 @@ const getMe = (req, res) => {
  */
 const updateMe = catchAsync(async (req, res) => {
     const user = await userService.updateMe(req.user._id, req.body);
-    return res
-        .status(200)
-        .json(new SuccessResponse('User successfully updated.', { user }));
+    return res.status(200).json(new SuccessResponse('User successfully updated.', { user }));
 });
 
 /**
@@ -101,16 +97,10 @@ const deleteMe = catchAsync(async (req, res) => {
  * @throws  {ErrorResponse} 500 - Internal server error if an exception occurs.
  */
 const changeMyProfilePicture = catchAsync(async (req, res) => {
-    if (!req.file) throw new ErrorResponse(422, 'No image file provided');
-    
-    const user = await userService.changeProfilePicture(
-        req.user._id,
-        req.user.profilePicture,
-        req.file.filename
-    );
-    res.status(200).json(
-        new SuccessResponse('Profile picture successfully changed.', { user })
-    );
+    if (!req.file) throw new UnprocessableEntityError('No image file provided');
+
+    const user = await userService.changeProfilePicture(req.user._id, req.user.profilePicture, req.file.filename);
+    res.status(200).json(new SuccessResponse('Profile picture successfully changed.', { user }));
 });
 
 /**
@@ -133,13 +123,8 @@ const changeMyProfilePicture = catchAsync(async (req, res) => {
  * @throws  {ErrorResponse} 500 - Internal server error if an exception occurs.
  */
 const deleteMyProfilePicture = catchAsync(async (req, res) => {
-    const user = await userService.deleteProfilePicture(
-        req.user._id,
-        req.user.profilePicture
-    );
-    res.status(200).json(
-        new SuccessResponse('Profile picture successfully removed.', { user })
-    );
+    const user = await userService.deleteProfilePicture(req.user._id, req.user.profilePicture);
+    res.status(200).json(new SuccessResponse('Profile picture successfully removed.', { user }));
 });
 
 module.exports = {
