@@ -1,55 +1,44 @@
 const catchAsync = require('../utils/functions/catchAsync');
 const measurementService = require('../services/measurementService');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
-const {
-    measurementRequestDTO,
-    measurementResponseDTO,
-} = require('../dtos/measurementDto');
+const measurementDto = require('../dtos/measurementDto');
+const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
 
-const create = catchAsync(async (req, res) => {
-    const userId = req.user._id;
-    const data = req.body;
-    const measurement = await measurementService.create(userId, data);
+const create = catchAsync(async (req, res, next) => {
+    const { error, value } = measurementDto.create.validate(req.body);
+    if (error) throw new UnprocessableEntityError(error.message);
 
-    res.status(201).json(
-        new SuccessResponse('Measurement successfully created', {
-            measurement: measurementResponseDTO(measurement),
+    const measurement = await measurementService.create(req.user._id, value);
+    next(
+        new SuccessResponse(201, 'Measurement successfully created', {
+            measurement: measurementDto.response(measurement),
         })
     );
 });
 
-const getAllByUserId = catchAsync(async (req, res) => {
-    const userId = req.user._id;
-    const measurements = await measurementService.getAllByUserId(userId);
-    res.status(200).json(
-        new SuccessResponse('Measurements successfully retrieved.', {
+const getAllByUserId = catchAsync(async (req, res, next) => {
+    const measurements = await measurementService.getAllByUserId(req.user._id);
+    next(
+        new SuccessResponse(200, 'Measurements successfully retrieved.', {
             total: measurements.length,
-            measurements: measurements.map(measurementResponseDTO),
+            measurements: measurements.map(measurementDto.response),
         })
     );
 });
 
-const updateByIdAndUserId = catchAsync(async (req, res) => {
-    const { measurementId } = req.params;
-    const userId = req.user._id;
-    const data = req.body;
-    const updated = await measurementService.updateByIdAndUserId(
-        measurementId,
-        userId,
-        data
-    );
-    res.status(200).json(
-        new SuccessResponse('Measurement successfully updated.', {
-            measurement: measurementResponseDTO(updated),
-        })
+const updateByIdAndUserId = catchAsync(async (req, res, next) => {
+    const { error, value } = measurementDto.update.validate(req.body);
+    if (error) throw new UnprocessableEntityError(error.message);
+
+    const updated = await measurementService.updateByIdAndUserId(req.params.measurementId, req.user._id, value);
+    next(
+        new SuccessResponse(200, 'Measurement successfully updated.', { measurement: measurementDto.response(updated) })
     );
 });
 
-const deleteByIdAndUserId = catchAsync(async (req, res) => {
-    const { measurementId } = req.params;
-    const userId = req.user._id;
-    await measurementService.deleteByIdAndUserId(measurementId, userId);
-    res.status(204).send();
+const deleteByIdAndUserId = catchAsync(async (req, res, next) => {
+    await measurementService.deleteByIdAndUserId(req.params.measurementId, req.user._id);
+    next(new SuccessResponse(204));
 });
 
 module.exports = {

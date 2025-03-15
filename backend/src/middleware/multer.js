@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const constants = require('../config/constants');
-const ErrorResponse = require('../utils/classes/ErrorResponse');
+const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
 
 const uploadPath = constants.TEMP_UPLOAD_DIR;
 const profilePicturePath = constants.PROFILE_PICTURE_DIR;
@@ -23,13 +23,7 @@ const fileFilter = (req, file, cb) => {
     if (allowedTypes.includes(file.mimetype)) {
         cb(null, true);
     } else {
-        cb(
-            new ErrorResponse(
-                422,
-                'Only image files (jpeg, png, jpg) are allowed'
-            ),
-            false
-        );
+        cb(new UnprocessableEntityError('Only image files (jpeg, png, jpg) are allowed'), false);
     }
 };
 

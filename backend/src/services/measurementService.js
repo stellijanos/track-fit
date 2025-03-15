@@ -1,5 +1,5 @@
+const BadRequestError = require('../errors/BadRequestError');
 const measurementRepository = require('../repositories/measurementRepository');
-const ErrorResponse = require('../utils/classes/ErrorResponse');
 
 const create = async (userId, data) => {
     const measurement = {
@@ -12,27 +12,22 @@ const create = async (userId, data) => {
     return await measurementRepository.createOne(measurement);
 };
 
-const getAllByUserId = async (userId) =>
-    await measurementRepository.findAllByUserId(userId);
+const getAllByUserId = async (userId) => await measurementRepository.findAllByUserId(userId);
 
 const updateByIdAndUserId = async (id, userId, data) => {
-    const updated = {
+    const updated = await measurementRepository.updateByIdAndUserId(id, userId, {
         weight: data.weight,
         bodyFatPercentage: data.bodyFatPercentage,
         skeletalMuscleMass: data.skeletalMuscleMass,
-    };
+    });
 
-    return await measurementRepository.updateByIdAndUserId(id, userId, updated);
+    if (!updated) throw new BadRequestError('Failed to delete measurement: not found or missing permissions.');
+    return updated;
 };
 
 const deleteByIdAndUserId = async (id, userId) => {
     const deleted = await measurementRepository.deleteByIdAndUserId(id, userId);
-    if (!deleted) {
-        throw new ErrorResponse(
-            400,
-            'Failed to delete measurement: not found or missing permissions.'
-        );
-    }
+    if (!deleted) throw new BadRequestError('Failed to delete measurement: not found or missing permissions.');
 };
 
 module.exports = {

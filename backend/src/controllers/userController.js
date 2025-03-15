@@ -13,8 +13,8 @@ const userDto = require('../dtos/userDto');
  * @returns {SuccessResponse} 200 - Response containing the user data.
  * @throws  {NotFoundError} 404 - User not found.
  */
-const getMe = (req, res) => {
-    res.status(200).json(new SuccessResponse('User successfully received.', { user: userDto.response(req.user) }));
+const getMe = (req, res, next) => {
+    next(new SuccessResponse(200, 'User successfully retrieved.', { user: userDto.response(req.user) }));
 };
 
 /**
@@ -26,13 +26,12 @@ const getMe = (req, res) => {
  * @returns {SuccessResponse} 200 - Response containing the user data.
  * @throws  {NotFoundError} 404 - User not found.
  */
-const updateMe = catchAsync(async (req, res) => {
+const updateMe = catchAsync(async (req, res, next) => {
     const { error, value } = userDto.updateMe.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
     const user = await userService.updateMe(req.user._id, value);
-
-    res.status(200).json(new SuccessResponse('User successfully updated.', { user: userDto.response(user) }));
+    next(new SuccessResponse(200, 'User successfully updated.', { user: userDto.response(user) }));
 });
 
 /**
@@ -44,10 +43,9 @@ const updateMe = catchAsync(async (req, res) => {
  * @returns {empty} 204 - Returns nothing.
  * @throws  {NotFoundError} 404 - User not found.
  */
-const deleteMe = catchAsync(async (req, res) => {
+const deleteMe = catchAsync(async (req, res, next) => {
     await userService.deleteMe(req.user._id);
-
-    res.status(204).send();
+    next(new SuccessResponse(204));
 });
 
 /**
@@ -59,14 +57,11 @@ const deleteMe = catchAsync(async (req, res) => {
  * @returns {SuccessResponse} 200 - Response containing the user data.
  * @throws {NotFoundError} 404 - User not found.
  */
-const changeMyProfilePicture = catchAsync(async (req, res) => {
+const changeMyProfilePicture = catchAsync(async (req, res, next) => {
     if (!req.file) throw new UnprocessableEntityError('No image file provided');
 
     const user = await userService.changeProfilePicture(req.user._id, req.user.profilePicture, req.file.filename);
-
-    res.status(200).json(
-        new SuccessResponse('Profile picture successfully changed.', { user: userDto.response(user) })
-    );
+    next(new SuccessResponse(200, 'Profile picture successfully changed.', { user: userDto.response(user) }));
 });
 
 /**
@@ -78,12 +73,9 @@ const changeMyProfilePicture = catchAsync(async (req, res) => {
  * @returns {SuccessResponse} 200 - Response containing the user data.
  * @throws  {NotFoundError} 404 - User not found.
  */
-const deleteMyProfilePicture = catchAsync(async (req, res) => {
+const deleteMyProfilePicture = catchAsync(async (req, res, next) => {
     const user = await userService.deleteProfilePicture(req.user._id, req.user.profilePicture);
-
-    res.status(200).json(
-        new SuccessResponse('Profile picture successfully removed.', { user: userDto.response(user) })
-    );
+    next(new SuccessResponse(200, 'Profile picture successfully removed.', { user: userDto.response(user) }));
 });
 
 module.exports = {

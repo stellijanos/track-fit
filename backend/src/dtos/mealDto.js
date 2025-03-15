@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const visibility = require('../enums/visbility');
 
-const mealRequestDTO = Joi.object({
+const create = Joi.object({
     name: Joi.string().required(),
     isCustom: Joi.boolean(),
     kcalPer100G: Joi.number().min(0).required(),
@@ -13,7 +13,19 @@ const mealRequestDTO = Joi.object({
     visibility: Joi.string().valid(...Object.values(visibility)),
 });
 
-const mealResponseDTO = (meal) => {
+const update = Joi.object({
+    name: Joi.string(),
+    isCustom: Joi.boolean(),
+    kcalPer100G: Joi.number().min(0),
+    proteinPer100G: Joi.number().min(0),
+    carbPer100G: Joi.number().min(0),
+    fatPer100G: Joi.number().min(0),
+    fibrePer100G: Joi.number().min(0),
+    saltPer100G: Joi.number().min(0),
+    visibility: Joi.string().valid(...Object.values(visibility)),
+}).min(1);
+
+const response = (meal) => {
     return {
         id: meal._id,
         name: meal.name,
@@ -31,6 +43,7 @@ const mealResponseDTO = (meal) => {
 };
 
 module.exports = {
-    mealRequestDTO,
-    mealResponseDTO,
+    create,
+    update,
+    response,
 };

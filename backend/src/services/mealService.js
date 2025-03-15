@@ -1,5 +1,5 @@
+const BadRequestError = require('../errors/BadRequestError');
 const mealRepository = require('../repositories/mealRepository');
-const ErrorResponse = require('../utils/classes/ErrorResponse');
 
 const createOne = async (userId, data) => {
     const meal = {
@@ -17,11 +17,10 @@ const createOne = async (userId, data) => {
     return await mealRepository.createOne(meal);
 };
 
-const getAllByUserOrPublic = async (userId) =>
-    await mealRepository.findAllByUserOrPublic(userId);
+const getAllByUserOrPublic = async (userId) => await mealRepository.findAllByUserOrPublic(userId);
 
 const updateByUserAndId = async (userId, mealId, data) => {
-    const updated = {
+    const updated = await mealRepository.updateByUserAndId(userId, mealId, {
         name: data.name,
         kcalPer100G: data.kcalPer100G,
         proteinPer100G: data.proteinPer100G,
@@ -30,17 +29,14 @@ const updateByUserAndId = async (userId, mealId, data) => {
         fibrePer100G: data.fibrePer100G,
         saltPer100G: data.saltPer100G,
         visibility: data.visibility,
-    };
-    return await mealRepository.updateByUserAndId(userId, mealId, updated);
+    });
+    if (!updated) throw new BadRequestError('Failed to update meal: not found or missing permissions');
+    return updated;
 };
 
 const deleteByUserAndId = async (userId, mealId) => {
     const deleted = await mealRepository.deleteByUserAndId(userId, mealId);
-    if (!deleted)
-        throw new ErrorResponse(
-            400,
-            'Failed to delete meal: not found or missing permissions'
-        );
+    if (!deleted) throw new BadRequestError('Failed to delete meal: not found or missing permissions');
 };
 
 module.exports = {

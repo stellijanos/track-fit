@@ -1,12 +1,18 @@
 const Joi = require('joi');
 
-const measurementRequestDTO = Joi.object({
+const create = Joi.object({
     weight: Joi.number().min(0).required(),
     bodyFatPercentage: Joi.number().min(0).max(100),
     skeletalMuscleMass: Joi.number().min(0),
 });
 
-const measurementResponseDTO = (data) => {
+const update = Joi.object({
+    weight: Joi.number().min(0),
+    bodyFatPercentage: Joi.number().min(0).max(100),
+    skeletalMuscleMass: Joi.number().min(0),
+}).min(1);
+
+const response = (data) => {
     return {
         id: data._id,
         weight: data.weight,
@@ -18,6 +24,7 @@ const measurementResponseDTO = (data) => {
 };
 
 module.exports = {
-    measurementRequestDTO,
-    measurementResponseDTO,
+    create,
+    update,
+    response,
 };

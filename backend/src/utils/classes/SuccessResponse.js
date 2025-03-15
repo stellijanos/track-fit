@@ -1,9 +1,11 @@
 class SuccessResponse {
-
-    constructor(message = '', data = undefined) {
-        this.message = message;
-        this.data = data;
-        this.success = true;
+    constructor(statusCode, message = undefined, data = undefined) {
+        this.name = 'SuccessResponse';
+        this.statusCode = statusCode;
+        this.body = {
+            message: message,
+            data: data,
+        };
     }
 }
 
