@@ -13,7 +13,12 @@ const create = async (userId, data) =>
         fatPerKg: data.fatPerKg,
     });
 
+const getAllByUserId = async (userId) => await caloricTargetRepository.getAllByUserId(userId);
+
+const rename = async (id, userId, name) => await caloricTargetRepository.updateByIdAndUserId(id, userId, { name });
 
 module.exports = {
-    create
-}
+    create,
+    getAllByUserId,
+    rename
+};
