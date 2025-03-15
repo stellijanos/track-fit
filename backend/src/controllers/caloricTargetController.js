@@ -26,11 +26,11 @@ const getAllByUserId = catchAsync(async (req, res, next) => {
     );
 });
 
-const rename = catchAsync(async (req, res, next) => {
+const renameByIdAndUserId = catchAsync(async (req, res, next) => {
     const { error, value } = caloricTargetDto.update.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
-    const updated = await caloricTargetService.rename(req.params.id, req.user._id, value.name);
+    const updated = await caloricTargetService.renameByIdAndUserId(req.params.id, req.user._id, value.name);
     next(
         new SuccessResponse(200, 'Caloric target successfully renamed.', {
             caloricTarget: caloricTargetDto.response(updated),
@@ -38,8 +38,15 @@ const rename = catchAsync(async (req, res, next) => {
     );
 });
 
+const deleteByIdAndUserId = catchAsync(async (req, res, next) => {
+    console.log(req.user);
+    await caloricTargetService.deleteByIdAndUserId(req.params.id, req.user._id, req.user.currentCaloricTarget);
+    next(new SuccessResponse(204));
+});
+
 module.exports = {
     create,
     getAllByUserId,
-    rename
+    renameByIdAndUserId,
+    deleteByIdAndUserId,
 };

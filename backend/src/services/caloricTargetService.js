@@ -1,7 +1,11 @@
+const ConflictError = require('../errors/ConflictError');
+const BadRequestError = require('../errors/BadRequestError');
 const caloricTargetRepository = require('../repositories/caloricTargetRepository');
+const userRepository = require('../repositories/userRepository');
+const { default: mongoose } = require('mongoose');
 
-const create = async (userId, data) =>
-    await caloricTargetRepository.create({
+const create = async (userId, data) => {
+    const created = await caloricTargetRepository.create({
         user: userId,
         name: data.name,
         kcal: data.kcal,
@@ -13,12 +17,26 @@ const create = async (userId, data) =>
         fatPerKg: data.fatPerKg,
     });
 
+    if (!created) throw new BadRequestError('Failed to create caloric target');
+
+    await userRepository.updateById(userId, { currentCaloricTarget: created._id });
+    return created;
+};
+
 const getAllByUserId = async (userId) => await caloricTargetRepository.getAllByUserId(userId);
 
-const rename = async (id, userId, name) => await caloricTargetRepository.updateByIdAndUserId(id, userId, { name });
+const renameByIdAndUserId = async (id, userId, name) =>
+    await caloricTargetRepository.updateByIdAndUserId(id, userId, { name });
+
+const deleteByIdAndUserId = async (id, userId, currentTargetId) => {
+    if (currentTargetId.toString() === id) throw new ConflictError('Current caloric target cannot be deleted.');
+    const deleted = await caloricTargetRepository.deleteByIdAndUserId(id, userId);
+    if (!deleted) throw new BadRequestError('Failed to delete caloric target: not found or missing permissions');
+};
 
 module.exports = {
     create,
     getAllByUserId,
-    rename
+    renameByIdAndUserId,
+    deleteByIdAndUserId,
 };
