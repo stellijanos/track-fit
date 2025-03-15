@@ -1,48 +1,46 @@
 const catchAsync = require('../utils/functions/catchAsync');
-const ErrorResponse = require('../utils/classes/ErrorResponse');
+const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
-const { activityRequestDTO, activityResponseDTO } = require('../dtos/activityDto');
+const activityDto = require('../dtos/activityDto');
 const activityService = require('../services/activityService');
 
 const create = catchAsync(async (req, res) => {
-    const { error, value } = activityRequestDTO.validate(req.body);
+    const { error, value } = activityDto.create.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
-    const activity = await activityService.createOne(req.user._id, value);
+    const activity = await activityService.create(req.user._id, value);
+
     res.status(201).json(
         new SuccessResponse('Activity successfully created.', {
-            activity: activityResponseDTO(activity),
+            activity: activityDto.response(activity),
         })
     );
 });
 
 const getAllByUserorPublic = catchAsync(async (req, res) => {
     const activities = await activityService.getAllByUserorPublic(req.user._id);
-    return res.status(200).json(
+    res.status(200).json(
         new SuccessResponse(`Activitites successfully retrieved activities.`, {
             total: activities.length,
-            activities: activities.map(activityResponseDTO),
+            activities: activities.map(activityDto.response),
         })
     );
 });
 
 const updateByUserAndId = catchAsync(async (req, res) => {
-    const userId = req.user._id;
-    const { activityId } = req.params;
-    const data = req.body;
-    const updated = await activityService.updateOne(userId, activityId, data);
+    const { error, value } = activityDto.update.validate(req.body);
+    if (error) throw new UnprocessableEntityError(error.message);
+
+    const updated = await activityService.updateByIdAndUserId(req.user._id, req.params.activityId, value);
 
     res.status(200).json(
-        new SuccessResponse('Activity successfully updated.', {
-            activity: activityResponseDTO(updated),
-        })
+        new SuccessResponse('Activity successfully updated.', { activity: activityDto.response(updated) })
     );
 });
 
 const deleteByUserIdAndId = catchAsync(async (req, res) => {
-    const userId = req.user._id;
-    const { activityId } = req.params;
-    await activityService.deleteByUserAndId(userId, activityId);
+    await activityService.deleteByUserAndId(req.user._id);
+
     res.status(204).send();
 });
 

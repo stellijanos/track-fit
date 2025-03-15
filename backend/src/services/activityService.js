@@ -1,7 +1,7 @@
 const activityRepository = require('../repositories/activityRepository');
-const ErrorResponse = require('../utils/classes/ErrorResponse');
+const BadRequestError = require('../errors/BadRequestError');
 
-const createOne = async (userId, data) => {
+const create = async (userId, data) => {
     const activity = {
         user: userId,
         name: data.name,
@@ -9,37 +9,31 @@ const createOne = async (userId, data) => {
         visibility: data.visibility,
     };
 
-    return await activityRepository.createOne(activity);
+    return await activityRepository.create(activity);
 };
 
-const getAllByUserorPublic = async (userId) =>
-    await activityRepository.findByUserOrPublic(userId);
+const getAllByUserorPublic = async (userId) => await activityRepository.findByUserIdOrPublic(userId);
 
-const updateOne = async (userId, activityId, data) => {
-    const updated = {
+const updateByIdAndUserId = async (userId, activityId, data) => {
+    const updated = await activityRepository.updateByIdAndUserId(userId, activityId, {
         user: userId,
         name: data.name,
         caloriesPerHour: data.caloriesPerHour,
         visibility: data.visibility,
-    };
-    return await activityRepository.updateOneByUserAndId(
-        userId,
-        activityId,
-        updated
-    );
+    });
+
+    if (!updated) throw new BadRequestError('Failed to update activity');
+    return updated;
 };
 
 const deleteByUserAndId = async (userId, activityId) => {
-    const deleted = await activityRepository.deleteByUserAndId(
-        userId,
-        activityId
-    );
-    if (!deleted) throw new ErrorResponse(400, 'Failed or missing permissions to delete activity.');
+    const deleted = await activityRepository.deleteByIdAndUserId(userId, activityId);
+    if (!deleted) throw new BadRequestError('Failed or missing permissions to delete activity.');
 };
 
 module.exports = {
-    createOne,
+    create,
     getAllByUserorPublic,
-    updateOne,
+    updateByIdAndUserId,
     deleteByUserAndId,
 };
