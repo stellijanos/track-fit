@@ -5,18 +5,18 @@ const date = Joi.date().required().messages({
     'any.required': 'Date is required.',
 });
 
-const quantity = Joi.number().min(1).required();
+const quantity = Joi.number().min(0).required();
 
 const create = Joi.object({
     date,
 });
 
-const addWaterIntake = Joi.object({
+const waterIntake = Joi.object({
     date,
     quantity,
 });
 
 module.exports = {
     create,
-    addWaterIntake,
+    waterIntake,
 };

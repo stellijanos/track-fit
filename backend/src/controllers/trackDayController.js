@@ -14,14 +14,23 @@ const getByDateAndUser = catchAsync(async (req, res, next) => {
 });
 
 const addWaterIntake = catchAsync(async (req, res, next) => {
-    const { error, value } = trackDayValidators.addWaterIntake.validate({ ...req.params, ...req.body });
+    const { error, value } = trackDayValidators.waterIntake.validate({ ...req.params, ...req.body });
     if (error) throw new UnprocessableEntityError(error.message);
 
     const trackDay = await trackDayService.addWaterIntake(value.date, req.user, value.quantity);
     next(new SuccessResponse(200, 'Water intake successfully added.', { trackDay: trackDayDto.response(trackDay) }));
 });
 
+const setWaterIntake = catchAsync(async (req, res, next) => {
+    const { error, value } = trackDayValidators.waterIntake.validate({ ...req.params, ...req.body });
+    if (error) throw new UnprocessableEntityError(error.message);
+
+    const trackDay = await trackDayService.setWaterIntake(value.date, req.user, value.quantity);
+    next(new SuccessResponse(200, 'Water intake successfully added.', { trackDay: trackDayDto.response(trackDay) }));
+});
+
 module.exports = {
     getByDateAndUser,
     addWaterIntake,
+    setWaterIntake
 };
