@@ -1,6 +1,8 @@
 const BadRequestError = require('../errors/BadRequestError');
 const trackDayRepository = require('../repositories/trackDayRepository');
 
+const getAllByUserId = async (userId) => await trackDayRepository.findAllByUserId(userId);
+
 const getByDateAndUser = async (date, user) => {
     const trackDay = await trackDayRepository.createOrUpdate(date, user._id, {
         user: user._id,
@@ -26,6 +28,7 @@ const setWaterIntake = async (date, user, quantity) => {
 };
 
 module.exports = {
+    getAllByUserId,
     getByDateAndUser,
     addWaterIntake,
     setWaterIntake,

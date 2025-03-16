@@ -5,6 +5,16 @@ const SuccessResponse = require('../utils/classes/SuccessResponse');
 const trackDayService = require('../services/trackDayService');
 const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
 
+const getAllByUserId = catchAsync(async (req, res, next) => {
+    const trackDays = await trackDayService.getAllByUserId(req.user._id);
+    next(
+        new SuccessResponse(200, 'Trackdays successfully retrieved.', {
+            total: trackDays.length,
+            trackDays: trackDays.map(trackDayDto.response),
+        })
+    );
+});
+
 const getByDateAndUser = catchAsync(async (req, res, next) => {
     const { error, value } = trackDayValidators.create.validate(req.params);
     if (error) throw new UnprocessableEntityError(error.message);
@@ -30,7 +40,8 @@ const setWaterIntake = catchAsync(async (req, res, next) => {
 });
 
 module.exports = {
+    getAllByUserId,
     getByDateAndUser,
     addWaterIntake,
-    setWaterIntake
+    setWaterIntake,
 };
