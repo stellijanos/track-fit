@@ -26,6 +26,8 @@ const response = (data) => {
         proteinPerKg: data.proteinPerKg,
         carbPerKg: data.carbPerKg,
         fatPerKg: data.fatPerKg,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt
     };
 };
 
