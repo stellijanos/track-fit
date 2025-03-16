@@ -25,8 +25,11 @@ const create = async (userId, data) => {
 
 const getAllByUserId = async (userId) => await caloricTargetRepository.getAllByUserId(userId);
 
-const renameByIdAndUserId = async (id, userId, name) =>
-    await caloricTargetRepository.updateByIdAndUserId(id, userId, { name });
+const renameByIdAndUserId = async (id, userId, name) => {
+    const updated = await caloricTargetRepository.updateByIdAndUserId(id, userId, { name });
+    if (!updated) throw new BadRequestError('Failed to rename caloric target: not found or missing permissions');
+    return updated;
+};
 
 const deleteByIdAndUserId = async (id, userId, currentTargetId) => {
     if (currentTargetId.toString() === id) throw new ConflictError('Current caloric target cannot be deleted.');
