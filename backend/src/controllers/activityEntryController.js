@@ -12,13 +12,28 @@ const create = catchAsync(async (req, res, next) => {
     const activityEntry = await activityEntryService.create(req.user, value);
 
     next(
-        new SuccessResponse(201, 'Activity successfully created.', {
+        new SuccessResponse(201, 'Activity entry successfully created.', {
             activityEntry: activityEntryDto.response(activityEntry),
             value,
         })
     );
 });
 
+const getAllByUserAndDate = catchAsync(async (req, res, next) => {
+    const { error, value } = activityEntryValidator.getAll.validate({ ...req.params });
+    if (error) throw new UnprocessableEntityError(error.message);
+
+    const activityEntries = await activityEntryService.getAllByUserAndDate(req.user, value.date);
+    next(
+        new SuccessResponse(200, 'Activitiy entries successfully retrieved.', {
+            total: activityEntries.length,
+            activityEntries: activityEntries.map(activityEntryDto.response),
+        })
+    );
+});
+
 module.exports = {
     create,
+    getAllByUserAndDate,
 };
+getAllByUserAndDate;

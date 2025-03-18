@@ -25,6 +25,12 @@ const create = async (user, data) => {
     return created;
 };
 
+const getAllByUserAndDate = async (user, date) => {
+    const trackDay = await trackDayService.getByDateAndUser(date, user);
+    return await activityEntryRepository.findAllByTrackDayId(trackDay._id);
+};
+
 module.exports = {
     create,
+    getAllByUserAndDate,
 };

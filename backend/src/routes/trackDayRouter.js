@@ -10,5 +10,6 @@ router.put('/:date/water-intake', trackDayController.setWaterIntake);
 router.patch('/:date/water-intake', trackDayController.addWaterIntake);
 
 router.post('/:date/activities', activityEntryController.create);
+router.get('/:date/activities', activityEntryController.getAllByUserAndDate);
 
 module.exports = router;

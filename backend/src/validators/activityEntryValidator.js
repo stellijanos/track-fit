@@ -10,6 +10,11 @@ const create = Joi.object({
     durationInM: Joi.number().min(1).required(),
 });
 
+const getAll = Joi.object({
+    date: Joi.date().required(),
+});
+
 module.exports = {
     create,
+    getAll
 };
