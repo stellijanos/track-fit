@@ -6,7 +6,7 @@ const activityEntrySchema = new mongoose.Schema(
         name: { type: String, required: true },
         caloriesPerHour: { type: Number, required: true, min: 0 },
         totalCalories: { type: Number, required: true, min: 0 },
-        duration: { type: Number, required: true, min: 0 },
+        durationInM: { type: Number, required: true, min: 0 },
     },
     {
         timestamps: true,

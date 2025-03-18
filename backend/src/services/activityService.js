@@ -1,5 +1,6 @@
 const activityRepository = require('../repositories/activityRepository');
 const BadRequestError = require('../errors/BadRequestError');
+const NotFoundError = require('../errors/NotFoundError');
 
 const create = async (userId, data) => {
     const activity = {
@@ -10,6 +11,12 @@ const create = async (userId, data) => {
     };
 
     return await activityRepository.create(activity);
+};
+
+const getById = async (id) => {
+    const activity = await activityRepository.findById(id);
+    if (!activity) throw new NotFoundError('Activity');
+    return activity;
 };
 
 const getAllByUserorPublic = async (userId) => await activityRepository.findByUserIdOrPublic(userId);
@@ -33,6 +40,7 @@ const deleteByUserAndId = async (userId, activityId) => {
 
 module.exports = {
     create,
+    getById,
     getAllByUserorPublic,
     updateByIdAndUserId,
     deleteByUserAndId,
