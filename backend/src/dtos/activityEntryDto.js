@@ -3,6 +3,7 @@ const response = (data) => {
         id: data._id,
         name: data.name,
         caloriesPerHour: data.caloriesPerHour,
+        totalCalories: data.totalCalories,
         visibility: data.visibility,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,

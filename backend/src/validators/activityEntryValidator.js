@@ -14,7 +14,17 @@ const getAll = Joi.object({
     date: Joi.date().required(),
 });
 
+const update = Joi.object({
+    activityEntryId: Joi.objectId().required().messages({
+        'string.pattern.base': 'Invalid activity ID provided.',
+        'any.required': 'Activity ID is required.',
+    }),
+    date: Joi.date().required(),
+    durationInM: Joi.number().min(1).required(),
+});
+
 module.exports = {
     create,
-    getAll
+    getAll,
+    update,
 };

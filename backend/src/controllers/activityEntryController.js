@@ -32,8 +32,20 @@ const getAllByUserAndDate = catchAsync(async (req, res, next) => {
     );
 });
 
+const updateById = catchAsync(async (req, res, next) => {
+    const { error, value } = activityEntryValidator.update.validate({ ...req.params, ...req.body });
+    if (error) throw new UnprocessableEntityError(error.message);
+
+    const updated = await activityEntryService.updateById(value);
+    next(
+        new SuccessResponse(200, 'Activity entry successfully updated.', {
+            activityEntry: activityEntryDto.response(updated),
+        })
+    );
+});
+
 module.exports = {
     create,
     getAllByUserAndDate,
+    updateById,
 };
-getAllByUserAndDate;
