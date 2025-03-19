@@ -47,8 +47,14 @@ const updateById = async (data) => {
     return updated;
 };
 
+const deleteById = async (id) => {
+    const deleted = await activityEntryRepository.deleteById(id);
+    if (!deleted) throw new BadRequestError('Failed to delete activity entry.');
+};
+
 module.exports = {
     create,
     getAllByUserAndDate,
     updateById,
+    deleteById,
 };

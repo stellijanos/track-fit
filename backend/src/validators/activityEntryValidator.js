@@ -7,7 +7,7 @@ const create = Joi.object({
         'any.required': 'Activity ID is required.',
     }),
     date: Joi.date().required(),
-    durationInM: Joi.number().min(1).required(),
+    durationInM: Joi.number().min(1).max(1440).required(),
 });
 
 const getAll = Joi.object({
@@ -20,11 +20,19 @@ const update = Joi.object({
         'any.required': 'Activity ID is required.',
     }),
     date: Joi.date().required(),
-    durationInM: Joi.number().min(1).required(),
+    durationInM: Joi.number().min(1).max(1440).required(),
+});
+
+const deleteById = Joi.object({
+    activityEntryId: Joi.objectId().required().messages({
+        'string.pattern.base': 'Invalid activity ID provided.',
+        'any.required': 'Activity ID is required.',
+    }),
 });
 
 module.exports = {
     create,
     getAll,
     update,
+    deleteById,
 };

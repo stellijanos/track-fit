@@ -14,7 +14,6 @@ const create = catchAsync(async (req, res, next) => {
     next(
         new SuccessResponse(201, 'Activity entry successfully created.', {
             activityEntry: activityEntryDto.response(activityEntry),
-            value,
         })
     );
 });
@@ -44,8 +43,18 @@ const updateById = catchAsync(async (req, res, next) => {
     );
 });
 
+const deleteById = catchAsync(async (req, res, next) => {
+    const {activityEntryId} = req.params;
+    const { error, value } = activityEntryValidator.deleteById.validate({activityEntryId});
+    if (error) throw new UnprocessableEntityError(error.message);
+
+    await activityEntryService.deleteById(value.activityEntryId);
+    next(new SuccessResponse(204));
+});
+
 module.exports = {
     create,
     getAllByUserAndDate,
     updateById,
+    deleteById,
 };
