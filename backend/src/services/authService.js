@@ -3,6 +3,7 @@ const bcryptUtil = require('../utils/auth/bcrypt');
 const jwtUtil = require('../utils/auth/jwt');
 const jwtTypes = require('../enums/jwtTypes');
 const resetPasswordStatuses = require('../enums/resetPasswordStatuses');
+const detectCrenentialType = require('../utils/functions/detectCredentialType');
 const generateRandomString = require('../utils/functions/generateRandomString');
 const isDateExpired = require('../utils/functions/isDateExpired');
 const userRepository = require('../repositories/userRepository');
@@ -13,6 +14,8 @@ const NotFoundError = require('../errors/NotFoundError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 const BadRequestError = require('../errors/BadRequestError');
 const ConflictError = require('../errors/ConflictError');
+const credentialTypes = require('../enums/credentialTypes');
+const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
 
 const ACCESS_TOKEN_EXPIRES_IN = env.auth.jwt.expiresIn.accessToken;
 const REFRESH_TOKEN_EXPIRES_IN = env.auth.jwt.expiresIn.refreshToken;
@@ -163,8 +166,8 @@ const register = async (data) => {
  * @throws {UnauthorizedError} - Invalid email or phone.
  * @throws {UnauthorizedError} - Incorrect password.
  */
-const login = async (email, phone, password) => {
-    const existingUser = await userRepository.findByEmailOrPhone(email, phone);
+const login = async (credential, password) => {
+    const existingUser = await userRepository.findByEmailOrPhone(credential, credential);
     if (!existingUser) throw new UnauthorizedError('Invalid email or phone.');
 
     await checkPasswords(password, existingUser.password);
@@ -185,14 +188,19 @@ const login = async (email, phone, password) => {
  * @returns {void} - Returns nothing.
  * @throws {NotFoundError} - User not found.
  */
-const forgotPassword = async (email, phone) => {
-    const existingUser = await userRepository.findByEmailOrPhone(email, phone);
+const forgotPassword = async (credential) => {
+    const existingUser = await userRepository.findByEmailOrPhone(credential, credential);
     if (!existingUser) throw new NotFoundError('User');
+
+    const credentialType = detectCrenentialType(credential);
+
+    if (credentialType === credentialTypes.INVALID)
+        throw new UnprocessableEntityError('Invalid email or phone provided');
 
     const newReset = {
         code: generateRandomString(RESET_PASSWORD_CODE_LENGTH),
         user: existingUser._id,
-        sentTo: email || phone,
+        sentTo: credential,
         expiresAt: Date.now() + RESET_PASSWORD_CODE_EXPIRES_IN_M * 60 * 1000,
     };
 
@@ -200,23 +208,16 @@ const forgotPassword = async (email, phone) => {
 
     const data = {
         userName: existingUser.firstName,
-        sendTo: email || phone,
+        sendTo: credential,
         resetLink: `${APP_URI}/reset-password?code=${newReset.code}`,
         validFor: `${RESET_PASSWORD_CODE_EXPIRES_IN_M} minutes`,
     };
 
-    console.log(data);
-
-    if (email) {
+    if (credentialType === credentialTypes.EMAIL) {
         await emailService.sendResetPassword(data);
-        return 'Email successfully sent.';
-    }
-    if (phone) {
+    } else if (credentialType === credentialTypes.PHONE) {
         await smsService.sendResetPassword(data);
-        return 'SMS successfully sent';
     }
-
-    return 'Error occured';
 };
 
 /**

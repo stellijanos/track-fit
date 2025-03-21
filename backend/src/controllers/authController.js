@@ -40,7 +40,7 @@ const login = catchAsync(async (req, res, next) => {
     const { error, value } = authDto.login.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
-    const tokens = await authService.login(value.email, value.phone, value.password);
+    const tokens = await authService.login(value.credential, value.password);
     next(new SuccessResponse(200, `Successfully logged in.`, tokens));
 });
 
@@ -57,10 +57,10 @@ const login = catchAsync(async (req, res, next) => {
 const forgotPassword = catchAsync(async (req, res, next) => {
     const { error, value } = authDto.forgotPassword.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
-    console.log(value);
-    const message = await authService.forgotPassword(value.email, value.phone);
-    
-    next(new SuccessResponse(200, message));
+
+    await authService.forgotPassword(value.credential);
+
+    next(new SuccessResponse(200, `Password reset link successfully sent to ${value.credential}.`));
 });
 
 /**

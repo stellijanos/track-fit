@@ -1,12 +1,16 @@
+const credentialTypes = require('../../enums/credentialTypes');
+
 const detectCredentialType = (credential) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\+?\d{10,15}$/;
 
     if (emailRegex.test(credential)) {
-        return 'email';
+        return credentialTypes.EMAIL;
     } else if (phoneRegex.test(credential)) {
-        return 'phone';
+        return credentialTypes.PHONE;
     } else {
-        return 'invalid';
+        return credentialTypes.INVALID;
     }
 };
+
+module.exports = detectCredentialType;
