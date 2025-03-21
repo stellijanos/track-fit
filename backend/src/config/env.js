@@ -36,4 +36,9 @@ module.exports = {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
     },
+    sms: {
+        key: process.env.SMS_KEY,
+        url: process.env.SMS_URL,
+        maxLength: 160
+    },
 };
