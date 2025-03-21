@@ -1,5 +1,5 @@
 {
-  "name": "persona-website",
+  "name": "track-fit",
   "version": "1.0.0",
   "directories": {
     "test": "tests"
@@ -27,8 +27,8 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.10.0",
-    "persona-website": "file:",
     "sharp": "^0.33.5",
+    "track-fit": "file:",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"
   },
