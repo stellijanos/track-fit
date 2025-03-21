@@ -8,6 +8,7 @@ const isDateExpired = require('../utils/functions/isDateExpired');
 const userRepository = require('../repositories/userRepository');
 const passwordResetRepository = require('../repositories/passwordResetRepository');
 const emailService = require('./emailService');
+const smsService = require('./smsService');
 const NotFoundError = require('../errors/NotFoundError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 const BadRequestError = require('../errors/BadRequestError');
@@ -184,26 +185,38 @@ const login = async (email, phone, password) => {
  * @returns {void} - Returns nothing.
  * @throws {NotFoundError} - User not found.
  */
-const forgotPassword = async (email) => {
-    const existingUser = await userRepository.findByEmail(email);
+const forgotPassword = async (email, phone) => {
+    const existingUser = await userRepository.findByEmailOrPhone(email, phone);
     if (!existingUser) throw new NotFoundError('User');
 
-    const data = {
+    const newReset = {
         code: generateRandomString(RESET_PASSWORD_CODE_LENGTH),
         user: existingUser._id,
-        sentTo: email,
+        sentTo: email || phone,
         expiresAt: Date.now() + RESET_PASSWORD_CODE_EXPIRES_IN_M * 60 * 1000,
     };
 
-    const emailContent = {
+    await passwordResetRepository.create(newReset);
+
+    const data = {
         userName: existingUser.firstName,
-        sendTo: email,
-        resetLink: `${APP_URI}/reset-password?code=${data.code}`,
+        sendTo: email || phone,
+        resetLink: `${APP_URI}/reset-password?code=${newReset.code}`,
         validFor: `${RESET_PASSWORD_CODE_EXPIRES_IN_M} minutes`,
     };
 
-    await passwordResetRepository.create(data);
-    await emailService.sendResetPassword(emailContent);
+    console.log(data);
+
+    if (email) {
+        await emailService.sendResetPassword(data);
+        return 'Email successfully sent.';
+    }
+    if (phone) {
+        await smsService.sendResetPassword(data);
+        return 'SMS successfully sent';
+    }
+
+    return 'Error occured';
 };
 
 /**

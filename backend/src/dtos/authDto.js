@@ -30,8 +30,15 @@ const login = Joi.object({
     .messages({ 'object.missing': 'Email or phone is required.' });
 
 const forgotPassword = Joi.object({
-    email: Joi.string().required(),
-});
+    email: Joi.string(),
+    phone: Joi.string()
+        .pattern(/^\+40\d{9}$/)
+        .messages({
+            'string.pattern.base': 'Phone number must start with +40 and have exactly 9 digits after.',
+        }),
+})
+    .or('email', 'phone')
+    .messages({ 'object.missing': 'Email or phone is required.' });
 
 const validatePasswordResetCode = Joi.object({
     code: Joi.string().required(),

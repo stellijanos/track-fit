@@ -57,9 +57,10 @@ const login = catchAsync(async (req, res, next) => {
 const forgotPassword = catchAsync(async (req, res, next) => {
     const { error, value } = authDto.forgotPassword.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
-
-    await authService.forgotPassword(value.email);
-    next(new SuccessResponse(200, 'Email successfully sent.'));
+    console.log(value);
+    const message = await authService.forgotPassword(value.email, value.phone);
+    
+    next(new SuccessResponse(200, message));
 });
 
 /**
