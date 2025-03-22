@@ -2,12 +2,10 @@ const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 
 const create = Joi.object({
-    activityId: Joi.objectId().required().messages({
-        'string.pattern.base': 'Invalid activity ID provided.',
-        'any.required': 'Activity ID is required.',
-    }),
     date: Joi.date().required(),
+    name: Joi.string().required(),
     durationInM: Joi.number().min(1).max(1440).required(),
+    additionalInfo: Joi.string().required(),
 });
 
 const getAll = Joi.object({
@@ -20,7 +18,8 @@ const update = Joi.object({
         'any.required': 'Activity ID is required.',
     }),
     date: Joi.date().required(),
-    durationInM: Joi.number().min(1).max(1440).required(),
+    name: Joi.string(),
+    durationInM: Joi.number().min(1).max(1440),
 });
 
 const deleteById = Joi.object({

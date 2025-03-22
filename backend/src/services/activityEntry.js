@@ -1,5 +1,6 @@
 const activityEntryRepository = require('../repositories/activityEntry');
 const trackDayService = require('./trackDay');
+const openAiService = require('./openAi');
 
 const BadRequestError = require('../errors/BadRequest');
 const NotFoundError = require('../errors/NotFound');
@@ -7,11 +8,31 @@ const NotFoundError = require('../errors/NotFound');
 const create = async (user, data) => {
     const trackDay = await trackDayService.getByDateAndUser(data.date, user);
 
+    const info = {
+        user: {
+            gender: user.gender,
+            birthDate: user.birthDate,
+            height: user.height,
+            lastMeasurement: user.lastMeasurement,
+        },
+        activity: {
+            name: data.name,
+            durationInM: data.durationInM,
+            additionalInfo: data.additionalInfo,
+        },
+    };
+
+    const responseString = await openAiService.getActivityData(info);
+
+    const response = JSON.parse(responseString);
+
+    console.log(response);
+
     const created = await activityEntryRepository.create({
         trackDay: trackDay._id,
-        name: data.name,
-        caloriesPerHour: data.caloriesPerHour,
-        totalCalories: (data.caloriesPerHour * data.durationInM) / 60,
+        name: response.name,
+        caloriesPerHour: response.caloriesPerHour,
+        totalCalories: (response.caloriesPerHour * data.durationInM) / 60,
         durationInM: data.durationInM,
     });
 
@@ -31,7 +52,9 @@ const updateById = async (data) => {
     const updated = await activityEntryRepository.updateById(data.activityEntryId, {
         name: data.name,
         caloriesPerHour: activityEntry.caloriesPerHour,
-        totalCalories: ((activityEntry.caloriesPerHour * data.durationInM) / 60).toFixed(2),
+        totalCalories: ((activityEntry.caloriesPerHour * (data.durationInM || activityEntry.durationInM)) / 60).toFixed(
+            2
+        ),
         durationInM: data.durationInM,
     });
 

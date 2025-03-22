@@ -41,4 +41,5 @@ module.exports = {
         url: process.env.SMS_URL,
         maxLength: 160
     },
+    openAiApiKey: process.env.OPENAI_API_KEY
 };
