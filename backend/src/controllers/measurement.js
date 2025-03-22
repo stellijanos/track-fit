@@ -1,13 +1,15 @@
 const catchAsync = require('../utils/functions/catchAsync');
-const measurementService = require('../services/measurementService');
-const SuccessResponse = require('../utils/classes/SuccessResponse');
-const measurementDto = require('../dtos/measurementDto');
+
+const measurementDto = require('../dtos/measurement');
 const measurementValidator = require('../validators/measurement');
-const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
+const measurementService = require('../services/measurement');
+
+const SuccessResponse = require('../utils/classes/SuccessResponse');
+const UnprocessableEntityErrorError = require('../errors/UnprocessableEntity');
 
 const create = catchAsync(async (req, res, next) => {
     const { error, value } = measurementValidator.create.validate(req.body);
-    if (error) throw new UnprocessableEntityError(error.message);
+    if (error) throw new UnprocessableEntityErrorError(error.message);
 
     const measurement = await measurementService.create(req.user._id, value);
     next(
@@ -29,7 +31,7 @@ const getAllByUserId = catchAsync(async (req, res, next) => {
 
 const updateByIdAndUserId = catchAsync(async (req, res, next) => {
     const { error, value } = measurementValidator.update.validate(req.body);
-    if (error) throw new UnprocessableEntityError(error.message);
+    if (error) throw new UnprocessableEntityErrorError(error.message);
 
     const updated = await measurementService.updateByIdAndUserId(req.params.measurementId, req.user._id, value);
     next(new SuccessResponse(200, 'Measurement successfully updated.', { measurement: measurementDto(updated) }));

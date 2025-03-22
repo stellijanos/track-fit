@@ -1,5 +1,5 @@
 const express = require('express');
-const caloricTargetController = require('../controllers/caloricTargetController');
+const caloricTargetController = require('../controllers/caloricTarget');
 
 const router = express.Router();
 

@@ -2,8 +2,8 @@ const fs = require('fs');
 const sharp = require('sharp');
 const constants = require('../config/constants');
 const defaults = require('../config/dbDefaults');
-const NotFoundError = require('../errors/NotFoundError');
-const userRepository = require('../repositories/userRepository');
+const userRepository = require('../repositories/user');
+const NotFoundError = require('../errors/NotFound');
 
 /**
  * Helper Functions

@@ -1,13 +1,15 @@
 const catchAsync = require('../utils/functions/catchAsync');
-const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
-const SuccessResponse = require('../utils/classes/SuccessResponse');
-const caloricTargetDto = require('../dtos/caloricTargetDto');
+
+const caloricTargetDto = require('../dtos/caloricTarget');
 const caloricTargetValidator = require('../validators/caloricTarget');
-const caloricTargetService = require('../services/caloricTargetService');
+const caloricTargetService = require('../services/caloricTarget');
+
+const UnprocessableEntityErrorError = require('../errors/UnprocessableEntity');
+const SuccessResponse = require('../utils/classes/SuccessResponse');
 
 const create = catchAsync(async (req, res, next) => {
     const { error, value } = caloricTargetValidator.create.validate(req.body);
-    if (error) throw new UnprocessableEntityError(error.message);
+    if (error) throw new UnprocessableEntityErrorError(error.message);
 
     const created = await caloricTargetService.create(req.user._id, value);
     next(
@@ -29,7 +31,7 @@ const getAllByUserId = catchAsync(async (req, res, next) => {
 
 const renameByIdAndUserId = catchAsync(async (req, res, next) => {
     const { error, value } = caloricTargetValidator.update.validate(req.body);
-    if (error) throw new UnprocessableEntityError(error.message);
+    if (error) throw new UnprocessableEntityErrorError(error.message);
 
     const updated = await caloricTargetService.renameByIdAndUserId(req.params.id, req.user._id, value.name);
     next(

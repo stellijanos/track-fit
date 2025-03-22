@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const appLogger = require('../utils/loggers/appLogger');
+const appLogger = require('../utils/loggers/app');
 
 async function connectToDatabase() {
     let uri;

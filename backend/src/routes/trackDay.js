@@ -1,6 +1,6 @@
 const express = require('express');
-const trackDayController = require('../controllers/trackDayController');
-const activityEntryController = require('../controllers/activityEntryController');
+const trackDayController = require('../controllers/trackDay');
+const activityEntryController = require('../controllers/activityEntry');
 
 const router = express.Router();
 

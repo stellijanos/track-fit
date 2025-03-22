@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const constants = require('../config/constants');
-const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
+const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 
 const uploadPath = constants.TEMP_UPLOAD_DIR;
 const profilePicturePath = constants.PROFILE_PICTURE_DIR;

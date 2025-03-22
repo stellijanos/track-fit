@@ -1,5 +1,5 @@
 const morgan = require('morgan');
-const requestLogger = require('../utils/loggers/requestLogger');
+const requestLogger = require('../utils/loggers/request');
 const { performance } = require('perf_hooks');
 
 morgan.token('body', (req) => {

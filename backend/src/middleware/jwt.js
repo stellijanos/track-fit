@@ -1,9 +1,9 @@
 const jwtUtil = require('../utils/auth/jwt');
 const catchAsync = require('../utils/functions/catchAsync');
-const userService = require('../services/userService');
+const userService = require('../services/user');
 const jwtTypes = require('../enums/jwtTypes');
-const NotFoundError = require('../errors/NotFoundError');
-const UnauthorizedError = require('../errors/UnauthorizedError');
+const NotFoundError = require('../errors/NotFound');
+const UnauthorizedError = require('../errors/Unauthorized');
 
 const jwtMiddleware = catchAsync(async (req, res, next) => {
     const authHeader = req.header('Authorization');

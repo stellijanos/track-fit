@@ -1,5 +1,5 @@
-const BadRequestError = require('../errors/BadRequestError');
-const trackDayRepository = require('../repositories/trackDayRepository');
+const trackDayRepository = require('../repositories/trackDay');
+const BadRequestError = require('../errors/BadRequest');
 
 const getAllByUserId = async (userId) => await trackDayRepository.findAllByUserId(userId);
 

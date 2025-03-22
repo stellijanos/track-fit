@@ -1,8 +1,8 @@
 const catchAsync = require('../utils/functions/catchAsync');
-const activityEntryDto = require('../dtos/activityEntryDto');
+const activityEntryDto = require('../dtos/activityEntry');
 const activityEntryValidator = require('../validators/activityEntry');
-const activityEntryService = require('../services/activityEntryService');
-const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
+const activityEntryService = require('../services/activityEntry');
+const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
 
 const create = catchAsync(async (req, res, next) => {

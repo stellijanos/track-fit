@@ -1,7 +1,7 @@
 const app = require('./app');
 const env = require('./config/env');
 const { connectToDatabase } = require('./config/db');
-const appLogger = require('./utils/loggers/appLogger');
+const appLogger = require('./utils/loggers/app');
 
 connectToDatabase().then(() => {
     const PORT = env.app.port;

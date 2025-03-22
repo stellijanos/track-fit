@@ -1,13 +1,13 @@
 const express = require('express');
 const path = require('path');
 
-const notFoundMiddleware = require('./middleware/notFoundMiddleware');
-const errorHandleMiddleware = require('./middleware/errorHandleMiddleware');
+const notFoundMiddleware = require('./middleware/notFound');
+const errorHandleMiddleware = require('./middleware/errorHandle');
 const createDirIfNotExists = require('./utils/functions/createDirIfNotexists');
 const constants = require('./config/constants');
 const apiRoutes = require('./routes');
-const requestLoggerMiddleware = require('./middleware/requestLoggerMiddleware');
-const successHandleMiddleware = require('./middleware/successHandleMiddleware');
+const requestLoggerMiddleware = require('./middleware/request');
+const successHandleMiddleware = require('./middleware/successHandle');
 
 createDirIfNotExists(constants.LOGS_BASE_DIR);
 

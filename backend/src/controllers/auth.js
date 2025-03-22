@@ -1,12 +1,14 @@
 const catchAsync = require('../utils/functions/catchAsync');
-const SuccessResponse = require('../utils/classes/SuccessResponse');
-const BadRequestError = require('../errors/BadRequestError');
-const UnauthorizedError = require('../errors/UnauthorizedError');
-const NotFoundError = require('../errors/NotFoundError');
-const ConflictError = require('../errors/ConflictError');
-const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
 const authValidator = require('../validators/auth');
-const authService = require('../services/authService');
+const authService = require('../services/auth');
+
+const SuccessResponse = require('../utils/classes/SuccessResponse');
+const BadRequestError = require('../errors/BadRequest');
+const NotFoundError = require('../errors/NotFound');
+const UnauthorizedError = require('../errors/Unauthorized');
+const ConflictError = require('../errors/Conflict');
+const UnprocessableEntityError = require('../errors/UnprocessableEntity');
+
 
 /**
  * @route POST /auth/register

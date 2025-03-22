@@ -1,8 +1,8 @@
 const catchAsync = require('../utils/functions/catchAsync');
-const userService = require('../services/userService');
+const userService = require('../services/user');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
-const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
-const userDto = require('../dtos/userDto');
+const UnprocessableEntityErrorError = require('../errors/UnprocessableEntity');
+const userDto = require('../dtos/user');
 
 /**
  * @route GET /users/me
@@ -28,7 +28,7 @@ const getMe = (req, res, next) => {
  */
 const updateMe = catchAsync(async (req, res, next) => {
     const { error, value } = userDto.updateMe.validate(req.body);
-    if (error) throw new UnprocessableEntityError(error.message);
+    if (error) throw new UnprocessableEntityErrorError(error.message);
 
     const user = await userService.updateMe(req.user._id, value);
     next(new SuccessResponse(200, 'User successfully updated.', { user: userDto.response(user) }));
@@ -58,7 +58,7 @@ const deleteMe = catchAsync(async (req, res, next) => {
  * @throws {NotFoundError} 404 - User not found.
  */
 const changeMyProfilePicture = catchAsync(async (req, res, next) => {
-    if (!req.file) throw new UnprocessableEntityError('No image file provided');
+    if (!req.file) throw new UnprocessableEntityErrorError('No image file provided');
 
     const user = await userService.changeProfilePicture(req.user._id, req.user.profilePicture, req.file.filename);
     next(new SuccessResponse(200, 'Profile picture successfully changed.', { user: userDto.response(user) }));

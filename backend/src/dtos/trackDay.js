@@ -1,4 +1,4 @@
-const caloricTargetDto = require('./caloricTargetDto');
+const caloricTargetDto = require('./caloricTarget');
 
 module.exports = (data) => ({
     id: data._id,

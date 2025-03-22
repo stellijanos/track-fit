@@ -1,21 +1,27 @@
-const env = require('./../config/env');
+const env = require('../config/env');
+
 const bcryptUtil = require('../utils/auth/bcrypt');
 const jwtUtil = require('../utils/auth/jwt');
+
 const jwtTypes = require('../enums/jwtTypes');
+const credentialTypes = require('../enums/credentialTypes');
 const resetPasswordStatuses = require('../enums/resetPasswordStatuses');
+
 const detectCrenentialType = require('../utils/functions/detectCredentialType');
 const generateRandomString = require('../utils/functions/generateRandomString');
 const isDateExpired = require('../utils/functions/isDateExpired');
-const userRepository = require('../repositories/userRepository');
-const passwordResetRepository = require('../repositories/passwordResetRepository');
-const emailService = require('./emailService');
-const smsService = require('./smsService');
-const NotFoundError = require('../errors/NotFoundError');
-const UnauthorizedError = require('../errors/UnauthorizedError');
-const BadRequestError = require('../errors/BadRequestError');
-const ConflictError = require('../errors/ConflictError');
-const credentialTypes = require('../enums/credentialTypes');
-const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
+
+const userRepository = require('../repositories/user');
+const passwordResetRepository = require('../repositories/passwordReset');
+
+const emailService = require('./email');
+const smsService = require('./sms');
+
+const NotFoundError = require('../errors/NotFound');
+const UnauthorizedError = require('../errors/Unauthorized');
+const BadRequestError = require('../errors/BadRequest');
+const ConflictError = require('../errors/Conflict');
+const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 
 const ACCESS_TOKEN_EXPIRES_IN = env.auth.jwt.expiresIn.accessToken;
 const REFRESH_TOKEN_EXPIRES_IN = env.auth.jwt.expiresIn.refreshToken;

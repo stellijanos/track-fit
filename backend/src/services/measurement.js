@@ -1,5 +1,5 @@
-const BadRequestError = require('../errors/BadRequestError');
-const measurementRepository = require('../repositories/measurementRepository');
+const measurementRepository = require('../repositories/measurement');
+const BadRequestError = require('../errors/BadRequest');
 
 const create = async (userId, data) => {
     const measurement = {

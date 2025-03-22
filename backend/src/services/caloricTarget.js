@@ -1,8 +1,8 @@
-const ConflictError = require('../errors/ConflictError');
-const BadRequestError = require('../errors/BadRequestError');
-const caloricTargetRepository = require('../repositories/caloricTargetRepository');
-const userRepository = require('../repositories/userRepository');
-const { default: mongoose } = require('mongoose');
+const caloricTargetRepository = require('../repositories/caloricTarget');
+const userRepository = require('../repositories/user');
+
+const ConflictError = require('../errors/Conflict');
+const BadRequestError = require('../errors/BadRequest');
 
 const create = async (userId, data) => {
     const created = await caloricTargetRepository.create({

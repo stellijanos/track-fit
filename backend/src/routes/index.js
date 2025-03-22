@@ -1,10 +1,10 @@
 const express = require('express');
-const jwtMiddleware = require('../middleware/jwtMiddleware');
-const authRouter = require('./authRouter');
-const userRouter = require('./userRouter');
-const measurementRouter = require('./measurementRouter');
-const caloricTargetRouter = require('./caloricTargetRouter');
-const trackDayRouter = require('./trackDayRouter');
+const jwtMiddleware = require('../middleware/jwt');
+const authRouter = require('./auth');
+const userRouter = require('./user');
+const measurementRouter = require('./measurement');
+const caloricTargetRouter = require('./caloricTarget');
+const trackDayRouter = require('./trackDay');
 
 const router = express.Router();
 
