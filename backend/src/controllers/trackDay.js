@@ -1,11 +1,10 @@
 const catchAsync = require('../utils/functions/catchAsync');
 const trackDayDto = require('../dtos/trackDay');
-
 const trackDayValidators = require('../validators/trackDay');
 const trackDayService = require('../services/trackDay');
 
 const SuccessResponse = require('../utils/classes/SuccessResponse');
-const UnprocessableEntityErrorError = require('../errors/UnprocessableEntity');
+const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 
 const getAllByUserId = catchAsync(async (req, res, next) => {
     const trackDays = await trackDayService.getAllByUserId(req.user._id);
@@ -19,7 +18,7 @@ const getAllByUserId = catchAsync(async (req, res, next) => {
 
 const getByDateAndUser = catchAsync(async (req, res, next) => {
     const { error, value } = trackDayValidators.create.validate(req.params);
-    if (error) throw new UnprocessableEntityErrorError(error.message);
+    if (error) throw new UnprocessableEntityError(error.message);
 
     const trackDay = await trackDayService.getByDateAndUser(value.date, req.user);
     next(new SuccessResponse(200, 'Trackday successfully received.', { trackDay: trackDayDto(trackDay) }));
@@ -27,7 +26,7 @@ const getByDateAndUser = catchAsync(async (req, res, next) => {
 
 const addWaterIntake = catchAsync(async (req, res, next) => {
     const { error, value } = trackDayValidators.waterIntake.validate({ ...req.params, ...req.body });
-    if (error) throw new UnprocessableEntityErrorError(error.message);
+    if (error) throw new UnprocessableEntityError(error.message);
 
     const trackDay = await trackDayService.addWaterIntake(value.date, req.user, value.quantity);
     next(new SuccessResponse(200, 'Water intake successfully added.', { trackDay: trackDayDto(trackDay) }));
@@ -35,7 +34,7 @@ const addWaterIntake = catchAsync(async (req, res, next) => {
 
 const setWaterIntake = catchAsync(async (req, res, next) => {
     const { error, value } = trackDayValidators.waterIntake.validate({ ...req.params, ...req.body });
-    if (error) throw new UnprocessableEntityErrorError(error.message);
+    if (error) throw new UnprocessableEntityError(error.message);
 
     const trackDay = await trackDayService.setWaterIntake(value.date, req.user, value.quantity);
     next(new SuccessResponse(200, 'Water intake successfully added.', { trackDay: trackDayDto(trackDay) }));

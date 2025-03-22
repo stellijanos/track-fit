@@ -1,14 +1,14 @@
 const axios = require('axios');
 const env = require('../../config/env');
-const UnprocessableEntityErrorError = require('../../errors/UnprocessableEntity');
+const UnprocessableEntityError = require('../../errors/UnprocessableEntity');
 
 const sendSMS = async (phone, message) => {
     const URL = env.sms.url;
     const KEY = env.sms.key;
     const MAX_LENGTH = env.sms.maxLength;
 
-    if (!phone.startsWith('+40')) throw new UnprocessableEntityErrorError('Phone number must begin with +40.');
-    if (message.length > MAX_LENGTH) throw new UnprocessableEntityErrorError('Message too long.');
+    if (!phone.startsWith('+40')) throw new UnprocessableEntityError('Phone number must begin with +40.');
+    if (message.length > MAX_LENGTH) throw new UnprocessableEntityError('Message too long.');
 
     const data = {
         phone,
