@@ -7,8 +7,14 @@ const mealPlanSchema = new mongoose.Schema(
         name: { type: String, required: true },
         meals: [
             {
-                meal: { type: mongoose.Schema.Types.ObjectId, ref: 'Meal' },
+                name: { type: String, required: true },
                 type: { type: String, enum: Object.values(mealTypes) },
+                kcal: { type: Number, required: true },
+                protein: { type: Number, required: true },
+                carb: { type: Number, required: true },
+                fat: { type: Number, required: true },
+                fibre: { type: Number, required: true },
+                salt: { type: Number, required: true },
             },
         ],
     },

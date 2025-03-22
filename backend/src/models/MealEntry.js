@@ -5,12 +5,8 @@ const mealEntrySchema = new mongoose.Schema(
     {
         trackDay: { type: mongoose.Schema.Types.ObjectId, ref: 'TrackDay' },
         name: { type: String, required: true },
-        mealType: {
-            type: String,
-            enum: Object.values(mealTypes),
-            default: mealTypes.SNACK,
-        },
-        per100G: {
+        type: { type: String, enum: Object.values(mealTypes) },
+        per100: {
             kcal: { type: Number, required: true },
             protein: { type: Number, required: true },
             carb: { type: Number, required: true },
@@ -19,7 +15,7 @@ const mealEntrySchema = new mongoose.Schema(
             salt: { type: Number, required: true },
         },
         totalConsumed: {
-            quantityInG: { type: Number, required: true },
+            quantity: { type: Number, required: true },
             kcal: { type: Number, required: true },
             protein: { type: Number, required: true },
             carb: { type: Number, required: true },
