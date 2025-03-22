@@ -5,7 +5,7 @@ const UnauthorizedError = require('../errors/UnauthorizedError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
 const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
-const authDto = require('../dtos/authDto');
+const authValidator = require('../validators/auth');
 const authService = require('../services/authService');
 
 /**
@@ -19,7 +19,7 @@ const authService = require('../services/authService');
  * @throws {ConflictError} 409 - User already exists.
  */
 const register = catchAsync(async (req, res, next) => {
-    const { error, value } = authDto.register.validate(req.body);
+    const { error, value } = authValidator.register.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
     const tokens = await authService.register(value);
@@ -37,7 +37,7 @@ const register = catchAsync(async (req, res, next) => {
  * @throws {NotFoundError} 404 - User not found.
  */
 const login = catchAsync(async (req, res, next) => {
-    const { error, value } = authDto.login.validate(req.body);
+    const { error, value } = authValidator.login.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
     const tokens = await authService.login(value.credential, value.password);
@@ -55,7 +55,7 @@ const login = catchAsync(async (req, res, next) => {
  * @throws {NotFoundError} 404 - User not found.
  */
 const forgotPassword = catchAsync(async (req, res, next) => {
-    const { error, value } = authDto.forgotPassword.validate(req.body);
+    const { error, value } = authValidator.forgotPassword.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
     await authService.forgotPassword(value.credential);
@@ -76,7 +76,7 @@ const forgotPassword = catchAsync(async (req, res, next) => {
  * @throws {BadRequestError} 400 - Password reset code already validated.
  */
 const validatePasswordResetCode = catchAsync(async (req, res, next) => {
-    const { error, value } = authDto.validatePasswordResetCode.validate(req.body);
+    const { error, value } = authValidator.validatePasswordResetCode.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
     await authService.validatePasswordResetCode(value.code);
@@ -96,7 +96,7 @@ const validatePasswordResetCode = catchAsync(async (req, res, next) => {
  * @throws {BadRequestError} 400 - Password reset code already validated.
  */
 const resetPassword = catchAsync(async (req, res, next) => {
-    const { error, value } = authDto.resetPassword.validate(req.body);
+    const { error, value } = authValidator.resetPassword.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
     await authService.resetPassword(value.code, value.password);
@@ -114,7 +114,7 @@ const resetPassword = catchAsync(async (req, res, next) => {
  * @throws {UnauthorizedError} 401 - Incorrect password.
  */
 const changePassword = catchAsync(async (req, res, next) => {
-    const { error, value } = authDto.changePassword.validate(req.body);
+    const { error, value } = authValidator.changePassword.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
     await authService.changePassword(req.user, value);
@@ -132,7 +132,7 @@ const changePassword = catchAsync(async (req, res, next) => {
  * @throws {NotFoundError} 404 - User not found.
  */
 const refreshToken = catchAsync(async (req, res, next) => {
-    const { error, value } = authDto.refreshToken.validate(req.body);
+    const { error, value } = authValidator.refreshToken.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
     const tokens = await authService.refreshToken(value.refreshToken);

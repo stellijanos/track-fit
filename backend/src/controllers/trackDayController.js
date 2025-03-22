@@ -1,6 +1,6 @@
 const catchAsync = require('../utils/functions/catchAsync');
 const trackDayDto = require('../dtos/trackDayDto');
-const trackDayValidators = require('../validators/trackDayValidators');
+const trackDayValidators = require('../validators/trackDay');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
 const trackDayService = require('../services/trackDayService');
 const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
@@ -10,7 +10,7 @@ const getAllByUserId = catchAsync(async (req, res, next) => {
     next(
         new SuccessResponse(200, 'Trackdays successfully retrieved.', {
             total: trackDays.length,
-            trackDays: trackDays.map(trackDayDto.response),
+            trackDays: trackDays.map(trackDayDto),
         })
     );
 });
@@ -20,7 +20,7 @@ const getByDateAndUser = catchAsync(async (req, res, next) => {
     if (error) throw new UnprocessableEntityError(error.message);
 
     const trackDay = await trackDayService.getByDateAndUser(value.date, req.user);
-    next(new SuccessResponse(200, 'Trackday successfully received.', { trackDay: trackDayDto.response(trackDay) }));
+    next(new SuccessResponse(200, 'Trackday successfully received.', { trackDay: trackDayDto(trackDay) }));
 });
 
 const addWaterIntake = catchAsync(async (req, res, next) => {
@@ -28,7 +28,7 @@ const addWaterIntake = catchAsync(async (req, res, next) => {
     if (error) throw new UnprocessableEntityError(error.message);
 
     const trackDay = await trackDayService.addWaterIntake(value.date, req.user, value.quantity);
-    next(new SuccessResponse(200, 'Water intake successfully added.', { trackDay: trackDayDto.response(trackDay) }));
+    next(new SuccessResponse(200, 'Water intake successfully added.', { trackDay: trackDayDto(trackDay) }));
 });
 
 const setWaterIntake = catchAsync(async (req, res, next) => {
@@ -36,7 +36,7 @@ const setWaterIntake = catchAsync(async (req, res, next) => {
     if (error) throw new UnprocessableEntityError(error.message);
 
     const trackDay = await trackDayService.setWaterIntake(value.date, req.user, value.quantity);
-    next(new SuccessResponse(200, 'Water intake successfully added.', { trackDay: trackDayDto.response(trackDay) }));
+    next(new SuccessResponse(200, 'Water intake successfully added.', { trackDay: trackDayDto(trackDay) }));
 });
 
 module.exports = {

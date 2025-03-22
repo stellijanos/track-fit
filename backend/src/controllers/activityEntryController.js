@@ -1,6 +1,6 @@
 const catchAsync = require('../utils/functions/catchAsync');
 const activityEntryDto = require('../dtos/activityEntryDto');
-const activityEntryValidator = require('../validators/activityEntryValidator');
+const activityEntryValidator = require('../validators/activityEntry');
 const activityEntryService = require('../services/activityEntryService');
 const UnprocessableEntityError = require('../errors/UnprocessableEntityError');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
@@ -13,7 +13,7 @@ const create = catchAsync(async (req, res, next) => {
 
     next(
         new SuccessResponse(201, 'Activity entry successfully created.', {
-            activityEntry: activityEntryDto.response(activityEntry),
+            activityEntry: activityEntryDto(activityEntry),
         })
     );
 });
@@ -26,7 +26,7 @@ const getAllByUserAndDate = catchAsync(async (req, res, next) => {
     next(
         new SuccessResponse(200, 'Activitiy entries successfully retrieved.', {
             total: activityEntries.length,
-            activityEntries: activityEntries.map(activityEntryDto.response),
+            activityEntries: activityEntries.map(activityEntryDto),
         })
     );
 });
@@ -38,14 +38,14 @@ const updateById = catchAsync(async (req, res, next) => {
     const updated = await activityEntryService.updateById(value);
     next(
         new SuccessResponse(200, 'Activity entry successfully updated.', {
-            activityEntry: activityEntryDto.response(updated),
+            activityEntry: activityEntryDto(updated),
         })
     );
 });
 
 const deleteById = catchAsync(async (req, res, next) => {
-    const {activityEntryId} = req.params;
-    const { error, value } = activityEntryValidator.deleteById.validate({activityEntryId});
+    const { activityEntryId } = req.params;
+    const { error, value } = activityEntryValidator.deleteById.validate({ activityEntryId });
     if (error) throw new UnprocessableEntityError(error.message);
 
     await activityEntryService.deleteById(value.activityEntryId);
