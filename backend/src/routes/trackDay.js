@@ -1,6 +1,7 @@
 const express = require('express');
 const trackDayController = require('../controllers/trackDay');
 const activityEntryController = require('../controllers/activityEntry');
+const mealEntryController = require('../controllers/mealEntry');
 
 const router = express.Router();
 
@@ -13,5 +14,7 @@ router.post('/:date/activities', activityEntryController.create);
 router.get('/:date/activities', activityEntryController.getAllByUserAndDate);
 router.patch('/:date/activities/:activityEntryId', activityEntryController.updateById);
 router.delete('/:date/activities/:activityEntryId', activityEntryController.deleteById);
+
+router.post('/:date/meal-entries', mealEntryController.createMany);
 
 module.exports = router;

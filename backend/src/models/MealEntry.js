@@ -29,6 +29,6 @@ const mealEntrySchema = new mongoose.Schema(
     }
 );
 
-mealEntrySchema.index({ trackDay: -1, meal: 1, mealType: 1 }, { unique: true });
+mealEntrySchema.index({ trackDay: -1, mealType: 1 });
 
 module.exports = mongoose.model('MealEntry', mealEntrySchema);
