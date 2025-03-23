@@ -44,8 +44,17 @@ const updateByIdAndTrackDayId = catchAsync(async (req, res, next) => {
     );
 });
 
+const deleteByIdAndTrackDayId = catchAsync(async (req, res, next) => {
+    const { error, value } = mealEntryValidator.deleteByIdAndTrackDayId.validate({ ...req.params, ...req.body });
+    if (error) throw new UnprocessableEntityError(error.message);
+
+    await mealEntryService.deleteByIdAndTrackDayId(req.user, value);
+    next(new SuccessResponse(204));
+});
+
 module.exports = {
     createMany,
     getAllByTrackDayId,
-    updateByIdAndTrackDayId
+    updateByIdAndTrackDayId,
+    deleteByIdAndTrackDayId,
 };

@@ -1,4 +1,5 @@
 const trackDay = require('../dtos/trackDay');
+const BadRequestError = require('../errors/BadRequest');
 const InternalServerError = require('../errors/InternalServer');
 const NotFoundError = require('../errors/NotFound');
 const UnprocessableEntityError = require('../errors/UnprocessableEntity');
@@ -39,7 +40,7 @@ const getAllByTrackDayId = async (user, date) => {
 
 const updateByIdAndTrackDayId = async (user, data) => {
     const mealEntry = await mealEntryRepository.findById(data.mealEntryId);
-    if (!mealEntry) throw new NotFoundError('Meal entry.');
+    if (!mealEntry) throw new NotFoundError('Meal entry');
 
     const trackDay = await trackDayService.getByDateAndUser(data.date, user);
     if (!mealEntry.trackDay.equals(trackDay._id))
@@ -64,8 +65,21 @@ const updateByIdAndTrackDayId = async (user, data) => {
     });
 };
 
+const deleteByIdAndTrackDayId = async (user, data) => {
+    const mealEntry = await mealEntryRepository.findById(data.mealEntryId);
+    if (!mealEntry) throw new NotFoundError('Meal entry');
+
+    const trackDay = await trackDayService.getByDateAndUser(data.date, user);
+    if (!mealEntry.trackDay.equals(trackDay._id))
+        throw new UnprocessableEntityError('Meal entry does not belong to your trackday.');
+
+    const deleted = await mealEntryRepository.deleteByIdAndTrackDayId(data.mealEntryId, trackDay._id);
+    if (!deleted) throw new BadRequestError('Failed to delete meal entry: not found or missing permissions.');
+};
+
 module.exports = {
     createMany,
     getAllByTrackDayId,
     updateByIdAndTrackDayId,
+    deleteByIdAndTrackDayId,
 };

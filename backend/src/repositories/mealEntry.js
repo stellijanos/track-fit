@@ -10,10 +10,14 @@ const findById = async (mealEntryId) => await MealEntry.findById(mealEntryId);
 
 const updateById = async (id, data) => await MealEntry.findByIdAndUpdate(id, { $set: data }, { new: true });
 
+const deleteByIdAndTrackDayId = async (id, trackDayId) =>
+    await MealEntry.findOneAndDelete({ _id: id, trackDay: trackDayId });
+
 module.exports = {
     create,
     createMany,
     findAllByTrackDayId,
     findById,
     updateById,
+    deleteByIdAndTrackDayId
 };

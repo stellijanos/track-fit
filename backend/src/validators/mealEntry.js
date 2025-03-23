@@ -23,8 +23,17 @@ const update = Joi.object({
     type: Joi.string().valid(...Object.values(mealTypes)),
 }).min(1);
 
+const deleteByIdAndTrackDayId = Joi.object({
+    date,
+    mealEntryId: Joi.objectId().required().messages({
+        'string.pattern.base': 'Invalid activity ID provided.',
+        'any.required': 'Activity ID is required.',
+    }),
+});
+
 module.exports = {
     create,
     date,
     update,
+    deleteByIdAndTrackDayId,
 };
