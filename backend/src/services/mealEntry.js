@@ -1,5 +1,7 @@
 const trackDay = require('../dtos/trackDay');
 const InternalServerError = require('../errors/InternalServer');
+const NotFoundError = require('../errors/NotFound');
+const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 const mealEntryRepository = require('../repositories/mealEntry');
 const openAiService = require('./openAi');
 const trackDayService = require('./trackDay');
@@ -30,15 +32,40 @@ const createMany = async (user, data) => {
     }
 };
 
-
-const getAllByTrackDayId = async(user, date) => {
-    console.log(date);
+const getAllByTrackDayId = async (user, date) => {
     const trackDay = await trackDayService.getByDateAndUser(date, user);
-    console.log(trackDay);
     return await mealEntryRepository.findAllByTrackDayId(trackDay._id);
-}
+};
+
+const updateByIdAndTrackDayId = async (user, data) => {
+    const mealEntry = await mealEntryRepository.findById(data.mealEntryId);
+    if (!mealEntry) throw new NotFoundError('Meal entry.');
+
+    const trackDay = await trackDayService.getByDateAndUser(data.date, user);
+    if (!mealEntry.trackDay.equals(trackDay._id))
+        throw new UnprocessableEntityError('Meal entry does not belong to your trackday.');
+
+    const quantity = data.quantity ?? mealEntry.totalConsumed?.quantity ?? 0;
+
+    const calculateNutrient = (valuePer100) => Number(((valuePer100 * quantity) / 100).toFixed(2));
+
+    return await mealEntryRepository.updateById(data.mealEntryId, {
+        name: data.name,
+        type: data.type,
+        totalConsumed: {
+            quantity,
+            kcal: calculateNutrient(mealEntry.per100.kcal),
+            protein: calculateNutrient(mealEntry.per100.protein),
+            carb: calculateNutrient(mealEntry.per100.carb),
+            fat: calculateNutrient(mealEntry.per100.fat),
+            fibre: calculateNutrient(mealEntry.per100.fibre),
+            salt: calculateNutrient(mealEntry.per100.salt),
+        },
+    });
+};
 
 module.exports = {
     createMany,
-    getAllByTrackDayId
+    getAllByTrackDayId,
+    updateByIdAndTrackDayId,
 };

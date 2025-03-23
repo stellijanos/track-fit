@@ -25,9 +25,21 @@ const getAllByTrackDayId = catchAsync(async (req, res, next) => {
     const mealEntries = await mealEntryService.getAllByTrackDayId(req.user, value);
 
     next(
-        new SuccessResponse(200, 'Meal entries successfully retrieved', {
+        new SuccessResponse(200, 'Meal entries successfully retrieved.', {
             total: mealEntries.length,
             mealEntries: mealEntries.map(mealEntryDto),
+        })
+    );
+});
+
+const updateByIdAndTrackDayId = catchAsync(async (req, res, next) => {
+    const { error, value } = mealEntryValidator.update.validate({ ...req.params, ...req.body });
+    if (error) throw new UnprocessableEntityError(error.message);
+
+    const updated = await mealEntryService.updateByIdAndTrackDayId(req.user, value);
+    next(
+        new SuccessResponse(200, 'Meal entry successfully updated.', {
+            mealEntry: mealEntryDto(updated),
         })
     );
 });
@@ -35,4 +47,5 @@ const getAllByTrackDayId = catchAsync(async (req, res, next) => {
 module.exports = {
     createMany,
     getAllByTrackDayId,
+    updateByIdAndTrackDayId
 };
