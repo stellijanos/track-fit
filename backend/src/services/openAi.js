@@ -2,6 +2,7 @@ const openAi = require('../utils/functions/openAi');
 const activityLevelValues = require('../enums/activityLevelValues');
 const goalAdjustments = require('../enums/goalAdjustments');
 const mealTypes = require('../enums/mealTypes');
+const mealPlanTypes = require('../enums/mealPlanTypes');
 
 const getActivityData = async (data) => {
     const dataStructure = {
@@ -94,8 +95,64 @@ const getMealEntry = async (data) => {
     return await openAi.generateMessage(content);
 };
 
+const getMealPlan = async (data) => {
+    const dataStructure = {
+        name: 'String',
+        type: `one of: ${Object.values(mealPlanTypes).join(', ')}`,
+        days: [
+            {
+                name: 'String',
+                description: 'String',
+                dailyCaloricTarget: 'Number',
+                dailyMacros: {
+                    protein: 'Number',
+                    carb: 'Number',
+                    fat: 'Number',
+                },
+                meals: [
+                    {
+                        name: 'String',
+                        description: 'String',
+                        type: `one of: ${Object.values(mealTypes).join(', ')}`,
+                        kcal: 'Number',
+                        protein: 'Number',
+                        carb: 'Number',
+                        fat: 'Number',
+                        fibre: 'Number',
+                        salt: 'Number',
+                    },
+                ],
+            },
+        ],
+    };
+
+    const content = `
+You are a JSON-only assistant that generates a structured meal plan object.
+
+### User Input:
+${JSON.stringify(data)}
+
+### Instructions:
+- Generate a meal plan based on the provided input.
+- If the input is not food/meal-related, return: \`{}\`
+- Use only the following values for \`type\`: ${Object.values(mealPlanTypes).join(', ')}
+- Each day must include meals with nutritional values.
+- Return protein, carb, and fat in grams.
+- Capitalize each meal name (e.g. "Grilled Chicken" instead of "grilled chicken").
+- The response MUST be a valid pure JSON object. DO NOT include markdown, comments, or any text outside the JSON.
+- Structure the JSON exactly like this:
+
+    ${JSON.stringify(dataStructure, null, 2)}
+`;
+
+    // console.log(content);
+
+    return await openAi.generateMessage(content);
+};
+
 module.exports = {
     getActivityData,
     getCaloricTarget,
     getMealEntry,
+    getMealPlan,
 };
