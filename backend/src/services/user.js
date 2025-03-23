@@ -60,18 +60,20 @@ const getById = async (id) => {
  * @returns {User} - The updated user.
  * @throws {NotFoundError} User not found.
  */
-const updateMe = async (Id, data) => {
+const updateById = async (id, data) => {
     const updatedData = {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
         phone: data.phone,
+        lastMeasurement: data.lastMeasurement,
+        currentCaloricTarget: data.currentCaloricTarget,
         birthDate: data.birthDate,
         gender: data.gender,
         height: data.height,
     };
 
-    const updated = await userRepository.updateById(Id, updatedData);
+    const updated = await userRepository.updateById(id, updatedData);
     if (!updated) throw new NotFoundError('User');
     return updated;
 };
@@ -129,7 +131,7 @@ const deleteProfilePicture = async (userId, currentImage) => {
 module.exports = {
     getByEmail,
     getById,
-    updateMe,
+    updateById,
     deleteMe,
     changeProfilePicture,
     deleteProfilePicture,

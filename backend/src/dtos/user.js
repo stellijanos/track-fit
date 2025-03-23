@@ -1,3 +1,6 @@
+const caloricTargetDto = require("./caloricTarget");
+const measurementDto = require("./measurement");
+
 module.exports = (data) => ({
     id: data._id,
     firstName: data.firstName,
@@ -11,9 +14,9 @@ module.exports = (data) => ({
     isEmailVerified: data.isEmailVerified,
     isPhoneVerified: data.isPhoneVerified,
     profilePicture: data.profilePicture,
-    lastMeasurement: data.lastMeasurement,
+    lastMeasurement: measurementDto(data.lastMeasurement),
     currentWaterTarget: data.currentWaterTarget,
-    currentCaloricTarget: data.currentCaloricTarget,
+    currentCaloricTarget: caloricTargetDto(data.currentCaloricTarget),
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
 });

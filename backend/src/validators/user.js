@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const genders = require('../enums/genders');
 
-const updateMe = Joi.object({
+const updateById = Joi.object({
     firstName: Joi.string(),
     lastName: Joi.string(),
     email: Joi.string().email(),
@@ -16,5 +16,5 @@ const updateMe = Joi.object({
 }).min(1);
 
 module.exports = {
-    updateMe,
+    updateById,
 };

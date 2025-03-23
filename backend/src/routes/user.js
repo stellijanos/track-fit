@@ -7,11 +7,7 @@ const router = express.Router();
 
 router.use(jwtMiddleware);
 
-router
-    .route('/me')
-    .get(userController.getMe)
-    .patch(userController.updateMe)
-    .delete(userController.deleteMe);
+router.route('/me').get(userController.getMe).patch(userController.updateById).delete(userController.deleteMe);
 
 router
     .route('/me/profile-picture')

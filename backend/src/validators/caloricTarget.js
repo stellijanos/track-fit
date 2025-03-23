@@ -1,22 +1,20 @@
 const Joi = require('joi');
+const activityLevels = require('../enums/activityLevels');
+const physicalGoals = require('../enums/physicalGoals');
+const goalSpeed = require('../enums/goalSpeed');
 
 const create = Joi.object({
-    name: Joi.string(),
-    kcal: Joi.number().required(),
-    protein: Joi.number().required(),
-    carb: Joi.number().required(),
-    fat: Joi.number().required(),
-    proteinPerKg: Joi.number().required(),
-    carbPerKg: Joi.number().required(),
-    fatPerKg: Joi.number().required(),
+    activityLevel: Joi.string()
+        .valid(...Object.values(activityLevels))
+        .required(),
+    physicalGoal: Joi.string()
+        .valid(...Object.values(physicalGoals))
+        .required(),
+    goalSpeed: Joi.string()
+        .valid(...Object.values(goalSpeed))
+        .required(),
 });
-
-const update = Joi.object({
-    name: Joi.string(),
-}).min(1);
-
 
 module.exports = {
     create,
-    update,
 };

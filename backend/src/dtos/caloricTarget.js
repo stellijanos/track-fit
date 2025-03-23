@@ -8,6 +8,7 @@ module.exports = (data) => ({
     proteinPerKg: data.proteinPerKg,
     carbPerKg: data.carbPerKg,
     fatPerKg: data.fatPerKg,
+    isLocked: data.isLocked,
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
 });

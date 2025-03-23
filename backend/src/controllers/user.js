@@ -27,11 +27,11 @@ const getMe = (req, res, next) => {
  * @returns {SuccessResponse} 200 - Response containing the user data.
  * @throws  {NotFoundError} 404 - User not found.
  */
-const updateMe = catchAsync(async (req, res, next) => {
-    const { error, value } = userValidator.updateMe.validate(req.body);
+const updateById = catchAsync(async (req, res, next) => {
+    const { error, value } = userValidator.updateById.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
-    const user = await userService.updateMe(req.user._id, value);
+    const user = await userService.updateById(req.user._id, value);
     next(new SuccessResponse(200, 'User successfully updated.', { user: userDto(user) }));
 });
 
@@ -81,7 +81,7 @@ const deleteMyProfilePicture = catchAsync(async (req, res, next) => {
 
 module.exports = {
     getMe,
-    updateMe,
+    updateById,
     deleteMe,
     changeMyProfilePicture,
     deleteMyProfilePicture,
