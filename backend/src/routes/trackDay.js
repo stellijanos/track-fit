@@ -16,5 +16,6 @@ router.patch('/:date/activities/:activityEntryId', activityEntryController.updat
 router.delete('/:date/activities/:activityEntryId', activityEntryController.deleteById);
 
 router.post('/:date/meal-entries', mealEntryController.createMany);
+router.get('/:date/meal-entries', mealEntryController.getAllByTrackDayId);
 
 module.exports = router;

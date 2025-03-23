@@ -1,8 +1,10 @@
 const Joi = require('joi');
 const mealTypes = require('../enums/mealTypes');
 
+const date = Joi.date().required();
+
 const create = Joi.object({
-    date: Joi.date().required(),
+    date,
     description: Joi.string().required(),
     type: Joi.string()
         .valid(...Object.values(mealTypes))
@@ -11,4 +13,5 @@ const create = Joi.object({
 
 module.exports = {
     create,
+    date,
 };

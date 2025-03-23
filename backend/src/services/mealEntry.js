@@ -1,3 +1,4 @@
+const trackDay = require('../dtos/trackDay');
 const InternalServerError = require('../errors/InternalServer');
 const mealEntryRepository = require('../repositories/mealEntry');
 const openAiService = require('./openAi');
@@ -29,6 +30,15 @@ const createMany = async (user, data) => {
     }
 };
 
+
+const getAllByTrackDayId = async(user, date) => {
+    console.log(date);
+    const trackDay = await trackDayService.getByDateAndUser(date, user);
+    console.log(trackDay);
+    return await mealEntryRepository.findAllByTrackDayId(trackDay._id);
+}
+
 module.exports = {
     createMany,
+    getAllByTrackDayId
 };

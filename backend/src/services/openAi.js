@@ -55,7 +55,14 @@ const getCaloricTarget = async (data) => {
 const getMealEntry = async (data) => {
     const dataStructure = {
         name: 'String',
-        per100: { kcal: 'Number', protein: 'Number', carb: 'Number', fat: 'Number', fibre: 'Number', salt: 'Number' },
+        per100: {
+            kcal: 'Number',
+            protein: 'Number',
+            carb: 'Number',
+            fat: 'Number',
+            fibre: 'Number',
+            salt: 'Number',
+        },
         totalConsumed: {
             quantity: 'Number',
             kcal: 'Number',
@@ -71,15 +78,16 @@ const getMealEntry = async (data) => {
     ## User Input:
     ${JSON.stringify(data)}
 
-    ## Task
-    Calculate calories and nutrients for the provided meal.
-    Create many meals of they are mutiple.
-    Return -1 values for anything that is not food related.
-    'protein', 'carb' and 'fat' in g.
-    Extract each meal entry name (also capitalize) and also the total quantity.
-
-    Return ONLY "[${JSON.stringify(dataStructure)}]" as a valid JSON string.
-    Do not include any explanations, formatting, or markdown. Just pure list of JSON.
+    ## Task:
+    - Extract all meals from the user input.
+    - If quantities are provided separately for each meal/food item, create separate meal entries.
+    - If only one quantity is provided for the whole list, treat it as one meal.
+    - Return -1 for any field that is not related to food.
+    - Return 'protein', 'carb', and 'fat' in grams.
+    - Capitalize each meal name.
+    - Always return a list of JSON objects matching this structure:
+    [${JSON.stringify(dataStructure)}]
+    - Do not include any explanation, markdown, comments, or text outside the JSON array.
     `;
 
     console.log(content);
