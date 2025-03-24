@@ -1,3 +1,4 @@
+const NotFoundError = require('../errors/NotFound');
 const mealPlanRepository = require('../repositories/mealPlan');
 const openAiService = require('./openAi');
 
@@ -40,6 +41,16 @@ const create = async (user, data) => {
     });
 };
 
+const getAllPreviewByUserId = async (userId) => await mealPlanRepository.findAllPreviewByUserId(userId);
+
+const getByIdAndUserId = async (id, userId) => {
+    const found = await mealPlanRepository.findByIdAndUserId(id, userId);
+    if (!found) throw new NotFoundError('Meal plan');
+    return found;
+};
+
 module.exports = {
     create,
+    getAllPreviewByUserId,
+    getByIdAndUserId,
 };

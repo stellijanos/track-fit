@@ -9,13 +9,13 @@ module.exports = (data) => ({
     excludedFoods: data.excludedFoods,
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
-    days: data.days.map((day) => ({
+    days: (data.days || []).map((day) => ({
         id: day._id,
         name: day.name,
         description: day.description,
         dailyCaloricTarget: day.dailyCaloricTarget,
         dailyMacros: data.dailyMacros,
-        meals: day.meals.map((meal) => ({
+        meals: (day.meals|| []).map((meal) => ({
             id: meal.id,
             name: meal.name,
             description: meal.description,

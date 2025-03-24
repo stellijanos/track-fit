@@ -17,6 +17,27 @@ const create = catchAsync(async (req, res, next) => {
     );
 });
 
+const getAllPreviewByUserId = async (req, res, next) => {
+    const mealPlans = await mealPlanService.getAllPreviewByUserId(req.user._id);
+    next(
+        new SuccessResponse(200, 'Meal plans successfully retrieved.', {
+            total: mealPlans.length,
+            mealPlans: mealPlans.map(mealPlanDto),
+        })
+    );
+};
+
+const getByIdAndUserId = catchAsync(async (req, res, next) => {
+    const mealPlan = await mealPlanService.getByIdAndUserId(req.params.mealPlanId, req.user._id);
+    next(
+        new SuccessResponse(200, 'Meal plan successfully retrieved.', {
+            mealPlan: mealPlanDto(mealPlan),
+        })
+    );
+});
+
 module.exports = {
     create,
+    getAllPreviewByUserId,
+    getByIdAndUserId,
 };
