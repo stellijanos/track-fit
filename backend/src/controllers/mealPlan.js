@@ -36,8 +36,14 @@ const getByIdAndUserId = catchAsync(async (req, res, next) => {
     );
 });
 
+const deleteByIdAndUserId = catchAsync(async (req, res, next) => {
+    await mealPlanService.deleteByIdAndUserId(req.params.mealPlanId, req.user._id);
+    next(new SuccessResponse(204));
+});
+
 module.exports = {
     create,
     getAllPreviewByUserId,
     getByIdAndUserId,
+    deleteByIdAndUserId,
 };

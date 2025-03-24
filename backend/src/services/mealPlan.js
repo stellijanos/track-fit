@@ -1,3 +1,4 @@
+const BadRequestError = require('../errors/BadRequest');
 const NotFoundError = require('../errors/NotFound');
 const mealPlanRepository = require('../repositories/mealPlan');
 const openAiService = require('./openAi');
@@ -49,8 +50,15 @@ const getByIdAndUserId = async (id, userId) => {
     return found;
 };
 
+const deleteByIdAndUserId = async (id, userId) => {
+    const deleted = await mealPlanRepository.deleteByIdAndUserId(id, userId);
+    console.log(deleted);
+    if (!deleted) throw new BadRequestError('Failed to delete meal plan: not found or missing permissions.');
+};
+
 module.exports = {
     create,
     getAllPreviewByUserId,
     getByIdAndUserId,
+    deleteByIdAndUserId,
 };
