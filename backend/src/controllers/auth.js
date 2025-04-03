@@ -8,6 +8,7 @@ const NotFoundError = require('../errors/NotFound');
 const UnauthorizedError = require('../errors/Unauthorized');
 const ConflictError = require('../errors/Conflict');
 const UnprocessableEntityError = require('../errors/UnprocessableEntity');
+const env = require('../config/env');
 
 /**
  * @route POST /auth/register
@@ -137,6 +138,19 @@ const refreshToken = catchAsync(async (req, res, next) => {
     next(new SuccessResponse(200, 'Token successfully refreshed.', { accessToken }, { refreshToken }));
 });
 
+/**
+ * @route POST /auth/logout
+ * @desc Logs out user by removing refresh token.
+ * @access Public
+ * @param {Object} req - Express request object
+ * @param {Object} req - Express response object
+ * @returns {void} 200 - Successfully logged out.
+ */
+const logout = catchAsync(async (req, res, next) => {
+    const refreshToken = 'delete';
+    next(new SuccessResponse(200, 'Successfully logged out.', {}, {refreshToken}));
+});
+
 module.exports = {
     register,
     login,
@@ -145,4 +159,5 @@ module.exports = {
     changePassword,
     resetPassword,
     refreshToken,
+    logout,
 };

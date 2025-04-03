@@ -11,5 +11,6 @@ router.post('/password/reset-code/validate', authController.validatePasswordRese
 router.put('/password/reset', authController.resetPassword);
 router.put('/password/change', jwtMiddleware, authController.changePassword);
 router.post('/token/refresh', authController.refreshToken);
+router.post('/logout', authController.logout);
 
 module.exports = router;
