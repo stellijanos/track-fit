@@ -148,7 +148,7 @@ const refreshToken = catchAsync(async (req, res, next) => {
  */
 const logout = catchAsync(async (req, res, next) => {
     const refreshToken = 'delete';
-    next(new SuccessResponse(200, 'Successfully logged out.', {}, {refreshToken}));
+    next(new SuccessResponse(200, 'Successfully logged out.', undefined, {refreshToken}));
 });
 
 module.exports = {
