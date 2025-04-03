@@ -301,7 +301,7 @@ const refreshToken = async (refreshToken) => {
         role: existingUser.role,
     };
 
-    return await getTokens(jwtPayload);
+    return getTokens(jwtPayload);
 };
 
 module.exports = {

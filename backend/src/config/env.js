@@ -8,11 +8,6 @@ module.exports = {
         env: process.env.NODE_ENV,
         name: process.env.APP_NAME,
     },
-    db: {
-        name: process.env.DB_NAME,
-        username: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-    },
     auth: {
         bcrypt: {
             saltRounds: process.env.BCRYPT_SALTROUNDS || 10,
@@ -30,16 +25,28 @@ module.exports = {
             length: 16,
         },
     },
+    cookies: {
+        refreshToken: {
+            name: 'refreshToken',
+            maxAge: 1000 * 60 * 60 * 24 * 30,
+        },
+    },
+    db: {
+        name: process.env.DB_NAME,
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+    },
+    sms: {
+        key: process.env.SMS_KEY,
+        url: process.env.SMS_URL,
+        maxLength: 160,
+    },
     smtp: {
         host: process.env.SMTP_HOST,
         port: process.env.SMTP_PORT,
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
     },
-    sms: {
-        key: process.env.SMS_KEY,
-        url: process.env.SMS_URL,
-        maxLength: 160
-    },
-    openAiApiKey: process.env.OPENAI_API_KEY
+
+    openAiApiKey: process.env.OPENAI_API_KEY,
 };

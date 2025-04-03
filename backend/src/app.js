@@ -1,5 +1,6 @@
-const express = require('express');
 const path = require('path');
+const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const notFoundMiddleware = require('./middleware/notFound');
 const errorHandleMiddleware = require('./middleware/errorHandle');
@@ -13,8 +14,11 @@ createDirIfNotExists(constants.LOGS_BASE_DIR);
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
+app.use(cookieParser());
 app.use(requestLoggerMiddleware);
 
 app.use('/api', apiRoutes, successHandleMiddleware, errorHandleMiddleware, notFoundMiddleware);

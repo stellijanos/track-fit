@@ -9,7 +9,6 @@ const UnauthorizedError = require('../errors/Unauthorized');
 const ConflictError = require('../errors/Conflict');
 const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 
-
 /**
  * @route POST /auth/register
  * @desc Register a new user
@@ -24,8 +23,8 @@ const register = catchAsync(async (req, res, next) => {
     const { error, value } = authValidator.register.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
-    const tokens = await authService.register(value);
-    next(new SuccessResponse(201, `Successfully registered.`, tokens));
+    const { accessToken, refreshToken } = await authService.register(value);
+    next(new SuccessResponse(201, `Successfully registered.`, { accessToken }, { refreshToken }));
 });
 
 /**
@@ -42,8 +41,8 @@ const login = catchAsync(async (req, res, next) => {
     const { error, value } = authValidator.login.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
-    const tokens = await authService.login(value.credential, value.password);
-    next(new SuccessResponse(200, `Successfully logged in.`, tokens));
+    const { accessToken, refreshToken } = await authService.login(value.credential, value.password);
+    next(new SuccessResponse(200, `Successfully logged in.`, { accessToken }, { refreshToken }));
 });
 
 /**
@@ -134,11 +133,8 @@ const changePassword = catchAsync(async (req, res, next) => {
  * @throws {NotFoundError} 404 - User not found.
  */
 const refreshToken = catchAsync(async (req, res, next) => {
-    const { error, value } = authValidator.refreshToken.validate(req.body);
-    if (error) throw new UnprocessableEntityError(error.message);
-
-    const tokens = await authService.refreshToken(value.refreshToken);
-    next(new SuccessResponse(200, 'Token successfully refreshed.', tokens));
+    const { accessToken, refreshToken } = await authService.refreshToken(req.cookies.refreshToken);
+    next(new SuccessResponse(200, 'Token successfully refreshed.', { accessToken }, { refreshToken }));
 });
 
 module.exports = {
