@@ -154,7 +154,7 @@ const register = async (data) => {
     const savedUser = await userRepository.createOne(newUser);
 
     const jwtPayload = {
-        _id: savedUser._id,
+        sub: savedUser._id,
         email: savedUser.email,
         role: savedUser.role,
     };
@@ -179,7 +179,7 @@ const login = async (credential, password) => {
     await checkPasswords(password, existingUser.password);
 
     const jwtPayload = {
-        _id: existingUser._id,
+        sub: existingUser._id,
         email: existingUser.email,
         role: existingUser.role,
     };
@@ -292,11 +292,11 @@ const changePassword = async (user, { currentPassword, newPassword }) => {
 const refreshToken = async (refreshToken) => {
     const payload = jwtUtil.verify(refreshToken, jwtTypes.REFRESH);
 
-    const existingUser = await userRepository.findById(payload._id);
+    const existingUser = await userRepository.findById(payload.sub);
     if (!existingUser) throw new NotFoundError('User');
 
     const jwtPayload = {
-        _id: existingUser._id,
+        sub: existingUser._id,
         email: existingUser.email,
         role: existingUser.role,
     };
