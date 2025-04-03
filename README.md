@@ -146,9 +146,6 @@ A comprehensive fitness tracking web application that allows users to register a
 
 ```bash
 .
-|-- .env
-|-- .env.example
-|-- .gitignore
 |-- files
 |   `-- uploads
 |       `-- images
@@ -169,10 +166,12 @@ A comprehensive fitness tracking web application that allows users to register a
     |   |-- activityEntry.js
     |   |-- auth.js
     |   |-- caloricTarget.js
+    |   |-- csvExport..js
     |   |-- entry.js
     |   |-- mealEntry.js
     |   |-- mealPlan.js
     |   |-- measurement.js
+    |   |-- pdfExport.js
     |   |-- user.js
     |   `-- waterIntake.js
     |-- dtos
@@ -239,6 +238,7 @@ A comprehensive fitness tracking web application that allows users to register a
     |   |-- auth.js
     |   |-- caloricTarget.js
     |   |-- entry.js
+    |   |-- export.js
     |   |-- index.js
     |   |-- mealPlan.js
     |   |-- measurement.js
@@ -248,12 +248,14 @@ A comprehensive fitness tracking web application that allows users to register a
     |   |-- activityEntry.js
     |   |-- auth.js
     |   |-- caloricTarget.js
+    |   |-- csvExport.js
     |   |-- email.js
     |   |-- entry.js
     |   |-- mealEntry.js
     |   |-- mealPlan.js
     |   |-- measurement.js
     |   |-- openAi.js
+    |   |-- pdfExport.js
     |   |-- sms.js
     |   |-- user.js
     |   `-- waterIntake.js
@@ -264,6 +266,9 @@ A comprehensive fitness tracking web application that allows users to register a
     |   |   |-- bcrypt.js
     |   |   `-- jwt.js
     |   |-- classes
+    |   |   |-- CSVResponse.js
+    |   |   |-- PDF.js
+    |   |   |-- PdfResponse.js
     |   |   `-- SuccessResponse.js
     |   |-- functions
     |   |   |-- catchAsync.js
@@ -272,6 +277,7 @@ A comprehensive fitness tracking web application that allows users to register a
     |   |   |-- generateRandomString.js
     |   |   |-- getDailyFolder.js
     |   |   |-- isDateExpired.js
+    |   |   |-- jsonToCsv.js
     |   |   |-- openAi.js
     |   |   |-- sendEmail.js
     |   |   `-- sendSMS.js
@@ -291,5 +297,4 @@ A comprehensive fitness tracking web application that allows users to register a
         |-- objectId.js
         |-- user.js
         `-- waterIntake.js
-
 ```
