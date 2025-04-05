@@ -12,8 +12,8 @@ router.patch('/:date/water-intake', trackDayController.addWaterIntake);
 
 router.post('/:date/activities', activityEntryController.create);
 router.get('/:date/activities', activityEntryController.getAllByUserAndDate);
-router.patch('/:date/activities/:activityEntryId', activityEntryController.updateById);
-router.delete('/:date/activities/:activityEntryId', activityEntryController.deleteById);
+router.patch('/:date/activities/:activityEntryId', activityEntryController.updateByIdAndTrackDayId);
+router.delete('/:date/activities/:activityEntryId', activityEntryController.deleteByIdAndTrackDayId);
 
 router.post('/:date/meal-entries', mealEntryController.createMany);
 router.get('/:date/meal-entries', mealEntryController.getAllByTrackDayId);
