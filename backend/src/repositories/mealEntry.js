@@ -6,6 +6,8 @@ const createMany = async (data) => await MealEntry.insertMany(data);
 
 const findAllByTrackDayId = async (trackDayId) => await MealEntry.find({ trackDay: trackDayId });
 
+const findByIdAndTrackDayId = async (id, trackDayId) => await MealEntry.findOne({ _id: id, trackDay: trackDayId });
+
 const findById = async (mealEntryId) => await MealEntry.findById(mealEntryId);
 
 const updateById = async (id, data) => await MealEntry.findByIdAndUpdate(id, { $set: data }, { new: true });
@@ -16,6 +18,7 @@ module.exports = {
     create,
     createMany,
     findAllByTrackDayId,
+    findByIdAndTrackDayId,
     findById,
     updateById,
     deleteByIdAndTrackDayId,

@@ -8,7 +8,7 @@ const NotFoundError = require('../errors/NotFound');
 /**
  * Create acitivty entry based on user and activity information.
  *
- * @param {User} user - User mongoose object,
+ * @param {User} user - User mongoose object.
  * @param {Object} data - Activity information.
  * @returns {ActivityEntry} - Newly created ActivityEntry.
  * @throws {BadRequestError} - Failed to create activity entry.
@@ -68,7 +68,7 @@ const getAllByUserAndDate = async (user, date) => {
  * Update acitivty Entry based on user, date and activity information.
  *
  * @async
- * @param {User} user - User mongoose object,
+ * @param {User} user - User mongoose object.
  * @param {Object} data - Activity information.
  * @returns {ActivityEntry} - Newly created ActivityEntry.
  * @throws {NotFoundError} - Activity entry not found.
