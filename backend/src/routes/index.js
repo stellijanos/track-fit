@@ -10,7 +10,7 @@ const mealPlanRouter = require('./mealPlan');
 const router = express.Router();
 
 router.use('/auth', authRouter);
-router.use('/users', userRouter);
+router.use('/users/me', jwtMiddleware, userRouter);
 router.use('/users/me/measurements', jwtMiddleware, measurementRouter);
 router.use('/users/me/caloric-targets', jwtMiddleware, caloricTargetRouter);
 router.use('/users/me/track-days', jwtMiddleware, trackDayRouter);

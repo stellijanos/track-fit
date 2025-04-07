@@ -10,7 +10,8 @@ const NotFoundError = require('../errors/NotFound');
  */
 
 /**
- * @desc Removes user image if it exists and is not the default profile picutre for a user.
+ * Removes user image if it exists and is not the default profile picutre for a user.
+ * 
  * @param {String} image - The image to be removed
  * @returns {void} - Returns nothing
  */
@@ -27,8 +28,9 @@ const removeIfExists = (image) => {
  */
 
 /**
+ * Retrieve the user by email address.
+ * 
  * @async
- * @desc Retrieve the user by email address.
  * @param {String} email - The email of the user.
  * @returns {User} This function returns the found user based on email.
  * @throws {NotFoundError} If the retrieval fails due to database issues or invalid user email.
@@ -40,8 +42,9 @@ const getByEmail = async (email) => {
 };
 
 /**
+ * Retrieve user by its ID.
+ * 
  * @async
- * @desc Retrieve user by its ID.
  * @param {String} id - The ID of the user.
  * @returns {User} - The found user.
  * @throws {NotFoundError} User not found.
@@ -53,14 +56,15 @@ const getById = async (id) => {
 };
 
 /**
+ * Update user by its ID.
+ * 
  * @async
- * @desc Update user by its ID.
  * @param {String} id - The ID of the user.
  * @param {Object} data - The data to be updated.
  * @returns {User} - The updated user.
  * @throws {NotFoundError} User not found.
  */
-const updateById = async (id, data) => {
+const updateMe = async (id, data) => {
     const updatedData = {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -79,8 +83,9 @@ const updateById = async (id, data) => {
 };
 
 /**
+ * Delete user by its ID.
+ * 
  * @async
- * @desc Delete user by its ID.
  * @param {String} id - The ID of the user.
  * @returns {void} - Return nothing.
  */
@@ -89,9 +94,10 @@ const deleteMe = async (id) => {
 };
 
 /**
+ * This method updates the user profile picture and in the meanwhile removes
+ * the current one if that is not the default picture for the user.
+ * 
  * @async
- * @desc This method updates the user profile picture and in the meanwhile removes
- *          the current one if that is not the default picture for the user.
  * @param {String} id - The ID of the user.
  * @param {String} currentImage - The current profile picture of the user.
  * @param {String} filename - The filename of the temporary uploaded image to be edited with sharp
@@ -113,9 +119,10 @@ const changeProfilePicture = async (userId, currentImage, filename) => {
 };
 
 /**
+ * This method deletes the user profile picture and in the meanwhile
+ * removes it if that is not the default picture for the user.
+ * 
  * @async
- * @desc This method deletes the user profile picture and in the meanwhile
- *          removes it if that is not the default picture for the user.
  * @param {ObjectId} id - The id of the user.
  * @param {String} currentImage - The current profile picture of the user
  * @returns {User} - User with deleted profile picture.
@@ -131,7 +138,7 @@ const deleteProfilePicture = async (userId, currentImage) => {
 module.exports = {
     getByEmail,
     getById,
-    updateById,
+    updateMe,
     deleteMe,
     changeProfilePicture,
     deleteProfilePicture,

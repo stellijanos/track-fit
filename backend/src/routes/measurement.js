@@ -3,9 +3,10 @@ const measurementController = require('../controllers/measurement');
 
 const router = express.Router();
 
-router.post('/', measurementController.create);
-router.get('/', measurementController.getAllByUserId);
-router.patch('/:measurementId', measurementController.updateByIdAndUserId);
-router.delete('/:measurementId', measurementController.deleteByIdAndUserId);
+router.route('/').post(measurementController.create).get(measurementController.getAllByUserId);
+router
+    .route('/:measurementId')
+    .patch(measurementController.updateByIdAndUserId)
+    .delete(measurementController.deleteByIdAndUserId);
 
 module.exports = router;

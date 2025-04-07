@@ -5,19 +5,33 @@ const mealEntryController = require('../controllers/mealEntry');
 
 const router = express.Router();
 
+// Trackdays
 router.get('/', trackDayController.getAllByUserId);
 router.get('/:date', trackDayController.getByDateAndUser);
-router.put('/:date/water-intake', trackDayController.setWaterIntake);
-router.patch('/:date/water-intake', trackDayController.addWaterIntake);
 
-router.post('/:date/activities', activityEntryController.create);
-router.get('/:date/activities', activityEntryController.getAllByUserAndDate);
-router.patch('/:date/activities/:activityEntryId', activityEntryController.updateByIdAndTrackDayId);
-router.delete('/:date/activities/:activityEntryId', activityEntryController.deleteByIdAndTrackDayId);
+router
+    .route('/:date/water-intake')
+    .put(trackDayController.setWaterIntake)
+    .patch(trackDayController.addWaterIntake);
 
-router.post('/:date/meal-entries', mealEntryController.createMany);
-router.get('/:date/meal-entries', mealEntryController.getAllByTrackDayId);
-router.patch('/:date/meal-entries/:mealEntryId', mealEntryController.updateByIdAndTrackDayId);
-router.delete('/:date/meal-entries/:mealEntryId', mealEntryController.deleteByIdAndTrackDayId);
+// [Trackday] activity entries
+router
+    .route('/:date/activities')
+    .post(activityEntryController.create)
+    .get(activityEntryController.getAllByUserAndDate);
+router
+    .route('/:date/activities/:activityEntryId')
+    .patch(activityEntryController.updateByIdAndTrackDayId)
+    .delete(activityEntryController.deleteByIdAndTrackDayId);
+
+// [Trackday] meal entries
+router
+    .route('/:date/meal-entries')
+    .post(mealEntryController.getAllByTrackDayId)
+    .get(mealEntryController.createMany);
+router
+    .route('/:date/meal-entries/:mealEntryId')
+    .patch(mealEntryController.updateByIdAndTrackDayId)
+    .delete(mealEntryController.deleteByIdAndTrackDayId);
 
 module.exports = router;
