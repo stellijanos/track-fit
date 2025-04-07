@@ -147,7 +147,8 @@ ${JSON.stringify(data)}
 
     // console.log(content);
 
-    return await openAi.generateMessage(content);
+    const response = await openAi.generateMessage(content);
+    return JSON.parse(response);
 };
 
 module.exports = {
