@@ -64,7 +64,7 @@ const getById = async (id) => {
  * @returns {User} - The updated user.
  * @throws {NotFoundError} User not found.
  */
-const updateMe = async (id, data) => {
+const updateById = async (id, data) => {
     const updatedData = {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -138,7 +138,7 @@ const deleteProfilePicture = async (userId, currentImage) => {
 module.exports = {
     getByEmail,
     getById,
-    updateMe,
+    updateById,
     deleteMe,
     changeProfilePicture,
     deleteProfilePicture,

@@ -7,6 +7,17 @@ const measurementService = require('../services/measurement');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
 const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 
+/**
+ * Create a new measurement for the current authenticated user
+ *
+ * @route POST /users/me/measurements
+ * @access Private
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {void} - Responsds with success message and created measurement (201)
+ * @throws {NotFoundError} - User not found (404)
+ * @throws {UnprocessableEntityError} - Request body validation failed (422)
+ */
 const create = catchAsync(async (req, res, next) => {
     const { error, value } = measurementValidator.create.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
@@ -19,6 +30,15 @@ const create = catchAsync(async (req, res, next) => {
     );
 });
 
+/**
+ * Retrieve all measurements of the current authenticated user
+ *
+ * @route GET /users/me/measurements
+ * @access Private
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {void} - Responsds with success message and the found measurements (200)
+ */
 const getAllByUserId = catchAsync(async (req, res, next) => {
     const measurements = await measurementService.getAllByUserId(req.user._id);
     next(
@@ -29,14 +49,43 @@ const getAllByUserId = catchAsync(async (req, res, next) => {
     );
 });
 
+/**
+ * Update a measurement for the current authenticated user
+ *
+ * @route PATCH /users/me/measurements/:measurementId
+ * @access Private
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {void} - Responsds with success message and the updated measurement (200)
+ * @throws {NotFoundError} - Measurement not found (404)
+ * @throws {UnprocessableEntityError} - Request body validation failed (422)
+ */
 const updateByIdAndUserId = catchAsync(async (req, res, next) => {
     const { error, value } = measurementValidator.update.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
-    const updated = await measurementService.updateByIdAndUserId(req.params.measurementId, req.user._id, value);
-    next(new SuccessResponse(200, 'Measurement successfully updated.', { measurement: measurementDto(updated) }));
+    const updated = await measurementService.updateByIdAndUserId(
+        req.params.measurementId,
+        req.user._id,
+        value
+    );
+    next(
+        new SuccessResponse(200, 'Measurement successfully updated.', {
+            measurement: measurementDto(updated),
+        })
+    );
 });
 
+/**
+ * DELETE a measurement for the current authenticated user
+ *
+ * @route DELETE /users/me/measurements/:measurementId
+ * @access Private
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {void} - Responsds with no content (204)
+ * @throws {NotFoundError} - Measurement not found (404)
+ */
 const deleteByIdAndUserId = catchAsync(async (req, res, next) => {
     await measurementService.deleteByIdAndUserId(req.params.measurementId, req.user._id);
     next(new SuccessResponse(204));

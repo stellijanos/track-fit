@@ -33,7 +33,7 @@ const updateMe = catchAsync(async (req, res, next) => {
     const { error, value } = userValidator.updateMe.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
-    const user = await userService.updateMe(req.user._id, value);
+    const user = await userService.updateById(req.user._id, value);
     next(new SuccessResponse(200, 'User successfully updated.', { user: userDto(user) }));
 });
 
