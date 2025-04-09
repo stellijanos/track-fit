@@ -39,36 +39,14 @@ A fitness tracking web application allowing users to register, track their activ
 
 ---
 
-## Track Days
+## Measurements
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/users/me/track-days` | Get all track days for user |
-| GET | `/users/me/track-days/:date` | Get (or create) a track day by date |
-| PUT | `/users/me/track-days/:date/water-target` | Set water target (auto-create track day) |
-| PATCH | `/users/me/track-days/:date/water-target` | Add water target (auto-create track day) |
-
----
-
-## Activity Entries
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/users/me/track-days/:date/activities` | Add activity entry |
-| GET | `/users/me/track-days/:date/activities` | Retrieve activity entries |
-| PATCH | `/users/me/track-days/:date/activities/:activityEntryId` | Update activity entry |
-| DELETE | `/users/me/track-days/:date/activities/:activityEntryId` | Delete activity entry |
-
----
-
-## Meal Entries
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/users/me/track-days/:trackDayId/meal-entries` | Retrieve meal entries |
-| POST | `/users/me/track-days/:trackDayId/meal-entries` | Create a meal entry |
-| PATCH | `/users/me/track-days/:trackDayId/meal-entries/:mealEntryId` | Update a meal entry |
-| DELETE | `/users/me/track-days/:trackDayId/meal-entries/:mealEntryId` | Delete a meal entry |
+| POST | `/users/me/measurements` | Add a new measurement entry |
+| GET | `/users/me/measurements?from=YYYY-MM-DD&until=YYYY-MM-DD` | Retrieve measurements in range |
+| PATCH | `/users/me/measurements/:measurementId` | Update a measurement |
+| DELETE | `/users/me/measurements/:measurementId` | Delete a measurement |
 
 ---
 
@@ -83,17 +61,6 @@ A fitness tracking web application allowing users to register, track their activ
 
 ---
 
-## Measurements
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/users/me/measurements` | Add a new measurement entry |
-| GET | `/users/me/measurements?from=YYYY-MM-DD&until=YYYY-MM-DD` | Retrieve measurements in range |
-| PATCH | `/users/me/measurements/:measurementId` | Update a measurement |
-| DELETE | `/users/me/measurements/:measurementId` | Delete a measurement |
-
----
-
 ## Caloric Targets
 
 | Method | Endpoint | Description |
@@ -101,3 +68,43 @@ A fitness tracking web application allowing users to register, track their activ
 | POST | `/users/me/caloric-targets` | Create a new caloric target |
 | GET | `/users/me/caloric-targets` | Retrieve caloric targets for user |
 | DELETE | `/users/me/caloric-targets/:caloricTargetId` | Delete a caloric target (not current) |
+
+---
+
+## Activity Entries
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/users/me/entries/:date/activities` | Add activity entry |
+| GET | `/users/me/entries/:date/activities` | Retrieve activity entries |
+| PATCH | `/users/me/entries/:date/activities/:activityEntryId` | Update activity entry |
+| DELETE | `/users/me/entries/:date/activities/:activityEntryId` | Delete activity entry |
+
+---
+
+## Meal Entries
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/users/me/entries/:date/meals` | Retrieve meal entries |
+| POST | `/users/me/entries/:date/meals` | Create a meal entry |
+| PATCH | `/users/me/entries/:date/meals/:mealEntryId` | Update a meal entry |
+| DELETE | `/users/me/entries/:date/meals/:mealEntryId` | Delete a meal entry |
+
+---
+
+## Water intake
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/users/me/entries/:date/water-intake` | Retrieve water intake |
+| PATCH | `/users/me/entries/:date/water-intake` | Add water intake entry|
+| DELETE | `/users/me/entries/:date/water-intake/:entryId` | Delete a water intake entry |
+
+---
+
+## Entries (all of above)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/users/me/entries/:date` | Retrieve water intake, activity- and meal entries |

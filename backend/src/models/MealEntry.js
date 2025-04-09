@@ -3,7 +3,8 @@ const mealTypes = require('../enums/mealTypes');
 
 const mealEntrySchema = new mongoose.Schema(
     {
-        trackDay: { type: mongoose.Schema.Types.ObjectId, ref: 'TrackDay' },
+        date: { type: Date, required: true },
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
         name: { type: String, required: true },
         type: { type: String, enum: Object.values(mealTypes) },
         per100: {
@@ -29,6 +30,7 @@ const mealEntrySchema = new mongoose.Schema(
     }
 );
 
-mealEntrySchema.index({ trackDay: -1, mealType: 1 });
+mealEntrySchema.index({ date: -1, user: 1 });
+mealEntrySchema.index({ date: -1, user: 1, type: 1 });
 
 module.exports = mongoose.model('MealEntry', mealEntrySchema);

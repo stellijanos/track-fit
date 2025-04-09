@@ -20,6 +20,7 @@ const jwtMiddleware = catchAsync(async (req, res, next) => {
     }
 
     req.user = user;
+    req.userId = user._id.toString();
     next();
 });
 

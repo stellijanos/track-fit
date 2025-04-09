@@ -4,7 +4,7 @@ const userService = require('./user');
 
 const ConflictError = require('../errors/Conflict');
 const BadRequestError = require('../errors/BadRequest');
-const { UnprocessableEntityError } = require('openai/error.mjs');
+const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 
 /**
  * Create a new caloric target
@@ -17,13 +17,14 @@ const { UnprocessableEntityError } = require('openai/error.mjs');
  * @throws {BadRequestError} - Failed to set users current caloric target.
  */
 const create = async (user, data) => {
-
     // 1. Throw error if user height or at least 1 measurement input does not exist
     if (!user.height || !user.lastMeasurement)
-        throw new UnprocessableEntityError('Enter your height and at least 1 measurement in order to get caloric target.');
+        throw new UnprocessableEntityError(
+            'Enter your height and at least 1 measurement in order to get caloric target.'
+        );
 
     // 2. Retrieve estimated caloric target data using AI based on user info and preferences
-    const responseString = await openAiService.getCaloricTarget({
+    const response = await openAiService.getCaloricTarget({
         gender: user.gender,
         birthDate: user.birthDate,
         height: user.height,
@@ -36,8 +37,7 @@ const create = async (user, data) => {
     });
 
     // 3. Retrieve the calories and macronutrient values
-    const { kcal, protein, carb, fat } = JSON.parse(responseString);
-    console.info(responseString, kcal, protein, carb, fat);
+    const { kcal, protein, carb, fat } = response;
 
     // 4. Save caloric target to the database
     const created = await caloricTargetRepository.create({
@@ -56,13 +56,19 @@ const create = async (user, data) => {
     });
 
     // 5. Unlock the current caloric target to be possible for deletion
-    const updated = await caloricTargetRepository.updateByIdAndUserId(user.currentCaloricTarget, user._id, {
-        isLocked: false,
-    });
+    const updated = await caloricTargetRepository.updateByIdAndUserId(
+        user.currentCaloricTarget,
+        user._id,
+        {
+            isLocked: false,
+        }
+    );
     if (!updated) throw new BadRequestError('Failed to update current caloric target.');
 
     // 6. Set the newly created caloric target as the users current caloric target
-    const updatedUser = await userService.updateById(user._id, { currentCaloricTarget: created._id });
+    const updatedUser = await userService.updateById(user._id, {
+        currentCaloricTarget: created._id,
+    });
     if (!updatedUser) throw new BadRequestError('Failed to set users current caloric target.');
 
     // 7. Return the created caloric target
@@ -91,13 +97,17 @@ const deleteByIdAndUserId = async (id, userId) => {
     const caloricTarget = await caloricTargetRepository.findById(id);
 
     // 2. Throw error if it exists and cannot be deleted (is locked)
-    if (caloricTarget && caloricTarget.isLocked) throw new ConflictError('Current caloric target cannot be deleted.');
+    if (caloricTarget && caloricTarget.isLocked)
+        throw new ConflictError('Current caloric target cannot be deleted.');
 
     // 3. Delete caloric target
     const deleted = await caloricTargetRepository.deleteByIdAndUserId(id, userId);
 
     // 4. Throw error if deletion failed
-    if (!deleted) throw new BadRequestError('Failed to delete caloric target: not found or missing permissions');
+    if (!deleted)
+        throw new BadRequestError(
+            'Failed to delete caloric target: not found or missing permissions'
+        );
 };
 
 module.exports = {

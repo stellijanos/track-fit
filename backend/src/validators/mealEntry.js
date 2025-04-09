@@ -1,39 +1,34 @@
 const Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi);
+const objectId = require('./objectId');
 const mealTypes = require('../enums/mealTypes');
 
+const type = Joi.string().valid(...Object.values(mealTypes));
 const date = Joi.date().required();
+const mealEntryId = objectId('Meal entry id');
 
 const create = Joi.object({
     date,
+    type: type.required(),
     description: Joi.string().required(),
-    type: Joi.string()
-        .valid(...Object.values(mealTypes))
-        .required(),
+});
+
+const get = Joi.object({
+    date,
 });
 
 const update = Joi.object({
+    type,
     date,
-    mealEntryId: Joi.objectId().required().messages({
-        'string.pattern.base': 'Invalid activity ID provided.',
-        'any.required': 'Activity ID is required.',
-    }),
+    mealEntryId,
     name: Joi.string(),
     quantity: Joi.number(),
-    type: Joi.string().valid(...Object.values(mealTypes)),
 }).min(1);
 
-const deleteByIdAndTrackDayId = Joi.object({
-    date,
-    mealEntryId: Joi.objectId().required().messages({
-        'string.pattern.base': 'Invalid activity ID provided.',
-        'any.required': 'Activity ID is required.',
-    }),
-});
+const remove = Joi.object({ date, mealEntryId });
 
 module.exports = {
     create,
-    date,
+    get,
     update,
-    deleteByIdAndTrackDayId,
+    remove,
 };

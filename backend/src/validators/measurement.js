@@ -1,19 +1,31 @@
 const Joi = require('joi');
+const objectId = require('./objectId');
+
+const date = Joi.date().required();
+const weight = Joi.number().min(0);
+const bodyFatPercentage = Joi.number().min(0).max(100);
+const skeletalMuscleMass = Joi.number().min(0);
+
+const measurementId = objectId('Measurement id');
 
 const create = Joi.object({
-    date: Joi.date().required(),
-    weight: Joi.number().min(0).required(),
-    bodyFatPercentage: Joi.number().min(0).max(100),
-    skeletalMuscleMass: Joi.number().min(0),
+    date,
+    weight: weight.required(),
+    bodyFatPercentage,
+    skeletalMuscleMass,
 });
 
 const update = Joi.object({
-    weight: Joi.number().min(0),
-    bodyFatPercentage: Joi.number().min(0).max(100),
-    skeletalMuscleMass: Joi.number().min(0),
+    measurementId,
+    weight,
+    bodyFatPercentage,
+    skeletalMuscleMass,
 }).min(1);
+
+const remove = Joi.object({ measurementId });
 
 module.exports = {
     create,
     update,
+    remove,
 };

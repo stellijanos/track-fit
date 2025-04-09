@@ -1,24 +1,17 @@
 const activityEntryRepository = require('../repositories/activityEntry');
-const trackDayService = require('./trackDay');
 const openAiService = require('./openAi');
-
-const BadRequestError = require('../errors/BadRequest');
 const NotFoundError = require('../errors/NotFound');
 
 /**
- * Create acitivty entry based on user and activity information.
+ * Create activity entry based on user and activity information.
  *
+ * @async
  * @param {User} user - User mongoose object.
  * @param {Object} data - Activity information.
  * @returns {ActivityEntry} - Newly created ActivityEntry.
- * @throws {BadRequestError} - Failed to create activity entry.
- * @throws {BadRequestError} - Failed to create track day.
  */
 const create = async (user, data) => {
-    // 1. Retrieve / create trackday
-    const trackDay = await trackDayService.getByDateAndUser(data.date, user);
-
-    // 2. set the information for OpenAi service
+    // 1. set the information for OpenAI service
     const info = {
         user: {
             gender: user.gender,
@@ -33,13 +26,13 @@ const create = async (user, data) => {
         },
     };
 
-    // 3. Retrieve response and parse it
-    const responseString = await openAiService.getActivityData(info);
-    const response = JSON.parse(responseString);
+    // 2. Retrieve response form OpenAI service
+    const response = await openAiService.getActivityData(info);
 
-    // 4. create activity and return it
+    // 3. create activity entry then return it
     return await activityEntryRepository.create({
-        trackDay: trackDay._id,
+        date: data.date,
+        user: user._id,
         name: response.name,
         caloriesPerHour: response.caloriesPerHour,
         totalCalories: (response.caloriesPerHour * data.durationInM) / 60,
@@ -48,78 +41,67 @@ const create = async (user, data) => {
 };
 
 /**
- * Retrieve all acitivty entries based on user and date.
+ * Retrieve all activity entries based on user and date.
  *
  * @async
- * @param {User} user - User mongoose object.
  * @param {String} date - Date of the activity entries.
+ * @param {String} userId - Id of the user.
  * @returns {ActivityEntry[]} - Activity Entries of the user for the provided date.
- * @throws {BadRequestError} - Failed to create track day.
  */
-const getAllByUserAndDate = async (user, date) => {
-    // 1. Retrieve / create trackday
-    const trackDay = await trackDayService.getByDateAndUser(date, user);
-
-    // 2. Return all the found activity entries for the specific date (trackday)
-    return await activityEntryRepository.findAllByTrackDayId(trackDay._id);
-};
+const getAllByDateAndUserId = async (date, userId) =>
+    await activityEntryRepository.findAllByDateAndUserId(date, userId);
 
 /**
- * Update acitivty Entry based on user, date and activity information.
+ * Update activity Entry based on user, date and activity information.
  *
  * @async
- * @param {User} user - User mongoose object.
- * @param {Object} data - Activity information.
- * @returns {ActivityEntry} - Newly created ActivityEntry.
- * @throws {NotFoundError} - Activity entry not found.
- * @throws {BadRequestError} - Failed to create track day.
+ * @param {String} id - Id of the activity entry
+ * @param {String} date - date of the activity entry
+ * @param {String} userId - Id of the user
+ * @param {Object} data - Activity entry information
+ * @returns {ActivityEntry} - Newly created activity entry
+ * @throws {NotFoundError} - Activity entry not found
  */
-const updateByIdAndTrackDayId = async (id, date, user, data) => {
-    // 1. Retrieve / create trackday
-    const trackDay = await trackDayService.getByDateAndUser(date, user);
+const updateByIdAndDateAndUserId = async (id, date, userId, data) => {
+    // 1. Retrieve for activity entry
+    const activityEntry = await activityEntryRepository.findByIdAndDateAndUserId(id, date, userId);
 
-    // 2. Check for existence of activity entry
-    const activityEntry = await activityEntryRepository.findByIdAndTrackDayId(id, trackDay._id);
+    // 2. Throw error if not found
     if (!activityEntry) throw new NotFoundError('Activity entry');
 
-    // 3. Update activity entry by its ID
-    const updated = await activityEntryRepository.updateById(id, {
+    // 3. Update then Return updated activity entry
+    return await activityEntryRepository.updateByIdAndDateAndUserId(id, date, userId, {
         name: data.name,
         caloriesPerHour: activityEntry.caloriesPerHour,
-        totalCalories: ((activityEntry.caloriesPerHour * (data.durationInM || activityEntry.durationInM)) / 60).toFixed(2),
+        totalCalories: (
+            (activityEntry.caloriesPerHour * (data.durationInM || activityEntry.durationInM)) /
+            60
+        ).toFixed(2),
         durationInM: data.durationInM,
     });
-
-    // 4. Check if activity entry updated successfully
-    if (!updated) throw new BadRequestError('Failed to update activity entry.');
-
-    // 5. Return updated actiivty entry
-    return updated;
 };
 
 /**
- * Delete acitivty Entry based on id
+ * Delete activity Entry based on id
  *
  * @async
- * @param {User} user - User mongoose object.
- * @param {Object} data - Activity information.
- * @returns {void} - Returns nothing.
- * @throws {BadRequestError} - Failed to delete activity entry.
+ * @param {String} id - Id of the activity entry
+ * @param {String} date - date of the activity entry
+ * @param {String} userId - Id of the user
+ * @returns {void} - Returns nothing
+ * @throws {NotFoundError} - Activity entry not found
  */
-const deleteByIdAndTrackDayId = async (id, date, user) => {
-    // 1. Retrieve / create trackday
-    const trackDay = await trackDayService.getByDateAndUser(date, user);
+const deleteByIdAndDateAndUserId = async (id, date, userId) => {
+    // 1. Delete activity entry
+    const deleted = await activityEntryRepository.deleteByIdAndDateAndUserId(id, date, userId);
 
-    // 2. Delete activity entry
-    const deleted = await activityEntryRepository.deleteByIdAndTrackDayId(id, trackDay._id);
-
-    // 3. Check if it was deleted
-    if (!deleted) throw new BadRequestError('Failed to delete activity entry: not found or missing permissions.');
+    // Throw error if not deleted
+    if (!deleted) throw new NotFoundError('Activity entry');
 };
 
 module.exports = {
     create,
-    getAllByUserAndDate,
-    updateByIdAndTrackDayId,
-    deleteByIdAndTrackDayId,
+    getAllByDateAndUserId,
+    updateByIdAndDateAndUserId,
+    deleteByIdAndDateAndUserId,
 };

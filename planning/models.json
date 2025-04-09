@@ -2,7 +2,7 @@
     {
         "ActivityEntry": {
             "_id": "String",
-            "trackDay": "TrackDay",
+            "date": "Date",
             "name": "String",
             "caloriesPerHour": "Number",
             "totalCalories": "Number",
@@ -30,7 +30,7 @@
     {
         "MealEntry": {
             "_id": "String",
-            "trackDay": "TrackDay",
+            "date": "Date",
             "name": "String",
             "type": "enum('breakfast','snack1','lunch','dinner','snack2')",
             "per100": {
@@ -98,7 +98,7 @@
         }
     },
     {
-        "TrackDay": {
+        "Date": {
             "_id": "String",
             "user": "User",
             "date": "Datetime",

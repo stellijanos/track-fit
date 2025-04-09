@@ -1,25 +1,26 @@
 const MealEntry = require('../models/MealEntry');
 
-const create = async (data) => await MealEntry.create(data);
-
 const createMany = async (data) => await MealEntry.insertMany(data);
 
-const findAllByTrackDayId = async (trackDayId) => await MealEntry.find({ trackDay: trackDayId });
+const findAllByDateAndUserId = async (date, userId) => await MealEntry.find({ date, user: userId });
 
-const findByIdAndTrackDayId = async (id, trackDayId) => await MealEntry.findOne({ _id: id, trackDay: trackDayId });
+const findByIdAndDateAndUserId = async (id, date, userId) =>
+    await MealEntry.findOne({ _id: id, date, user: userId });
 
-const findById = async (mealEntryId) => await MealEntry.findById(mealEntryId);
+const updateByIdAndDateAndUserId = async (id, date, userId, data) =>
+    await MealEntry.findOneAndUpdate(
+        { _id: id, date, user: userId },
+        { $set: data },
+        { new: true }
+    );
 
-const updateById = async (id, data) => await MealEntry.findByIdAndUpdate(id, { $set: data }, { new: true });
-
-const deleteByIdAndTrackDayId = async (id, trackDayId) => await MealEntry.findOneAndDelete({ _id: id, trackDay: trackDayId });
+const deleteByIdAndDateAndUserId = async (id, date, userId) =>
+    await MealEntry.findOneAndDelete({ _id: id, date, user: userId });
 
 module.exports = {
-    create,
     createMany,
-    findAllByTrackDayId,
-    findByIdAndTrackDayId,
-    findById,
-    updateById,
-    deleteByIdAndTrackDayId,
+    findAllByDateAndUserId,
+    findByIdAndDateAndUserId,
+    updateByIdAndDateAndUserId,
+    deleteByIdAndDateAndUserId,
 };

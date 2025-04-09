@@ -21,8 +21,8 @@ const getActivityData = async (data) => {
     Do not include any explanations, formatting, or markdown. Just pure JSON.
     `;
 
-    console.log(content);
-    return await openAi.generateMessage(content);
+    const response = await openAi.generateMessage(content);
+    return JSON.parse(response);
 };
 
 const getCaloricTarget = async (data) => {
@@ -49,8 +49,8 @@ const getCaloricTarget = async (data) => {
     Do not include any explanations, formatting, or markdown. Just pure JSON.
     `;
 
-    console.log(content);
-    return await openAi.generateMessage(content);
+    const response = await openAi.generateMessage(content);
+    return JSON.parse(response);
 };
 
 const getMealEntry = async (data) => {
@@ -83,16 +83,17 @@ const getMealEntry = async (data) => {
     - Extract all meals from the user input.
     - If quantities are provided separately for each meal/food item, create separate meal entries.
     - If only one quantity is provided for the whole list, treat it as one meal.
-    - Return -1 for any field that is not related to food.
+    - If there is specified some other numeric data, take that in account please.
     - Return 'protein', 'carb', and 'fat' in grams.
     - Capitalize each meal name.
-    - Always return a list of JSON objects matching this structure:
+    - Always return a list of JSON objects matching exactly this structure:
     [${JSON.stringify(dataStructure)}]
-    - Do not include any explanation, markdown, comments, or text outside the JSON array.
+    - Please do not include any explanation, markdown, comments, or \`\`\`json \`\`\`
     `;
 
-    console.log(content);
-    return await openAi.generateMessage(content);
+    const response = await openAi.generateMessage(content);
+    console.log(response);
+    return JSON.parse(response);
 };
 
 const getMealPlan = async (data) => {
@@ -127,25 +128,23 @@ const getMealPlan = async (data) => {
     };
 
     const content = `
-You are a JSON-only assistant that generates a structured meal plan object.
+    You are a JSON-only assistant that generates a structured meal plan object.
 
-### User Input:
-${JSON.stringify(data)}
+    ### User Input:
+    ${JSON.stringify(data)}
 
-### Instructions:
-- Generate a meal plan based on the provided input.
-- If the input is not food/meal-related, return: \`{}\`
-- Use only the following values for \`type\`: ${Object.values(mealPlanTypes).join(', ')}
-- Each day must include meals with nutritional values.
-- Return protein, carb, and fat in grams.
-- Capitalize each meal name (e.g. "Grilled Chicken" instead of "grilled chicken").
-- The response MUST be a valid pure JSON object. DO NOT include markdown, comments, or any text outside the JSON.
-- Structure the JSON exactly like this:
+    ### Instructions:
+    - Generate a meal plan based on the provided input.
+    - If the input is not food/meal-related, return: \`{}\`
+    - Use only the following values for \`type\`: ${Object.values(mealPlanTypes).join(', ')}
+    - Each day must include meals with nutritional values.
+    - Return protein, carb, and fat in grams.
+    - Capitalize each meal name (e.g. "Grilled Chicken" instead of "grilled chicken").
+    - The response MUST be a valid pure JSON object. DO NOT include markdown, comments, or any text outside the JSON.
+    - Structure the JSON exactly like this:
 
-    ${JSON.stringify(dataStructure, null, 2)}
-`;
-
-    // console.log(content);
+        ${JSON.stringify(dataStructure, null, 2)}
+    `;
 
     const response = await openAi.generateMessage(content);
     return JSON.parse(response);

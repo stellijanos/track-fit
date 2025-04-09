@@ -12,8 +12,7 @@ const UnprocessableEntityError = require('../errors/UnprocessableEntity');
  * @access Private
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
- * @returns {void} - Responsds with success message and created meal plan (201)
- * @throws {BadRequestError} - Failed to create track day (400)
+ * @returns {void} - Responds with success message and created meal plan (201)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */
 const create = catchAsync(async (req, res, next) => {
@@ -35,10 +34,10 @@ const create = catchAsync(async (req, res, next) => {
  * @access Private
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
- * @returns {void} - Responsds with success message and the retrieved meal plan previews (200)
+ * @returns {void} - Responds with success message and the retrieved meal plan previews (200)
  */
 const getAllPreviewByUserId = async (req, res, next) => {
-    const mealPlans = await mealPlanService.getAllPreviewByUserId(req.user._id);
+    const mealPlans = await mealPlanService.getAllPreviewByUserId(req.userId);
     next(
         new SuccessResponse(200, 'Meal plans successfully retrieved.', {
             total: mealPlans.length,
@@ -54,11 +53,11 @@ const getAllPreviewByUserId = async (req, res, next) => {
  * @access Private
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
- * @returns {void} - Responsds with success message and the retrieved meal plan (200)
+ * @returns {void} - Responds with success message and the retrieved meal plan (200)
  * @throws {NotFoundError} - Meal plan not found (404)
  */
 const getByIdAndUserId = catchAsync(async (req, res, next) => {
-    const mealPlan = await mealPlanService.getByIdAndUserId(req.params.mealPlanId, req.user._id);
+    const mealPlan = await mealPlanService.getByIdAndUserId(req.params.mealPlanId, req.userId);
     next(
         new SuccessResponse(200, 'Meal plan successfully retrieved.', {
             mealPlan: mealPlanDto(mealPlan),
@@ -73,11 +72,11 @@ const getByIdAndUserId = catchAsync(async (req, res, next) => {
  * @access Private
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
- * @returns {void} - Responsds with no content (204)
+ * @returns {void} - Responds with no content (204)
  * @throws {NotFoundError} - Meal plan not found (404)
  */
 const deleteByIdAndUserId = catchAsync(async (req, res, next) => {
-    await mealPlanService.deleteByIdAndUserId(req.params.mealPlanId, req.user._id);
+    await mealPlanService.deleteByIdAndUserId(req.params.mealPlanId, req.userId);
     next(new SuccessResponse(204));
 });
 
