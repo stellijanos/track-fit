@@ -45,7 +45,6 @@ const getAllByUserAndDate = catchAsync(async (req, res, next) => {
     const { userId } = req;
 
     const activityEntries = await activityEntryService.getAllByDateAndUserId(date, userId);
-    console.log(activityEntries);
     next(
         new SuccessResponse(200, 'Activity entries successfully retrieved.', {
             total: activityEntries.length,

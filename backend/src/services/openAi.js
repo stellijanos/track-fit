@@ -92,7 +92,6 @@ const getMealEntry = async (data) => {
     `;
 
     const response = await openAi.generateMessage(content);
-    console.log(response);
     return JSON.parse(response);
 };
 

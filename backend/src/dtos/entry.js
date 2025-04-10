@@ -1,6 +1,6 @@
 const activityEntryDto = require('./activityEntry');
 const mealEntryDto = require('./mealEntry');
-const waterIntakeDto = require('./waterIntake');
+const {waterIntakeDto} = require('./waterIntake');
 
 module.exports = (data) => ({
     activities: data.activities.map(activityEntryDto),
