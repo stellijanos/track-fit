@@ -4,7 +4,7 @@ const waterEntryDto = (data) => ({
     quantity: data.quantity,
 });
 
-const waterIntakeDto = (data) =>
+module.exports = (data) =>
     data == null
         ? null
         : {
@@ -12,5 +12,3 @@ const waterIntakeDto = (data) =>
               total: data.total,
               entries: data.entries.map(waterEntryDto),
           };
-
-module.exports = { waterEntryDto, waterIntakeDto };

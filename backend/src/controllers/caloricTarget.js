@@ -32,7 +32,7 @@ const create = async (req, res, next) => {
 };
 
 /**
- * Retrieve all caloric targets of the current authenticated user
+ * Retrieve all caloric targets for the current authenticated user.
  *
  * @route GET /users/me/caloric-targets
  * @access Private
@@ -51,7 +51,7 @@ const getAllByUserId = catchAsync(async (req, res, next) => {
 });
 
 /**
- * Delete caloric target (not current one) of the current authenticated user.
+ * Delete caloric target (not current one) for the current authenticated user.
  *
  * @route DELETE /users/me/caloric-targets/:caloricTargetId
  * @access Private

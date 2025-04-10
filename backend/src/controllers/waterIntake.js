@@ -1,5 +1,5 @@
 const catchAsync = require('../utils/functions/catchAsync');
-const {waterEntryDto, waterIntakeDto} = require('../dtos/waterIntake');
+const waterIntakeDto = require('../dtos/waterIntake');
 const waterIntakeValidator = require('../validators/waterIntake');
 const waterIntakeService = require('../services/waterIntake');
 const UnprocessableEntityError = require('../errors/UnprocessableEntity');
@@ -7,7 +7,7 @@ const SuccessResponse = require('../utils/classes/SuccessResponse');
 const objectIdValidator = require('../validators/objectId');
 
 /**
- * Retrieve water intake for the current authenticated user on the provided date
+ * Retrieve water intake on the provided date for the current authenticated user.
  *
  * @route GET /users/me/entries/:date/water-intake
  * @access Private
@@ -30,7 +30,7 @@ const getByDateAndUserId = catchAsync(async (req, res, next) => {
 });
 
 /**
- * Update water intake for the current authenticated user.
+ * Add water intake entry for the current authenticated user.
  *
  * @route POST /users/me/entries/:date/water-intake
  * @access Private
@@ -43,20 +43,20 @@ const createEntryByDateAndUserId = catchAsync(async (req, res, next) => {
     const { error } = waterIntakeValidator.addEntry.validate({ ...req.params, ...req.body });
     if (error) throw new UnprocessableEntityError(error.message);
 
-    const entry = await waterIntakeService.createEntryByDateAndUserId(
+    const waterIntake = await waterIntakeService.createEntryByDateAndUserId(
         req.params.date,
         req.userId,
         req.body
     );
     next(
         new SuccessResponse(200, 'Water intake entry successfully added.', {
-            waterIntake: waterEntryDto(entry),
+            waterIntake: waterIntakeDto(waterIntake),
         })
     );
 });
 
 /**
- * Delete water intake for the current authenticated user.
+ * Delete water intake entry for the current authenticated user.
  *
  * @route DELETE /users/me/entries/:date/water-intake/:entryId
  * @access Private

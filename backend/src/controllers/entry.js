@@ -6,9 +6,9 @@ const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
 
 /**
- * Create a new activity entry.
+ * Retrieve water intake, activity- and meal entries on the specified date for the current authenticated user.
  *
- * @route POST /users/me/entries/:date
+ * @route GET /users/me/entries/:date
  * @access Private
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object

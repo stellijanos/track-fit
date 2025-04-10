@@ -1,33 +1,28 @@
 const WaterIntake = require('../models/WaterIntake');
 
-const findByDateAndUserId = async (date, userId) =>
+const findIntakeByDateAndUserId = async (date, userId) =>
     await WaterIntake.findOne({ date, user: userId });
 
-const createEntryByDateAndUserId = async (date, userId, entry) => {
-    let waterIntake = await WaterIntake.findOne({ date, user: userId });
-    if (!waterIntake) {
-        waterIntake = await WaterIntake.create({ date, user: userId });
-    }
+const deleteIntakeByDateAndUserId = async (date, userId) =>
+    await WaterIntake.findOneAndDelete({ date, user: userId });
 
-    waterIntake.entries.push(entry);
-    const updated = await waterIntake.save();
-    return updated.entries.at(-1);
-};
+const createEntryByDateAndUserId = async (date, userId, data) =>
+    await WaterIntake.findOneAndUpdate(
+        { date, user: userId },
+        { $push: { entries: data } },
+        { new: true, upsert: true }
+    );
 
-const deleteEntryByIdDateAndUserId = async (entryId, date, userId) => {
-    const waterIntake = await WaterIntake.findOne({ date, user: userId });
-    if (!waterIntake) return null;
-
-    const entry = waterIntake.entries.id(entryId);
-    if (!entry) return null;
-
-    entry.deleteOne();
-
-    return await waterIntake.save();
-};
+const deleteEntryByIdDateAndUserId = async (id, date, userId) =>
+    await WaterIntake.findOneAndUpdate(
+        { date, user: userId },
+        { $pull: { entries: { _id: id } } },
+        { new: true }
+    );
 
 module.exports = {
-    findByDateAndUserId,
+    findIntakeByDateAndUserId,
+    deleteIntakeByDateAndUserId,
     createEntryByDateAndUserId,
     deleteEntryByIdDateAndUserId,
 };

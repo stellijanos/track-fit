@@ -15,7 +15,6 @@ const UnprocessableEntityError = require('../errors/UnprocessableEntity');
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @returns {void} - Responds with success message and created measurement (201)
- * @throws {NotFoundError} - User not found (404)
  * @throws {UnprocessableEntityError} - Request body validation failed (422)
  */
 const create = catchAsync(async (req, res, next) => {
