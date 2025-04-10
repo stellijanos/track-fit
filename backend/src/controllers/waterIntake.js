@@ -4,7 +4,6 @@ const waterIntakeValidator = require('../validators/waterIntake');
 const waterIntakeService = require('../services/waterIntake');
 const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
-const objectIdValidator = require('../validators/objectId');
 
 /**
  * Retrieve water intake on the provided date for the current authenticated user.
@@ -14,7 +13,6 @@ const objectIdValidator = require('../validators/objectId');
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @returns {void} - Responds with success message and found water intake (200)
- * @throws {NotFoundError} - Water intake entry not found (404)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */
 const getByDateAndUserId = catchAsync(async (req, res, next) => {
@@ -36,7 +34,7 @@ const getByDateAndUserId = catchAsync(async (req, res, next) => {
  * @access Private
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
- * @returns {void} - Responds with success message and updated water intake (200)
+ * @returns {void} - Responds with success message and updated water intake with the created entry (201)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */
 const createEntryByDateAndUserId = catchAsync(async (req, res, next) => {
@@ -49,7 +47,7 @@ const createEntryByDateAndUserId = catchAsync(async (req, res, next) => {
         req.body
     );
     next(
-        new SuccessResponse(200, 'Water intake entry successfully added.', {
+        new SuccessResponse(201, 'Water intake entry successfully added.', {
             waterIntake: waterIntakeDto(waterIntake),
         })
     );
@@ -63,7 +61,7 @@ const createEntryByDateAndUserId = catchAsync(async (req, res, next) => {
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @returns {void} - Responds with no content (204)
- * @throws {NotFoundError} - Water intake entry not found (404)
+ * @throws {NotFoundError} - Water intake not found (404)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */
 const deleteEntryByIdDateAndUserId = catchAsync(async (req, res, next) => {
