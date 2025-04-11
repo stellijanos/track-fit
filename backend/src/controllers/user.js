@@ -6,7 +6,7 @@ const userDto = require('../dtos/user');
 const userValidator = require('../validators/user');
 
 /**
- * Retrieve the profile details of the current authenticated user.
+ * Retrieve the profile details for the current authenticated user.
  *
  * @route GET /users/me
  * @access Private
@@ -21,7 +21,7 @@ const getMe = (req, res, next) => {
 };
 
 /**
- * Update the profile details of the current authenticated user.
+ * Update the profile details for the current authenticated user.
  *
  * @route PATCH /users/me
  * @access Private

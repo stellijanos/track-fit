@@ -94,7 +94,7 @@ const validatePasswordResetCode = catchAsync(async (req, res, next) => {
 });
 
 /**
- * Resets password based on validated code.
+ * Resets password based on validated code
  *
  * @route PUT /auth/password/reset
  * @access Public
@@ -116,7 +116,7 @@ const resetPassword = catchAsync(async (req, res, next) => {
 });
 
 /**
- * Changes password of the current authenticated user.
+ * Changes password for the current authenticated user
  *
  * @route PUT /auth/password/change
  * @access Private
@@ -155,7 +155,7 @@ const refreshToken = catchAsync(async (req, res, next) => {
 });
 
 /**
- * Logs out user by removing refresh token.
+ * Log out user by removing refresh token from httponly cookie
  *
  * @route POST /auth/logout
  * @access Public

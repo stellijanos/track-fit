@@ -31,7 +31,7 @@ const create = catchAsync(async (req, res, next) => {
 });
 
 /**
- * Retrieve all measurements of the current authenticated user
+ * Retrieve all measurements for the current authenticated user
  *
  * @route GET /users/me/measurements
  * @access Private
@@ -79,7 +79,7 @@ const updateByIdAndUserId = catchAsync(async (req, res, next) => {
 });
 
 /**
- * DELETE a measurement for the current authenticated user
+ * Delete a measurement for the current authenticated user
  *
  * @route DELETE /users/me/measurements/:measurementId
  * @access Private

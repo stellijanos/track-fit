@@ -6,7 +6,7 @@ const SuccessResponse = require('../utils/classes/SuccessResponse');
 const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 
 /**
- * Create a new activity entry for the current authenticated user.
+ * Create a new meal plan for the current authenticated user.
  *
  * @route POST /users/me/meal-plans
  * @access Private
@@ -29,7 +29,7 @@ const create = catchAsync(async (req, res, next) => {
 });
 
 /**
- * Retrieve all meal entry previews (not all data) for the current authenticated user.
+ * Retrieve all meal plan previews (not all data) for the current authenticated user.
  *
  * @route GET /users/me/meal-plans
  * @access Private
@@ -49,7 +49,7 @@ const getAllPreviewByUserId = async (req, res, next) => {
 };
 
 /**
- * Retrieve meal plan based on its Id for the current authenticated user.
+ * Retrieve meal plan based on its id for the current authenticated user.
  *
  * @route GET /users/me/meal-plans/:mealPlanId
  * @access Private

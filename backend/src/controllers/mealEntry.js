@@ -6,7 +6,7 @@ const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
 
 /**
- * Create a new activity entry for the current authenticated user.
+ * Create a new meal entry for the current authenticated user.
  *
  * @route POST /users/me/entries/:date/meals
  * @access Private
@@ -30,7 +30,7 @@ const createMany = catchAsync(async (req, res, next) => {
 });
 
 /**
- * Retrieve all meal entries for a day for the current authenticated user.
+ * Retrieve all meal entries for the provided date for the current authenticated user.
  *
  * @route GET /users/me/entries/:date/meals
  * @access Private
@@ -90,7 +90,7 @@ const updateByIdAndDateAndUserId = catchAsync(async (req, res, next) => {
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next middleware function
- * @returns {void} - Responds with success message and created activity entry (204)
+ * @returns {void} - Responds with success message and created meal entry (204)
  * @throws {NotFoundError} - Meal entry not found (404)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */

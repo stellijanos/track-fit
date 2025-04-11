@@ -6,7 +6,7 @@ const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
 
 /**
- * Retrieve water intake, activity- and meal entries on the specified date for the current authenticated user.
+ * Retrieve water intake, activity- and meal entries for the provided date for the current authenticated user.
  *
  * @route GET /users/me/entries/:date
  * @access Private
@@ -21,7 +21,6 @@ const getByDateAndUserId = catchAsync(async (req, res, next) => {
     if (error) throw new UnprocessableEntityError(error.message);
 
     const entries = await entryService.getByDateAndUserId(req.params.date, req.userId);
-    console.log(entries);
     next(
         new SuccessResponse(200, 'Entries successfully created.', {
             entries: entryDto(entries),

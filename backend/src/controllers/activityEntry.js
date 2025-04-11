@@ -6,7 +6,7 @@ const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 const SuccessResponse = require('../utils/classes/SuccessResponse');
 
 /**
- * Create a new activity entry.
+ * Create a new activity entry  for the current authenticated user
  *
  * @route POST /users/me/entries/:date/activities
  * @access Private
@@ -29,9 +29,9 @@ const create = catchAsync(async (req, res, next) => {
 });
 
 /**
- * Retrieve all activity entries for the current authenticated user on the provided date
+ * Retrieve all activity entries for the provided date for the current authenticated user
  *
- * @route POST /users/me/entries/:date/activities
+ * @route GET /users/me/entries/:date/activities
  * @access Private
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
