@@ -21,15 +21,31 @@ const generateToken = (payload, expiresIn) => jwt.sign(payload, SECRET_KEY, { ex
  */
 const verify = (token, type) => {
     try {
+        // 1. Retrieve payload from token by verifying it
         const payload = jwt.verify(token, SECRET_KEY);
+
+        // 2. Throw error if token type is invalid
         if (payload.type !== type) throw new Error(`Invalid ${type} token provided.`);
 
+        // 3. Return payload
         return payload;
     } catch (error) {
-        if (error instanceof jwt.TokenExpiredError) throw new UnauthorizedError('Token has expired.');
-        if (error instanceof jwt.JsonWebTokenError) throw new UnauthorizedError('Invalid token provided.');
-        if (error instanceof jwt.NotBeforeError) throw new UnauthorizedError('Token is not yet active.');
-        throw new UnauthorizedError(error.message || 'An unknown error occurred while verifying the token.');
+        // 1. Define different JWT errors
+        const errorMessages = {
+            TokenExpiredError: 'Token has expired.',
+            JsonWebTokenError: 'Invalid token provided.',
+            NotBeforeError: 'Token is not yet active.',
+        };
+
+        // 2. Throw error accordingly:
+        // - JWT Error
+        // - Error with known message
+        // - Unknown error
+        throw new UnauthorizedError(
+            errorMessages[error?.name] ||
+                error.message ||
+                'An unknown error occurred while verifying the token.'
+        );
     }
 };
 

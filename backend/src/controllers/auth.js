@@ -11,8 +11,9 @@ const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 const env = require('../config/env');
 
 /**
+ * Register a new user
+ *
  * @route POST /auth/register
- * @desc Register a new user
  * @access Public
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
@@ -29,8 +30,9 @@ const register = catchAsync(async (req, res, next) => {
 });
 
 /**
+ * Log in an existing user
+ *
  * @route POST /auth/login
- * @desc Log in an existing user
  * @access Public
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
@@ -47,8 +49,9 @@ const login = catchAsync(async (req, res, next) => {
 });
 
 /**
+ * Send email or SMS with password reset link (that also contains the code)
+ *
  * @route POST /auth/password/forgot
- * @desc Send email to reset password
  * @access Public
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
@@ -66,8 +69,9 @@ const forgotPassword = catchAsync(async (req, res, next) => {
 });
 
 /**
+ * Validate password reset code
+ *
  * @route POST /auth/password/reset-code/validate
- * @desc Validate password reset code
  * @access Public
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
@@ -86,8 +90,9 @@ const validatePasswordResetCode = catchAsync(async (req, res, next) => {
 });
 
 /**
+ * Resets password based on validated code.
+ *
  * @route PUT /auth/password/reset
- * @desc Resets password based on validated code.
  * @access Public
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
@@ -106,8 +111,9 @@ const resetPassword = catchAsync(async (req, res, next) => {
 });
 
 /**
+ * Changes password of the current authenticated user.
+ *
  * @route PUT /auth/password/change
- * @desc Changes password of the current authenticated user.
  * @access Private
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
@@ -124,8 +130,9 @@ const changePassword = catchAsync(async (req, res, next) => {
 });
 
 /**
+ * Generates new access- and refresh tokens
+ *
  * @route POST /auth/token/refresh
- * @desc Generates new access- and refresh tokens
  * @access Public
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
@@ -135,12 +142,15 @@ const changePassword = catchAsync(async (req, res, next) => {
  */
 const refreshToken = catchAsync(async (req, res, next) => {
     const { accessToken, refreshToken } = await authService.refreshToken(req.cookies.refreshToken);
-    next(new SuccessResponse(200, 'Token successfully refreshed.', { accessToken }, { refreshToken }));
+    next(
+        new SuccessResponse(200, 'Token successfully refreshed.', { accessToken }, { refreshToken })
+    );
 });
 
 /**
+ * Logs out user by removing refresh token.
+ *
  * @route POST /auth/logout
- * @desc Logs out user by removing refresh token.
  * @access Public
  * @param {Object} req - Express request object
  * @param {Object} req - Express response object
@@ -148,7 +158,7 @@ const refreshToken = catchAsync(async (req, res, next) => {
  */
 const logout = catchAsync(async (req, res, next) => {
     const refreshToken = 'delete';
-    next(new SuccessResponse(200, 'Successfully logged out.', undefined, {refreshToken}));
+    next(new SuccessResponse(200, 'Successfully logged out.', undefined, { refreshToken }));
 });
 
 module.exports = {

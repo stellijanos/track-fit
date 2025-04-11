@@ -11,7 +11,7 @@ const NotFoundError = require('../errors/NotFound');
 
 /**
  * Removes user image if it exists and is not the default profile picutre for a user.
- * 
+ *
  * @param {String} image - The image to be removed
  * @returns {void} - Returns nothing
  */
@@ -29,7 +29,7 @@ const removeIfExists = (image) => {
 
 /**
  * Retrieve the user by email address.
- * 
+ *
  * @async
  * @param {String} email - The email of the user.
  * @returns {User} This function returns the found user based on email.
@@ -43,7 +43,7 @@ const getByEmail = async (email) => {
 
 /**
  * Retrieve user by its ID.
- * 
+ *
  * @async
  * @param {String} id - The ID of the user.
  * @returns {User} - The found user.
@@ -57,7 +57,7 @@ const getById = async (id) => {
 
 /**
  * Update user by its ID.
- * 
+ *
  * @async
  * @param {String} id - The ID of the user.
  * @param {Object} data - The data to be updated.
@@ -77,26 +77,26 @@ const updateById = async (id, data) => {
         height: data.height,
     };
 
-    const updated = await userRepository.updateById(id, updatedData);
+    const updated = await userRepository.findByIdAndUpdate(id, updatedData);
     if (!updated) throw new NotFoundError('User');
     return updated;
 };
 
 /**
  * Delete user by its ID.
- * 
+ *
  * @async
  * @param {String} id - The ID of the user.
  * @returns {void} - Return nothing.
  */
 const deleteMe = async (id) => {
-    await userRepository.deleteById(id);
+    await userRepository.findByIdAndDelete(id);
 };
 
 /**
  * This method updates the user profile picture and in the meanwhile removes
  * the current one if that is not the default picture for the user.
- * 
+ *
  * @async
  * @param {String} id - The ID of the user.
  * @param {String} currentImage - The current profile picture of the user.
@@ -111,7 +111,7 @@ const changeProfilePicture = async (userId, currentImage, filename) => {
     await sharp(source).resize(512, 512).toFormat('png').toFile(destination);
     fs.unlinkSync(source);
 
-    const user = await userRepository.updateById(userId, { profilePicture });
+    const user = await userRepository.findByIdAndUpdate(userId, { profilePicture });
     if (user.profilePicture !== currentImage) {
         removeIfExists(currentImage);
     }
@@ -121,14 +121,14 @@ const changeProfilePicture = async (userId, currentImage, filename) => {
 /**
  * This method deletes the user profile picture and in the meanwhile
  * removes it if that is not the default picture for the user.
- * 
+ *
  * @async
  * @param {ObjectId} id - The id of the user.
  * @param {String} currentImage - The current profile picture of the user
  * @returns {User} - User with deleted profile picture.
  */
 const deleteProfilePicture = async (userId, currentImage) => {
-    const user = await userRepository.updateById(userId, {
+    const user = await userRepository.findByIdAndUpdate(userId, {
         profilePicture: defaults.PROFILE_PICTURE,
     });
     removeIfExists(currentImage);

@@ -4,12 +4,20 @@ const goalAdjustments = require('../enums/goalAdjustments');
 const mealTypes = require('../enums/mealTypes');
 const mealPlanTypes = require('../enums/mealPlanTypes');
 
+/**
+ * Generate activity data based on user data
+ *
+ * @param {Object} data - Data containing user input /details
+ * @returns
+ */
 const getActivityData = async (data) => {
+    // 1. Define data structure to return
     const dataStructure = {
         name: 'String (Activity name)',
         caloriesPerHour: 'Number',
     };
 
+    // 2. Define content (message) to OpenAI service
     const content = `
     ## User Input:
     ${JSON.stringify(data)}
@@ -21,11 +29,15 @@ const getActivityData = async (data) => {
     Do not include any explanations, formatting, or markdown. Just pure JSON.
     `;
 
+    // 3. Retrieve response from OpenAI (Defined data structure at step 1. in JSON format)
     const response = await openAi.generateMessage(content);
+
+    // 4. Return parsed response
     return JSON.parse(response);
 };
 
 const getCaloricTarget = async (data) => {
+    // 1. Define data structure to return
     const dataStructure = {
         kcal: 'Type Number',
         protein: 'Type Number',
@@ -33,6 +45,7 @@ const getCaloricTarget = async (data) => {
         fat: 'Type Number',
     };
 
+    // 2. Define content (message) to OpenAI service
     const content = `
     ## User Input:
     ${JSON.stringify(data)}
@@ -49,11 +62,15 @@ const getCaloricTarget = async (data) => {
     Do not include any explanations, formatting, or markdown. Just pure JSON.
     `;
 
+    // 3. Retrieve response from OpenAI (Defined data structure at step 1. in JSON format)
     const response = await openAi.generateMessage(content);
+
+    // 4. Return parsed response
     return JSON.parse(response);
 };
 
 const getMealEntry = async (data) => {
+    // 1. Define data structure to return
     const dataStructure = {
         name: 'String',
         per100: {
@@ -75,6 +92,7 @@ const getMealEntry = async (data) => {
         },
     };
 
+    // 2. Define content (message) to OpenAI service
     const content = `
     ## User Input:
     ${JSON.stringify(data)}
@@ -91,11 +109,15 @@ const getMealEntry = async (data) => {
     - Please do not include any explanation, markdown, comments, or \`\`\`json \`\`\`
     `;
 
+    // 3. Retrieve response from OpenAI (Defined data structure at step 1. in JSON format)
     const response = await openAi.generateMessage(content);
+
+    // 4. Return parsed response
     return JSON.parse(response);
 };
 
 const getMealPlan = async (data) => {
+    // 1. Define data structure to return
     const dataStructure = {
         name: 'String',
         type: `one of: ${Object.values(mealPlanTypes).join(', ')}`,
@@ -126,6 +148,7 @@ const getMealPlan = async (data) => {
         ],
     };
 
+    // 2. Define content (message) to OpenAI service
     const content = `
     You are a JSON-only assistant that generates a structured meal plan object.
 
@@ -145,7 +168,10 @@ const getMealPlan = async (data) => {
         ${JSON.stringify(dataStructure, null, 2)}
     `;
 
+    // 3. Retrieve response from OpenAI (Defined data structure at step 1. in JSON format)
     const response = await openAi.generateMessage(content);
+
+    // 4. Return parsed response
     return JSON.parse(response);
 };
 
