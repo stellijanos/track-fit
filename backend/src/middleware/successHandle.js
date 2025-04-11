@@ -3,10 +3,10 @@ const env = require('../config/env');
 /**
  * Middleware function to handle success responses and cookie settings
  *
- * @param {Object} result - Result object passed in the next function from previous middleware
+ * @param {Response} result - Result object passed in the next function from previous middleware
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function (to proceed to next middleware)
+ * @param {NextFunction} next - Express next middleware function
  */
 module.exports = (result, req, res, next) => {
     // 1. Proceeed to next middleware if it's not a success response

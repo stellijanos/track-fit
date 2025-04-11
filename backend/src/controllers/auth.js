@@ -15,8 +15,9 @@ const env = require('../config/env');
  *
  * @route POST /auth/register
  * @access Public
- * @param {Object} req - Express request object
- * @param {Object} req - Express response object
+ * @param {Request} req - Express request object
+ * @param {Request} req - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {JSON} 201 - Euccess message with access- and refresh tokens
  * @throws {UnprocessableEntityError} 422 - Requests body validation failed
  * @throws {ConflictError} 409 - User already exists.
@@ -34,8 +35,9 @@ const register = catchAsync(async (req, res, next) => {
  *
  * @route POST /auth/login
  * @access Public
- * @param {Object} req - Express request object
- * @param {Object} req - Express response object
+ * @param {Request} req - Express request object
+ * @param {Request} req - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {JSON} 200 - Success message with access- and refresh tokens
  * @throws {UnprocessableEntityError} 422 - Requests body validation failed
  * @throws {NotFoundError} 404 - User not found.
@@ -53,8 +55,9 @@ const login = catchAsync(async (req, res, next) => {
  *
  * @route POST /auth/password/forgot
  * @access Public
- * @param {Object} req - Express request object
- * @param {Object} req - Express response object
+ * @param {Request} req - Express request object
+ * @param {Request} req - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {JSON} 200 - Email successfully sent.
  * @throws {UnprocessableEntityError} 422 - Requests body validation failed
  * @throws {NotFoundError} 404 - User not found.
@@ -73,8 +76,9 @@ const forgotPassword = catchAsync(async (req, res, next) => {
  *
  * @route POST /auth/password/reset-code/validate
  * @access Public
- * @param {Object} req - Express request object
- * @param {Object} req - Express response object
+ * @param {Request} req - Express request object
+ * @param {Request} req - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {JSON} 200 - Code successfully validated.
  * @throws {UnprocessableEntityError} 422 - Requests body validation failed
  * @throws {NotFoundError} 404 - Code not found.
@@ -94,8 +98,9 @@ const validatePasswordResetCode = catchAsync(async (req, res, next) => {
  *
  * @route PUT /auth/password/reset
  * @access Public
- * @param {Object} req - Express request object
- * @param {Object} req - Express response object
+ * @param {Request} req - Express request object
+ * @param {Request} req - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {JSON} 200 - Password successfully reset.
  * @throws {UnprocessableEntityError} 422 - Requests body validation failed
  * @throws {NotFoundError} 404 - User not found.
@@ -115,8 +120,9 @@ const resetPassword = catchAsync(async (req, res, next) => {
  *
  * @route PUT /auth/password/change
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} req - Express response object
+ * @param {Request} req - Express request object
+ * @param {Request} req - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {JSON} 200 - Password successfully changed.
  * @throws {UnprocessableEntityError} 422 - Requests body validation failed
  * @throws {UnauthorizedError} 401 - Incorrect password.
@@ -134,8 +140,9 @@ const changePassword = catchAsync(async (req, res, next) => {
  *
  * @route POST /auth/token/refresh
  * @access Public
- * @param {Object} req - Express request object
- * @param {Object} req - Express response object
+ * @param {Request} req - Express request object
+ * @param {Request} req - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {JSON} 200 - Token successfully refreshed.
  * @throws {UnprocessableEntityError} 422 - Requests body validation failed
  * @throws {NotFoundError} 404 - User not found.
@@ -152,8 +159,9 @@ const refreshToken = catchAsync(async (req, res, next) => {
  *
  * @route POST /auth/logout
  * @access Public
- * @param {Object} req - Express request object
- * @param {Object} req - Express response object
+ * @param {Request} req - Express request object
+ * @param {Request} req - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} 200 - Successfully logged out.
  */
 const logout = catchAsync(async (req, res, next) => {

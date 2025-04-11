@@ -11,8 +11,9 @@ const SuccessResponse = require('../utils/classes/SuccessResponse');
  *
  * @route POST /users/me/caloric-targets
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and created caloric target (201)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  * @throws {UnprocessableEntityError} - Enter your height and at least 1 measurement in order to get caloric target (422)
@@ -36,8 +37,9 @@ const create = async (req, res, next) => {
  *
  * @route GET /users/me/caloric-targets
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and the retrieved caloric targets (200)
  */
 const getAllByUserId = catchAsync(async (req, res, next) => {
@@ -55,8 +57,9 @@ const getAllByUserId = catchAsync(async (req, res, next) => {
  *
  * @route DELETE /users/me/caloric-targets/:caloricTargetId
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with no content (204)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  * @throws {ConflictError} - Current caloric target cannot be deleted (409)

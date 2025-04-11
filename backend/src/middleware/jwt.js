@@ -11,7 +11,7 @@ const UnauthorizedError = require('../errors/Unauthorized');
  * @async
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function (to proceed to next middleware)
+ * @param {NextFunction} next - Express next middleware function
  */
 module.exports = catchAsync(async (req, res, next) => {
     // 1. Retrieve Authorization header

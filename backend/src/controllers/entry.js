@@ -10,8 +10,9 @@ const SuccessResponse = require('../utils/classes/SuccessResponse');
  *
  * @route GET /users/me/entries/:date
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and created activity entry (201)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */

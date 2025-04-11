@@ -12,8 +12,9 @@ const UnprocessableEntityError = require('../errors/UnprocessableEntity');
  *
  * @route POST /users/me/measurements
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and created measurement (201)
  * @throws {UnprocessableEntityError} - Request body validation failed (422)
  */
@@ -34,8 +35,9 @@ const create = catchAsync(async (req, res, next) => {
  *
  * @route GET /users/me/measurements
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and the found measurements (200)
  */
 const getAllByUserId = catchAsync(async (req, res, next) => {
@@ -53,8 +55,9 @@ const getAllByUserId = catchAsync(async (req, res, next) => {
  *
  * @route PATCH /users/me/measurements/:measurementId
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and the updated measurement (200)
  * @throws {NotFoundError} - Measurement not found (404)
  * @throws {UnprocessableEntityError} - Request body validation failed (422)
@@ -80,8 +83,9 @@ const updateByIdAndUserId = catchAsync(async (req, res, next) => {
  *
  * @route DELETE /users/me/measurements/:measurementId
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with no content (204)
  * @throws {NotFoundError} - Measurement not found (404)
  */

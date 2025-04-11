@@ -10,8 +10,9 @@ const UnprocessableEntityError = require('../errors/UnprocessableEntity');
  *
  * @route POST /users/me/meal-plans
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and created meal plan (201)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */
@@ -32,8 +33,9 @@ const create = catchAsync(async (req, res, next) => {
  *
  * @route GET /users/me/meal-plans
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and the retrieved meal plan previews (200)
  */
 const getAllPreviewByUserId = async (req, res, next) => {
@@ -51,8 +53,9 @@ const getAllPreviewByUserId = async (req, res, next) => {
  *
  * @route GET /users/me/meal-plans/:mealPlanId
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and the retrieved meal plan (200)
  * @throws {NotFoundError} - Meal plan not found (404)
  */
@@ -70,8 +73,9 @@ const getByIdAndUserId = catchAsync(async (req, res, next) => {
  *
  * @route DELETE /users/me/meal-plans/:mealPlanId
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with no content (204)
  * @throws {NotFoundError} - Meal plan not found (404)
  */

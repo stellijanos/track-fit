@@ -10,8 +10,9 @@ const SuccessResponse = require('../utils/classes/SuccessResponse');
  *
  * @route POST /users/me/entries/:date/activities
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and created activity entry (201)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */
@@ -32,8 +33,9 @@ const create = catchAsync(async (req, res, next) => {
  *
  * @route POST /users/me/entries/:date/activities
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and created activity entry (201)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */
@@ -58,8 +60,9 @@ const getAllByUserAndDate = catchAsync(async (req, res, next) => {
  *
  * @route PATCH /users/me/entries/:date/activities/:activityEntryId
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and updated activity entry (200)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  * @throws {NotFoundError} - Activity entry not found (404)
@@ -90,8 +93,9 @@ const updateByIdAndDateAndUserId = catchAsync(async (req, res, next) => {
  *
  * @route DELETE /users/me/entries/:date/activities/:activityEntryId
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with no content (204)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  * @throws {NotFoundError} - Activity entry not found (404)

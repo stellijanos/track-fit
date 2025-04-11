@@ -10,8 +10,9 @@ const userValidator = require('../validators/user');
  *
  * @route GET /users/me
  * @access Private
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and retrieved user (200)
  * @throws {NotFoundError} - User not found (404)
  */
@@ -24,8 +25,9 @@ const getMe = (req, res, next) => {
  *
  * @route PATCH /users/me
  * @access Private
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and updated user (200)
  * @throws {NotFoundError} - User not found (404)
  */
@@ -42,8 +44,9 @@ const updateMe = catchAsync(async (req, res, next) => {
  *
  * @route DELETE /users/me
  * @access Private
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with no content (204)
  * @throws {NotFoundError} - User not found (404)
  */
@@ -57,8 +60,9 @@ const deleteMe = catchAsync(async (req, res, next) => {
  *
  * @route POST /users/me/profile-picture
  * @access Private
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and user with the changed profile picture (200)
  * @throws {NotFoundError} - User not found (404)
  */
@@ -80,8 +84,9 @@ const changeMyProfilePicture = catchAsync(async (req, res, next) => {
  *
  * @route DELETE /users/me/profile-picture
  * @access Private
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and user with removed profile picture (200)
  * @throws {NotFoundError} - User not found (404)
  */

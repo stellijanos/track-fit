@@ -26,7 +26,7 @@ morgan.token('user-agent', (req) => req.get('User-Agent') || 'Unknown');
  *
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function (to proceed to next middleware)
+ * @param {NextFunction} next - Express next middleware function
  */
 module.exports = requestLoggerMiddleware = (req, res, next) => {
     // 1. Start measuring time

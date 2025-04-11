@@ -10,8 +10,9 @@ const SuccessResponse = require('../utils/classes/SuccessResponse');
  *
  * @route POST /users/me/entries/:date/meals
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and created meal entries(201)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */
@@ -33,8 +34,9 @@ const createMany = catchAsync(async (req, res, next) => {
  *
  * @route GET /users/me/entries/:date/meals
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and retrieved meal entries (200)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */
@@ -56,8 +58,9 @@ const getAllByDateAndUserId = catchAsync(async (req, res, next) => {
  *
  * @route PATCH /users/me/entries/:date/meals/:mealEntryId
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and updated meal entry (200)
  * @throws {NotFoundError} - Meal entry not found (404)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
@@ -84,8 +87,9 @@ const updateByIdAndDateAndUserId = catchAsync(async (req, res, next) => {
  *
  * @route DELETE /users/me/entries/:date/meals/:mealEntryId
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and created activity entry (204)
  * @throws {NotFoundError} - Meal entry not found (404)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)

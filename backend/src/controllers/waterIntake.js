@@ -10,8 +10,9 @@ const SuccessResponse = require('../utils/classes/SuccessResponse');
  *
  * @route GET /users/me/entries/:date/water-intake
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and found water intake (200)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */
@@ -32,8 +33,9 @@ const getByDateAndUserId = catchAsync(async (req, res, next) => {
  *
  * @route POST /users/me/entries/:date/water-intake
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with success message and updated water intake with the created entry (201)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
  */
@@ -58,8 +60,9 @@ const createEntryByDateAndUserId = catchAsync(async (req, res, next) => {
  *
  * @route DELETE /users/me/entries/:date/water-intake/:entryId
  * @access Private
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
  * @returns {void} - Responds with no content (204)
  * @throws {NotFoundError} - Water intake not found (404)
  * @throws {UnprocessableEntityError} - Requests body validation failed (422)
