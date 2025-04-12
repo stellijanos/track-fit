@@ -5,7 +5,7 @@
 
 A fitness tracking web application allowing users to register, track their activities, meals, water intake, and body measurements. Designed for clients, trainers, and admins.
 
-### ✅ Includes:
+### Includes:
 - **AI-generated** caloric targets, meal plans, meal entries, and activity entries
 - **Email & SMS notifications** for verification and password reset possibilities
 - **Secure authentication** using industry standards (JWT, HttpOnly cookies, refresh tokens)
