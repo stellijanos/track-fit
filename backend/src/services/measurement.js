@@ -48,12 +48,17 @@ const create = async (userId, data) => {
 };
 
 /**
- * Retrieve all measurements based on user id
+ * Retrieve all measurements withtin date range (optional) based on user id
  *
  * @param {ObjectId} userId - Id of the user
  * @returns {Measurement[]} - Found measurements
  */
-const getAllByUserId = async (userId) => await measurementRepository.findAllByUserId(userId);
+const getAllByUserInRange = async (userId, from, until) => {
+    if (from && until) {
+        return await measurementRepository.findAllByUserIdBetweenDates(userId, from, until);
+    }
+    return await measurementRepository.findAllByUserId(userId);
+};
 
 /**
  * Update measurement based on its id and user id
@@ -100,7 +105,7 @@ const deleteByIdAndUserId = async (id, userId) => {
 
 module.exports = {
     create,
-    getAllByUserId,
+    getAllByUserInRange,
     updateByIdAndUserId,
     deleteByIdAndUserId,
 };
