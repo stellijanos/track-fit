@@ -9,10 +9,9 @@ const env = require('../config/env');
  * @param {NextFunction} next - Express next middleware function
  */
 module.exports = (result, req, res, next) => {
-
     if (result?.name && result.name === 'PdfResponse') {
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', 'attachment; filename="simple.pdf"');
+        res.setHeader('Content-Disposition', `attachment; filename="${result.filename}.pdf"`);
         return res.send(result.pdfBuffer);
     }
 

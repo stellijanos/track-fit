@@ -1,7 +1,8 @@
 class PdfResponse {
-    constructor(buffer) {
+    constructor(buffer, filename) {
         this.pdfBuffer = buffer;
         this.name = 'PdfResponse';
+        this.filename = filename;
     }
 }
 
