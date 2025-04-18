@@ -14,6 +14,12 @@ module.exports = (result, req, res, next) => {
         res.setHeader('Content-Disposition', `attachment; filename="${result.filename}.pdf"`);
         return res.send(result.pdfBuffer);
     }
+    console.log(result?.name && result.name === 'CSVResponse');
+    if (result?.name && result.name === 'CSVResponse') {
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', `attachment; filename="${result.filename}.csv"`);
+        return res.send(result.data);
+    }
 
     // 1. Proceeed to next middleware if it's not a success response
     if (!result?.name || result.name !== 'SuccessResponse') return next(result);
