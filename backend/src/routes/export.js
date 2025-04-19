@@ -8,5 +8,6 @@ router.get('/pdf/meal-plans/:mealPlanId', pdfExportController.mealPlan);
 
 router.get('/csv/measurements', csvExportController.measurements);
 router.get('/csv/activities', csvExportController.activities);
+router.get('/csv/meals', csvExportController.meals);
 
 module.exports = router;

@@ -16,4 +16,11 @@ const activities = catchAsync(async (req, res, next) => {
     next(new CSVResponse(data, `activities-${Date.now()}`));
 });
 
-module.exports = { measurements, activities };
+const meals = catchAsync(async (req, res, next) => {
+    const { from, until } = req.query;
+    const data = await csvExportService.meals(req.userId, from, until);
+
+    next(new CSVResponse(data, `meals-${Date.now()}`));
+});
+
+module.exports = { measurements, activities, meals };

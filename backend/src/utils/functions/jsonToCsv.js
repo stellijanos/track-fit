@@ -27,7 +27,29 @@ const activities = (data) => {
     return rows.join('\n');
 };
 
+const meals = (data) => {
+    const rows = [
+        '"date","name","type", "kcal / 100g","protein / 100g","carb / 100g","fat / 100g","fibre / 100g","salt / 100g","consumed quantity (g)","consumed kcal","consumed protein (g)","consumed carb (g)","consumed fat (g)","consumed fibre (g)","consumed salt (g)",',
+    ];
+
+    data.forEach((m) => {
+        console.log(m.date);
+        rows.push(
+            `"${m.date || ''}",${m.name},${m.type},${m.per100.kcal},${m.per100.protein},${
+                m.per100.carb
+            },${m.per100.fat},${m.per100.fibre},${m.per100.salt},${m.totalConsumed.quantity},${
+                m.totalConsumed.kcal
+            },${m.totalConsumed.protein},${m.totalConsumed.carb},${m.totalConsumed.fat},${
+                m.totalConsumed.fibre
+            },${m.totalConsumed.salt}`
+        );
+    });
+
+    return rows.join('\n');
+};
+
 module.exports = {
     measurements,
     activities,
+    meals,
 };

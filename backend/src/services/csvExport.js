@@ -1,5 +1,6 @@
 const measurementRepository = require('../repositories/measurement');
 const activityEntryRepository = require('../repositories/activityEntry');
+const mealEntryRepository = require('../repositories/mealEntry');
 const NotFoundError = require('../errors/NotFound');
 const jsonToCsv = require('../utils/functions/jsonToCsv');
 
@@ -28,4 +29,18 @@ const activities = async (userId, from, until) => {
     return jsonToCsv.activities(data);
 };
 
-module.exports = { measurements, activities };
+const meals = async (userId, from, until) => {
+    let data;
+    if (!from || !until) {
+        data = await mealEntryRepository.findAllByUserId(userId);
+    } else {
+        data = await mealEntryRepository.findAllByUserIdBetweenDates(userId, from, until);
+    }
+    console.log(data);
+    if (!data.length) throw new NotFoundError('Meals');
+
+    return jsonToCsv.meals(data);
+};
+
+
+module.exports = { measurements, activities, meals };
