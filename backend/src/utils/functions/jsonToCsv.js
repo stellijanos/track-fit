@@ -14,6 +14,20 @@ const measurements = (data) => {
     return rows.join('\n');
 };
 
+const activities = (data) => {
+    const rows = ['"date","name","kcal / hour", "total calories (kcal)","Duration (m)"'];
+
+    data.forEach((m) => {
+        console.log(m.date);
+        rows.push(
+            `"${m.date || ''}",${m.name},${m.caloriesPerHour},${m.totalCalories},${m.durationInM}`
+        );
+    });
+
+    return rows.join('\n');
+};
+
 module.exports = {
     measurements,
+    activities,
 };

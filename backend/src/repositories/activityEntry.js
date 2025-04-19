@@ -2,6 +2,17 @@ const ActivityEntry = require('../models/ActivityEntry');
 
 const create = async (data) => await ActivityEntry.create(data);
 
+const findAllByUserId = async (userId) => await ActivityEntry.find({ user: userId });
+
+const findAllByUserIdBetweenDates = async (userId, from, until) =>
+    await ActivityEntry.find({
+        user: userId,
+        date: {
+            $gte: new Date(from),
+            $lte: new Date(until),
+        },
+    });
+
 const findAllByDateAndUserId = async (date, userId) =>
     await ActivityEntry.find({ date, user: userId });
 
@@ -20,6 +31,8 @@ const deleteByIdAndDateAndUserId = async (id, date, userId) =>
 
 module.exports = {
     create,
+    findAllByUserId,
+    findAllByUserIdBetweenDates,
     findAllByDateAndUserId,
     findByIdAndDateAndUserId,
     updateByIdAndDateAndUserId,
