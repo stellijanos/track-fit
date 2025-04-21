@@ -62,9 +62,22 @@ const caloricTargets = (data) => {
     return rows.join('\n');
 };
 
+const waterIntake = (data) => {
+    const rows = ['"date","quantity"'];
+
+    data.forEach((w) => {
+        w.entries.forEach((e) => {
+            rows.push(`"${e.date}",${e.quantity}`);
+        });
+    });
+
+    return rows.join('\n');
+};
+
 module.exports = {
-    measurements,
     activities,
-    meals,
     caloricTargets,
+    meals,
+    measurements,
+    waterIntake,
 };

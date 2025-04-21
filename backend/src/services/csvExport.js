@@ -2,6 +2,7 @@ const measurementRepository = require('../repositories/measurement');
 const activityEntryRepository = require('../repositories/activityEntry');
 const mealEntryRepository = require('../repositories/mealEntry');
 const caloricTargetRepository = require('../repositories/caloricTarget');
+const waterIntakeRepository = require('../repositories/waterIntake');
 const NotFoundError = require('../errors/NotFound');
 const jsonToCsv = require('../utils/functions/jsonToCsv');
 
@@ -56,4 +57,17 @@ const caloricTargets = async (userId, from, until) => {
     return jsonToCsv.caloricTargets(data);
 };
 
-module.exports = { measurements, activities, meals, caloricTargets };
+const waterIntake = async (userId, from, until) => {
+    let data;
+    if (!from || !until) {
+        data = await waterIntakeRepository.findAllByUserId(userId);
+    } else {
+        data = await waterIntakeRepository.findAllByUserIdBetweenDates(userId, from, until);
+    }
+    console.log(data);
+    if (!data.length) throw new NotFoundError('Water intake');
+
+    return jsonToCsv.waterIntake(data);
+};
+
+module.exports = { measurements, activities, meals, caloricTargets, waterIntake };

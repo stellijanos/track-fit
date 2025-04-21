@@ -1,5 +1,17 @@
 const WaterIntake = require('../models/WaterIntake');
 
+const findAllByUserId = async (userId) =>
+    await WaterIntake.find({ user: userId }).sort({ date: 1 });
+
+const findAllByUserIdBetweenDates = async (userId, from, until) =>
+    await WaterIntake.find({
+        user: userId,
+        date: {
+            $gte: new Date(from),
+            $lte: new Date(until),
+        },
+    }).sort({ date: 1 });
+
 const findIntakeByDateAndUserId = async (date, userId) =>
     await WaterIntake.findOne({ date, user: userId });
 
@@ -21,6 +33,8 @@ const deleteEntryByIdDateAndUserId = async (id, date, userId) =>
     );
 
 module.exports = {
+    findAllByUserId,
+    findAllByUserIdBetweenDates,
     findIntakeByDateAndUserId,
     deleteIntakeByDateAndUserId,
     createEntryByDateAndUserId,

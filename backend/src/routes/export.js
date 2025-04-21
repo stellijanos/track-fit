@@ -10,5 +10,6 @@ router.get('/csv/measurements', csvExportController.measurements);
 router.get('/csv/activities', csvExportController.activities);
 router.get('/csv/meals', csvExportController.meals);
 router.get('/csv/caloric-targets', csvExportController.caloricTargets);
+router.get('/csv/water-intake', csvExportController.waterIntake);
 
 module.exports = router;
