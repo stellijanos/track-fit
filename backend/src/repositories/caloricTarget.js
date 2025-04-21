@@ -6,15 +6,30 @@ const findById = async (id) => await CaloricTarget.findById(id);
 
 const findAllByUserId = async (userId) => await CaloricTarget.find({ user: userId });
 
-const updateByIdAndUserId = async (id, userId, data) =>
-    await CaloricTarget.findOneAndUpdate({ _id: id, user: userId }, { $set: data }, { new: true, runValidators: true });
+const findAllByUserIdBetweenDates = async (userId, from, until) =>
+    await CaloricTarget.find({
+        user: userId,
+        createdAt: {
+            $gte: new Date(from),
+            $lte: new Date(until),
+        },
+    });
 
-const deleteByIdAndUserId = async (id, userId) => await CaloricTarget.findOneAndDelete({ _id: id, user: userId });
+const updateByIdAndUserId = async (id, userId, data) =>
+    await CaloricTarget.findOneAndUpdate(
+        { _id: id, user: userId },
+        { $set: data },
+        { new: true, runValidators: true }
+    );
+
+const deleteByIdAndUserId = async (id, userId) =>
+    await CaloricTarget.findOneAndDelete({ _id: id, user: userId });
 
 module.exports = {
     create,
     findById,
     findAllByUserId,
+    findAllByUserIdBetweenDates,
     updateByIdAndUserId,
     deleteByIdAndUserId,
 };

@@ -48,8 +48,23 @@ const meals = (data) => {
     return rows.join('\n');
 };
 
+const caloricTargets = (data) => {
+    const rows = [
+        '"from","activity level","physical goal","goal speed", "kcal","protein","carb","fat","protein / kg","carb / kg","fat / kg"',
+    ];
+
+    data.forEach((c) => {
+        rows.push(
+            `"${c.createdAt},${c.activityLevel}",${c.physicalGoal},${c.goalSpeed},${c.kcal},${c.protein},${c.carb},${c.fat},${c.proteinPerKg},${c.carbPerKg},${c.fatPerKg}`
+        );
+    });
+
+    return rows.join('\n');
+};
+
 module.exports = {
     measurements,
     activities,
     meals,
+    caloricTargets,
 };
