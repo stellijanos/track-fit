@@ -113,6 +113,15 @@ A comprehensive fitness tracking web application that allows users to register a
 
 ---
 
+### 1.10 Exports to PDF and CSV (for the current authenticated user)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/users/me/exports/pdf/meal-plans/:mealPlanId` | Export meal plan to pdf |
+| GET | `/users/me/exports/csv/:subject` | Export activity-, meal entry, water intake and caloric targets to csv |
+
+---
+
 ## 2. Backend
 
 ### 2.1. Modular Architecture with Separation of Concerns:
