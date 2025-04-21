@@ -16,6 +16,6 @@ router.use('/users/me/measurements', jwtMiddleware, measurementRouter);
 router.use('/users/me/caloric-targets', jwtMiddleware, caloricTargetRouter);
 router.use('/users/me/entries', jwtMiddleware, entryRouter);
 router.use('/users/me/meal-plans', jwtMiddleware, mealPlanRouter);
-router.use('/exports', jwtMiddleware, exportRouter);
+router.use('/users/me/exports', jwtMiddleware, exportRouter);
 
 module.exports = router;

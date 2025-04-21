@@ -5,69 +5,80 @@ const caloricTargetRepository = require('../repositories/caloricTarget');
 const waterIntakeRepository = require('../repositories/waterIntake');
 const NotFoundError = require('../errors/NotFound');
 const jsonToCsv = require('../utils/functions/jsonToCsv');
+const UnprocessableEntityError = require('../errors/Unauthorized');
 
-const measurements = async (userId, from, until) => {
-    let data;
-    if (!from || !until) {
-        data = await measurementRepository.findAllByUserId(userId);
-    } else {
-        data = await measurementRepository.findAllByUserIdBetweenDates(userId, from, until);
-    }
-    if (!data.length) throw new NotFoundError('Measurements');
-
-    return jsonToCsv.measurements(data);
+/**
+ * Define repos and json to csv converters for entities that can be exported
+ */
+const entities = {
+    measurements: {
+        name: 'Measurements',
+        repoAll: measurementRepository.findAllByUserId,
+        repoDates: measurementRepository.findAllByUserIdBetweenDates,
+        jsonToCsv: jsonToCsv.measurements,
+    },
+    activities: {
+        name: 'Activities',
+        repoAll: activityEntryRepository.findAllByUserId,
+        repoDates: activityEntryRepository.findAllByUserIdBetweenDates,
+        jsonToCsv: jsonToCsv.activities,
+    },
+    meals: {
+        name: 'Meals',
+        repoAll: mealEntryRepository.findAllByUserId,
+        repoDates: mealEntryRepository.findAllByUserIdBetweenDates,
+        jsonToCsv: jsonToCsv.meals,
+    },
+    'caloric-targets': {
+        name: 'Caloric targets',
+        repoAll: caloricTargetRepository.findAllByUserId,
+        repoDates: caloricTargetRepository.findAllByUserIdBetweenDates,
+        jsonToCsv: jsonToCsv.caloricTargets,
+    },
+    'water-intake': {
+        name: 'Water intake',
+        repoAll: waterIntakeRepository.findAllByUserId,
+        repoDates: waterIntakeRepository.findAllByUserIdBetweenDates,
+        jsonToCsv: jsonToCsv.waterIntake,
+    },
 };
 
-const activities = async (userId, from, until) => {
+/**
+ *
+ * @param {String} userId - Id of the current authenticated user
+ * @param {String | undefined} from - Date to get the data from
+ * @param {String | undefined} until - Date to get the data until
+ * @param {String} subject - Entity as a string that can be exported
+ * @returns
+ */
+module.exports = async (userId, from, until, subject) => {
+    /**
+     * 1. Retrieve entity from the defined entities
+     */
+    const entity = entities[subject];
+
+    /**
+     * 2. Throw error if the subject is not supported (does not exist)
+     */
+    if (!entity) throw new UnprocessableEntityError(`Exports for ${subject} not supported.`);
+
+    /**
+     * 3. Retrieve data depending on the given from and until dates
+     */
     let data;
     if (!from || !until) {
-        data = await activityEntryRepository.findAllByUserId(userId);
+        data = await entity.repoAll(userId);
     } else {
-        data = await activityEntryRepository.findAllByUserIdBetweenDates(userId, from, until);
+        data = await entity.repoDates(userId, from, until);
     }
-    console.log(data);
-    if (!data.length) throw new NotFoundError('Activities');
 
-    return jsonToCsv.activities(data);
+    /**
+     * Throw error if no data found
+     */
+    if (!data.length) throw new NotFoundError(entity.name);
+
+    /**
+     * Return the data converted into csv
+     */
+    return entity.jsonToCsv(data);
 };
-
-const meals = async (userId, from, until) => {
-    let data;
-    if (!from || !until) {
-        data = await mealEntryRepository.findAllByUserId(userId);
-    } else {
-        data = await mealEntryRepository.findAllByUserIdBetweenDates(userId, from, until);
-    }
-    console.log(data);
-    if (!data.length) throw new NotFoundError('Meals');
-
-    return jsonToCsv.meals(data);
-};
-
-const caloricTargets = async (userId, from, until) => {
-    let data;
-    if (!from || !until) {
-        data = await caloricTargetRepository.findAllByUserId(userId);
-    } else {
-        data = await caloricTargetRepository.findAllByUserIdBetweenDates(userId, from, until);
-    }
-    console.log(data);
-    if (!data.length) throw new NotFoundError('Caloric targets');
-
-    return jsonToCsv.caloricTargets(data);
-};
-
-const waterIntake = async (userId, from, until) => {
-    let data;
-    if (!from || !until) {
-        data = await waterIntakeRepository.findAllByUserId(userId);
-    } else {
-        data = await waterIntakeRepository.findAllByUserIdBetweenDates(userId, from, until);
-    }
-    console.log(data);
-    if (!data.length) throw new NotFoundError('Water intake');
-
-    return jsonToCsv.waterIntake(data);
-};
-
-module.exports = { measurements, activities, meals, caloricTargets, waterIntake };

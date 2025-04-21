@@ -20,7 +20,7 @@ const activities = (data) => {
     data.forEach((m) => {
         console.log(m.date);
         rows.push(
-            `"${m.date || ''}",${m.name},${m.caloriesPerHour},${m.totalCalories},${m.durationInM}`
+            `"${m.date || ''}","${m.name}",${m.caloriesPerHour},${m.totalCalories},${m.durationInM}`
         );
     });
 
@@ -35,7 +35,7 @@ const meals = (data) => {
     data.forEach((m) => {
         console.log(m.date);
         rows.push(
-            `"${m.date || ''}",${m.name},${m.type},${m.per100.kcal},${m.per100.protein},${
+            `"${m.date || ''}","${m.name}","${m.type}",${m.per100.kcal},${m.per100.protein},${
                 m.per100.carb
             },${m.per100.fat},${m.per100.fibre},${m.per100.salt},${m.totalConsumed.quantity},${
                 m.totalConsumed.kcal
@@ -55,7 +55,7 @@ const caloricTargets = (data) => {
 
     data.forEach((c) => {
         rows.push(
-            `"${c.createdAt},${c.activityLevel}",${c.physicalGoal},${c.goalSpeed},${c.kcal},${c.protein},${c.carb},${c.fat},${c.proteinPerKg},${c.carbPerKg},${c.fatPerKg}`
+            `"${c.createdAt}","${c.activityLevel}","${c.physicalGoal}","${c.goalSpeed}",${c.kcal},${c.protein},${c.carb},${c.fat},${c.proteinPerKg},${c.carbPerKg},${c.fatPerKg}`
         );
     });
 

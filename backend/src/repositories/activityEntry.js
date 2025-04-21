@@ -2,7 +2,8 @@ const ActivityEntry = require('../models/ActivityEntry');
 
 const create = async (data) => await ActivityEntry.create(data);
 
-const findAllByUserId = async (userId) => await ActivityEntry.find({ user: userId });
+const findAllByUserId = async (userId) =>
+    await ActivityEntry.find({ user: userId }).sort({ date: 1 });
 
 const findAllByUserIdBetweenDates = async (userId, from, until) =>
     await ActivityEntry.find({
@@ -11,7 +12,7 @@ const findAllByUserIdBetweenDates = async (userId, from, until) =>
             $gte: new Date(from),
             $lte: new Date(until),
         },
-    });
+    }).sort({ date: 1 });
 
 const findAllByDateAndUserId = async (date, userId) =>
     await ActivityEntry.find({ date, user: userId });

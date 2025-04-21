@@ -2,7 +2,7 @@ const MealEntry = require('../models/MealEntry');
 
 const createMany = async (data) => await MealEntry.insertMany(data);
 
-const findAllByUserId = async (userId) => await MealEntry.find({ user: userId });
+const findAllByUserId = async (userId) => await MealEntry.find({ user: userId }).sort({ date: 1 });
 
 const findAllByDateAndUserId = async (date, userId) => await MealEntry.find({ date, user: userId });
 
@@ -13,7 +13,7 @@ const findAllByUserIdBetweenDates = async (userId, from, until) =>
             $gte: new Date(from),
             $lte: new Date(until),
         },
-    });
+    }).sort({ date: 1 });
 
 const findByIdAndDateAndUserId = async (id, date, userId) =>
     await MealEntry.findOne({ _id: id, date, user: userId });

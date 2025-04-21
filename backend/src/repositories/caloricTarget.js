@@ -4,7 +4,8 @@ const create = async (data) => await CaloricTarget.create(data);
 
 const findById = async (id) => await CaloricTarget.findById(id);
 
-const findAllByUserId = async (userId) => await CaloricTarget.find({ user: userId });
+const findAllByUserId = async (userId) =>
+    await CaloricTarget.find({ user: userId }).sort({ createdAt: 1 });
 
 const findAllByUserIdBetweenDates = async (userId, from, until) =>
     await CaloricTarget.find({
@@ -13,7 +14,7 @@ const findAllByUserIdBetweenDates = async (userId, from, until) =>
             $gte: new Date(from),
             $lte: new Date(until),
         },
-    });
+    }).sort({ createdAt: 1 });
 
 const updateByIdAndUserId = async (id, userId, data) =>
     await CaloricTarget.findOneAndUpdate(

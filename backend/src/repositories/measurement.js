@@ -2,7 +2,8 @@ const Measurement = require('../models/Measurement');
 
 const createOne = async (data) => await Measurement.create(data);
 
-const findAllByUserId = async (userId) => await Measurement.find({ user: userId });
+const findAllByUserId = async (userId) =>
+    await Measurement.find({ user: userId }).sort({ date: 1 });
 
 const findAllByUserIdBetweenDates = async (userId, from, until) =>
     await Measurement.find({
@@ -11,7 +12,7 @@ const findAllByUserIdBetweenDates = async (userId, from, until) =>
             $gte: new Date(from),
             $lte: new Date(until),
         },
-    });
+    }).sort({ date: 1 });
 
 const updateByIdAndUserId = async (id, userId, data) =>
     await Measurement.findOneAndUpdate({ _id: id, user: userId }, { $set: data }, { new: true });

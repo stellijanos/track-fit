@@ -2,39 +2,22 @@ const catchAsync = require('../utils/functions/catchAsync');
 const csvExportService = require('../services/csvExport');
 const CSVResponse = require('../utils/classes/CSVResponse');
 
-const measurements = catchAsync(async (req, res, next) => {
+/**
+ * Generic data csv export for the current authenticated user.
+ *
+ * @route GET /users/me/caloric-targets
+ * @access Private
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
+ * @returns {void} - Responds with success message and the exported data (200)
+ * @throws {NotFoundError} - Data not found (404)
+ * @throws {UnprocessableEntityError} - Exports for provided subject not supported (422)
+ */
+module.exports = catchAsync(async (req, res, next) => {
     const { from, until } = req.query;
-    const data = await csvExportService.measurements(req.userId, from, until);
+    const { subject } = req.params;
+    const data = await csvExportService(req.userId, from, until, subject);
 
-    next(new CSVResponse(data, `measurements-${Date.now()}`));
+    next(new CSVResponse(data, `${subject}-${Date.now()}`));
 });
-
-const activities = catchAsync(async (req, res, next) => {
-    const { from, until } = req.query;
-    const data = await csvExportService.activities(req.userId, from, until);
-
-    next(new CSVResponse(data, `activities-${Date.now()}`));
-});
-
-const meals = catchAsync(async (req, res, next) => {
-    const { from, until } = req.query;
-    const data = await csvExportService.meals(req.userId, from, until);
-
-    next(new CSVResponse(data, `meals-${Date.now()}`));
-});
-
-const caloricTargets = catchAsync(async (req, res, next) => {
-    const { from, until } = req.query;
-    const data = await csvExportService.caloricTargets(req.userId, from, until);
-
-    next(new CSVResponse(data, `caloric-targets-${Date.now()}`));
-});
-
-const waterIntake = catchAsync(async (req, res, next) => {
-    const { from, until } = req.query;
-    const data = await csvExportService.waterIntake(req.userId, from, until);
-
-    next(new CSVResponse(data, `water-intake-${Date.now()}`));
-});
-
-module.exports = { measurements, activities, meals, caloricTargets, waterIntake };
