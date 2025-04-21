@@ -22,9 +22,6 @@ app.use(cookieParser());
 app.use(requestLoggerMiddleware);
 
 app.use('/api', apiRoutes, successHandleMiddleware, errorHandleMiddleware, notFoundMiddleware);
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/frontend', 'index.html'));
-});
+app.use('/', express.static(path.join(__dirname, '../public/frontend')));
 
 module.exports = app;

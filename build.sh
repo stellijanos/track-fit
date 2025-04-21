@@ -2,6 +2,7 @@
 
 FRONTEND_DIR="./frontend"
 BACKEND_PUBLIC_FRONTEND_DIR="./backend/public/frontend"
+APP_NAME="frontend"
 
 set -e
 
@@ -18,6 +19,6 @@ echo "Cleaning old files from backend public frontend folder..."
 rm -rf "$BACKEND_PUBLIC_FRONTEND_DIR"/*
 
 echo "Copying frontend build to backend public folder..."
-cp -r "$FRONTEND_DIR"/dist/angular-app/browser/* "$BACKEND_PUBLIC_FRONTEND_DIR"
+cp -r "$FRONTEND_DIR"/dist/$APP_NAME/browser/* "$BACKEND_PUBLIC_FRONTEND_DIR"
 
 echo "Frontend build successfully copied to backend/public/frontend."
