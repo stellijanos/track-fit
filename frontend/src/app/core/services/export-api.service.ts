@@ -15,11 +15,11 @@ export class ExportApiService {
 
     constructor(private http: HttpClient) { }
 
-    pdf(mealPlanId: string): Observable<EmptyResponse> {
+    getPdf(mealPlanId: string): Observable<EmptyResponse> {
         return this.http.get<EmptyResponse>(`${this.url}/pdf/meal-plans/${mealPlanId}`);
     }
 
-    csv(subject: string, from?: string, until?: string): Observable<EmptyResponse> {
+    getCsv(subject: string, from?: string, until?: string): Observable<EmptyResponse> {
         let url = `${this.url}/csv/${subject}`
         if (from && until) {
             url = `${url}?from=${from}&until=${until}`

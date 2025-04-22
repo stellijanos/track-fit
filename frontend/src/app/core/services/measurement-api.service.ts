@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 
 type MeasurementResponse = ApiResponse<'measurement', Measurement>;
 type MeasurementsResponse = ApiResponse<'measurements', Measurement[]>;
+type EmptyResponse = ApiResponse<'', undefined>;
 
 @Injectable({
     providedIn: 'root'
@@ -29,8 +30,8 @@ export class MeasurementApiService {
         return this.http.patch<MeasurementResponse>(`${this.url}/${id}`, data);
     }
 
-    deleteMeasurement(id: string): Observable<MeasurementResponse> {
-        return this.http.delete<MeasurementResponse>(`${this.url}/${id}`);
+    deleteMeasurement(id: string): Observable<EmptyResponse> {
+        return this.http.delete<EmptyResponse>(`${this.url}/${id}`);
     }
 
 }

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../models/api-response.model';
-import { MealEntry } from '../models/meal-entry.model';
+import { MealEntry, MealEntryRequest } from '../models/meal-entry.model';
 import { Observable } from 'rxjs';
 
 type MealEntryResponse = ApiResponse<'mealEntry', MealEntry>;
@@ -19,7 +19,7 @@ export class MealEntryApiService {
 
     constructor(private http: HttpClient) { }
 
-    create(date: string, data: MealEntry): Observable<MealEntryResponse> {
+    create(date: string, data: MealEntryRequest): Observable<MealEntryResponse> {
         return this.http.post<MealEntryResponse>(`${this.url}/${date}/meals`, data);
     }
 

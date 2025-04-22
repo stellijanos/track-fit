@@ -8,3 +8,9 @@ export interface ActivityEntry {
     createdAt: Date,
     updatedAt: Date,
 }
+
+export interface ActivityEntryRequest {
+    name: string,
+    durationInM: number,
+    additionalInfo: string
+}

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiResponse } from '../models/api-response.model';
-import { MealPlan } from '../models/meal-plan.model';
+import { MealPlan, MealPlanRequest } from '../models/meal-plan.model';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
@@ -19,7 +19,7 @@ export class MealPlanApiService {
     constructor(private http: HttpClient) { }
 
 
-    create(data: MealPlan): Observable<MealPlanResponse> {
+    create(data: MealPlanRequest): Observable<MealPlanResponse> {
         return this.http.post<MealPlanResponse>(this.url, data);
     }
 

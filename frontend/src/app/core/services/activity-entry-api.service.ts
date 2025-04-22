@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../models/api-response.model';
-import { ActivityEntry } from '../models/activity-entry.model';
+import { ActivityEntry, ActivityEntryRequest } from '../models/activity-entry.model';
 import { Observable } from 'rxjs';
 
 type ActivityEntryResponse = ApiResponse<'activityEntry', ActivityEntry>;
@@ -19,7 +19,7 @@ export class ActivityEntryApiService {
 
     constructor(private http: HttpClient) { }
 
-    create(date: string, data: ActivityEntry): Observable<ActivityEntryResponse> {
+    create(date: string, data: ActivityEntryRequest): Observable<ActivityEntryResponse> {
         return this.http.post<ActivityEntryResponse>(`${this.url}/${date}/activities`, data);
     }
 

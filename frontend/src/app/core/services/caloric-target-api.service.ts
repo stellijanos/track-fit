@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { CaloricTarget } from '../models/caloric-target.model';
+import { CaloricTarget, CaloricTargetRequest } from '../models/caloric-target.model';
 import { ApiResponse } from '../models/api-response.model';
 import { Observable } from 'rxjs';
 
@@ -20,7 +20,7 @@ export class CaloricTargetApiService {
     constructor(private http: HttpClient) { }
 
 
-    create(data: CaloricTarget): Observable<CaloricTargetResponse> {
+    create(data: CaloricTargetRequest): Observable<CaloricTargetResponse> {
         return this.http.post<CaloricTargetResponse>(this.url, data);
     }
 

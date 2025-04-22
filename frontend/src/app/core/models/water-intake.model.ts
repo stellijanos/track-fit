@@ -9,3 +9,7 @@ export interface WaterIntake {
     id: string,
     entries: WaterEntry[]
 }
+
+export interface WaterEntryRequest {
+    quantity: number
+}
