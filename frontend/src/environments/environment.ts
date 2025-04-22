@@ -1,1 +1,4 @@
-export const environment = {};
+export const environment = {
+    apiUrl: 'https://track-fit.stellijanos.com/api',
+    production: true
+};
