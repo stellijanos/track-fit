@@ -1,0 +1,37 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { ApiResponse } from '../models/api-response.model';
+import { ActivityEntry } from '../models/activity-entry.model';
+import { Observable } from 'rxjs';
+
+type ActivityEntryResponse = ApiResponse<'activityEntry', ActivityEntry>;
+type ActivityEntrysResponse = ApiResponse<'activityEntries', ActivityEntry[]>;
+type EmptyResponse = ApiResponse<'', undefined>;
+
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ActivityEntryApiService {
+
+    private url = `${environment.apiUrl}/users/me/entries`;
+
+    constructor(private http: HttpClient) { }
+
+    create(date: string, data: ActivityEntry): Observable<ActivityEntryResponse> {
+        return this.http.post<ActivityEntryResponse>(`${this.url}/${date}/activities`, data);
+    }
+
+    getAll(date: String): Observable<ActivityEntrysResponse> {
+        return this.http.get<ActivityEntrysResponse>(`${this.url}/${date}/activities`);
+    }
+
+    update(id: string, date: string, data: ActivityEntry): Observable<EmptyResponse> {
+        return this.http.patch<EmptyResponse>(`${this.url}/${date}/activities/${id}`, data);
+    }
+
+    delete(id: string, date: string): Observable<EmptyResponse> {
+        return this.http.delete<EmptyResponse>(`${this.url}/${date}/activities/${id}`);
+    }
+}
