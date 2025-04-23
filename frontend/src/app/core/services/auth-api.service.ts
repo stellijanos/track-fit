@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ForgotPassword, Login, Register, ValidateResetPassword } from '../models/auth.model';
+import { ChangePassword, ForgotPassword, Login, Register, ResetPassword, ValidateResetPassword } from '../models/auth.model';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../models/api-response.model';
 import { environment } from '../../../environments/environment';
@@ -35,16 +35,16 @@ export class AuthApiService {
         return this.http.post<MessageResponse>(`${this.authUrl}/password/reset-code/validate`, data);
     }
 
-    resetPassword(data: ValidateResetPassword): Observable<MessageResponse> {
+    resetPassword(data: ResetPassword): Observable<MessageResponse> {
         return this.http.put<MessageResponse>(`${this.authUrl}/password/reset`, data);
     }
 
-    changePassword(data: ValidateResetPassword): Observable<MessageResponse> {
+    changePassword(data: ChangePassword): Observable<MessageResponse> {
         return this.http.put<MessageResponse>(`${this.authUrl}/password/change`, data);
     }
 
-    refreshToken(data: ValidateResetPassword): Observable<TokenResponse> {
-        return this.http.post<TokenResponse>(`${this.authUrl}/token/refresh`, data);
+    refreshToken(): Observable<TokenResponse> {
+        return this.http.post<TokenResponse>(`${this.authUrl}/token/refresh`, {});
     }
 
     logout(): Observable<MessageResponse> {
