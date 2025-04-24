@@ -1,0 +1,13 @@
+.not__found {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.not__found__text {
+    font-weight: bold;
+    font-size: 5rem;
+    text-align: center;
+}
