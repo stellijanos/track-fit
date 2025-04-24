@@ -19,14 +19,14 @@ export class MeasurementApiService {
     constructor(private http: HttpClient) { }
 
 
-    createMeasurement(data: Measurement): Observable<MeasurementResponse> {
+    createMeasurement(data: Omit<Measurement, 'id' | 'createdAt' | 'updatedAt'>): Observable<MeasurementResponse> {
         return this.http.post<MeasurementResponse>(this.url, data);
     }
     getMeasurements(): Observable<MeasurementsResponse> {
         return this.http.get<MeasurementsResponse>(this.url);
     }
 
-    updateMeasurement(id: string, data: Measurement): Observable<MeasurementResponse> {
+    updateMeasurement(id: string, data: Omit<Measurement, 'id' | 'createdAt' | 'updatedAt'>): Observable<MeasurementResponse> {
         return this.http.patch<MeasurementResponse>(`${this.url}/${id}`, data);
     }
 
