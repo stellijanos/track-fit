@@ -1,0 +1,45 @@
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthState } from '../../../core/states/auth.state';
+import { matchValidator } from '../../../core/validators/password-match.validator';
+import { Register } from '../../../core/models/auth.model';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
+@Component({
+    selector: 'app-register',
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.css', '../styles.css']
+})
+export class RegisterComponent {
+
+    form !: FormGroup;
+
+    constructor(private fb: FormBuilder, private authState: AuthState) {
+    }
+
+    ngOnInit(): void {
+        this.initForm();
+    }
+
+    initForm() {
+        this.form = this.fb.group({
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
+            phone: ['', Validators.required],
+            birthDate: ['', Validators.required],
+            password: ['', Validators.required],
+            passwordConfirm: ['', Validators.required],
+            gender: ['', [Validators.required, Validators.pattern(/^(male|female|other)$/)]],
+        }, {
+            validators: matchValidator('password', 'passwordConfirm')
+        });
+    }
+
+    onSubmit() {
+        if (!this.form.valid) return;
+        this.authState.register(this.form.value as Register);
+    }
+}

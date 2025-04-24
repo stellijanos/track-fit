@@ -1,22 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthState } from '../../core/states/auth.state';
-import { Router } from '@angular/router';
-import { Login } from '../../core/models/auth.model';
+import { AuthState } from '../../../core/states/auth.state';
+import { Login } from '../../../core/models/auth.model';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-login',
-    imports: [CommonModule, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
     templateUrl: './login.component.html',
-    styleUrl: './login.component.css'
+    styleUrls: ['./login.component.css', '../styles.css']
 })
 export class LoginComponent implements OnInit {
 
     form !: FormGroup;
 
-    constructor(private router: Router, private fb: FormBuilder, private authState: AuthState) {
-
+    constructor(private fb: FormBuilder, private authState: AuthState) {
     }
 
 
