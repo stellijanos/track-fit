@@ -1,4 +1,5 @@
 const path = require('path');
+const cors = require('cors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 
@@ -15,6 +16,13 @@ createDirIfNotExists(constants.LOGS_BASE_DIR);
 const app = express();
 
 app.set('trust proxy', 1);
+
+app.use(
+    cors({
+        origin: 'http://localhost:4200',
+        credentials: true,
+    })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));

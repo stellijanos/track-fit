@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+    --dark-bg: #328E6E;
+    --dar-text: #67AE6E;
+    --light-bg: #90C67C;
+    --light-text: #E1EEBC;
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-down {
+    animation: fadeInDown 0.4s ease-out;
+}

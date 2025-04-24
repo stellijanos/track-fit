@@ -39,6 +39,7 @@ module.exports = (result, req, res, next) => {
         const options = {
             httpOnly: true,
             secure: req.secure,
+            path: '/',
             sameSite: 'Strict',
         };
 

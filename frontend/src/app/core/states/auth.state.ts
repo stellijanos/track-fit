@@ -1,6 +1,7 @@
 import { computed, Injectable, signal } from "@angular/core";
 import { AuthApiService } from "../services/auth-api.service";
 import { ChangePassword, ForgotPassword, Login, Register, ResetPassword, ValidateResetPassword } from "../models/auth.model";
+import { Router } from "@angular/router";
 
 
 @Injectable({ providedIn: 'root' })
@@ -10,7 +11,7 @@ export class AuthState {
 
     readonly isLoggedIn = computed(() => !!this._accessToken())
 
-    constructor(private apiService: AuthApiService) { }
+    constructor(private router: Router, private apiService: AuthApiService) { }
 
 
     private setToken(token: string) {
@@ -25,6 +26,7 @@ export class AuthState {
         this.apiService.register(data).subscribe({
             next: (response) => {
                 this.setToken(response.data.accessToken);
+                this.router.navigate(['/']);
             },
             error: (response) => {
                 console.error(response.error.message)
@@ -37,6 +39,7 @@ export class AuthState {
         this.apiService.login(data).subscribe({
             next: (response) => {
                 this.setToken(response.data.accessToken);
+                this.router.navigate(['/']);
             },
             error: (response) => {
                 console.error(response.error.message)
