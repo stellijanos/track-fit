@@ -26,7 +26,7 @@ export class WaterIntakeApiService {
         return this.http.post<WaterIntakeResponse>(`${this.url}/${date}/water-intake`, data);
     }
 
-    delete(entryId: string, date: string): Observable<EmptyResponse> {
-        return this.http.delete<EmptyResponse>(`${this.url}/${date}/water-intake/${entryId}`);
+    delete(entryId: string, date: string): Observable<WaterIntakeResponse> {
+        return this.http.delete<WaterIntakeResponse>(`${this.url}/${date}/water-intake/${entryId}`);
     }
 }
