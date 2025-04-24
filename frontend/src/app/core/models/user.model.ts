@@ -8,10 +8,10 @@ export interface User {
     email: string,
     phone: string,
     birthDate: Date,
-    gender: 'male' | 'female' | 'other'
+    gender: 'male' | 'female' | 'other' | ''
     height: number,
     password: string,
-    role: 'client' | 'admin' | 'other',
+    role: 'client' | 'admin' | 'other' | '',
     profilePicture: string,
     lastMeasurement: Measurement,
     currentWaterTarget: {

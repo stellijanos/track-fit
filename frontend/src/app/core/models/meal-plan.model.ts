@@ -32,6 +32,7 @@ export enum MealPlanType {
     THREE_DAY = 'three_day',
     FIVE_DAY = 'five_day',
     SEVEN_DAY = 'seven_day',
+    DEFAULT = ''
 }
 
 
@@ -46,6 +47,7 @@ export enum DietaryPreference {
     GLUTEN_FREE = 'gluten_free',
     MEDITERRANEAN = 'mediterranean',
     PALEO = 'paleo',
+    DEFAULT = ''
 }
 
 
@@ -58,6 +60,7 @@ export enum DietaryRestriction {
     SHELLFISH = 'shellfish',
     FISH = 'fish',
     NIGHTSHADES = 'nightshades',
+    DEFAULT = ''
 }
 
 
@@ -66,7 +69,7 @@ export interface MealPlan {
     name: string,
     type: MealPlanType,
     preference: DietaryPreference,
-    mealsPerDay: 1 | 2 | 3 | 4 | 5,
+    mealsPerDay: 1 | 2 | 3 | 4 | 5 | -1,
     restrictions: DietaryRestriction,
     preferredFoods: string[],
     excludedFoods: string[],
