@@ -18,9 +18,6 @@ export class CaloricTargetState {
             this.api.getAll().subscribe({
                 next: (res) => {
                     this._targets.set(res.data.caloricTargets);
-                },
-                error: (err) => {
-                    console.error(err.error.message);
                 }
             });
         }
@@ -30,20 +27,14 @@ export class CaloricTargetState {
         this.api.create(data).subscribe({
             next: (res) => {
                 this._targets.update(list => [...list, res.data.caloricTarget]);
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }
 
     deleteTarget(id: string) {
         this.api.delete(id).subscribe({
-            next: () => {
+            next: (res) => {
                 this._targets.update(list => list.filter(t => t.id !== id));
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }

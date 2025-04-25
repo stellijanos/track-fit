@@ -17,9 +17,6 @@ export class MealPlanState {
             this.api.getAllPreviews().subscribe({
                 next: (res) => {
                     this._mealPlans.set(res.data.mealPlans);
-                },
-                error: (err) => {
-                    console.error(err.error.message);
                 }
             });
         }
@@ -29,9 +26,6 @@ export class MealPlanState {
         this.api.get(id).subscribe({
             next: (res) => {
                 this._selectedMealPlan.set(res.data.mealPlan);
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }
@@ -41,9 +35,6 @@ export class MealPlanState {
             next: (res) => {
                 this._mealPlans.update(list => [...list, res.data.mealPlan]);
                 this._selectedMealPlan.set(res.data.mealPlan); // optional
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }
@@ -55,9 +46,6 @@ export class MealPlanState {
                 if (this._selectedMealPlan()?.id === id) {
                     this._selectedMealPlan.set(null);
                 }
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }

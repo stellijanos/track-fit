@@ -1,0 +1,6 @@
+<div class="message-container">
+    <div *ngFor="let msg of messages()" class="message alert alert-dismissible" [ngClass]="msg.type"
+        (click)="dismiss(msg.id)">
+        <span>{{ msg.text }}</span>
+    </div>
+</div>

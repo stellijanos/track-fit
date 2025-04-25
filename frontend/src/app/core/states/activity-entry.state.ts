@@ -15,35 +15,26 @@ export class ActivityEntryState {
 
     loadEntries(date: string) {
         this.api.getAll(date).subscribe({
-            next: (response) => {
-                this._entries.set(response.data.activityEntries);
-            },
-            error: (err) => {
-                console.error(err.error.message);
+            next: (res) => {
+                this._entries.set(res.data.activityEntries);
             }
         });
     }
 
     createEntry(date: string, data: ActivityEntryRequest) {
         this.api.create(date, data).subscribe({
-            next: (response) => {
-                this._entries.update(list => [...list, response.data.activityEntry]);
-            },
-            error: (err) => {
-                console.error(err.error.message);
+            next: (res) => {
+                this._entries.update(list => [...list, res.data.activityEntry]);
             }
         });
     }
 
     updateEntry(id: string, date: string, updatedData: ActivityEntry) {
         this.api.update(id, date, updatedData).subscribe({
-            next: () => {
+            next: (res) => {
                 this._entries.update(list => list.map(entry =>
-                    entry.id === id ? { ...entry, ...updatedData } : entry
+                    entry.id === id ? res.data.activityEntry : entry
                 ));
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }
@@ -52,9 +43,6 @@ export class ActivityEntryState {
         this.api.delete(id, date).subscribe({
             next: () => {
                 this._entries.update(list => list.filter(entry => entry.id !== id));
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }

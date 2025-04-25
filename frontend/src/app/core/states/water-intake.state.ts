@@ -15,9 +15,6 @@ export class WaterIntakeState {
             this.api.get(date).subscribe({
                 next: (res) => {
                     this._intake.set(res.data.waterIntake);
-                },
-                error: (err) => {
-                    console.error(err.error.message);
                 }
             });
         }
@@ -27,9 +24,6 @@ export class WaterIntakeState {
         this.api.create(date, data).subscribe({
             next: (res) => {
                 this._intake.set(res.data.waterIntake);
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }
@@ -38,9 +32,6 @@ export class WaterIntakeState {
         this.api.delete(entryId, date).subscribe({
             next: (res) => {
                 this._intake.set(res.data.waterIntake)
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }

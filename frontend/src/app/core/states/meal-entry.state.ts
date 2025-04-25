@@ -18,9 +18,6 @@ export class MealEntryState {
             this.api.getAll(date).subscribe({
                 next: (res) => {
                     this._meals.set(res.data.mealEntries);
-                },
-                error: (err) => {
-                    console.error(err.error.message);
                 }
             });
         }
@@ -30,9 +27,6 @@ export class MealEntryState {
         this.api.create(date, data).subscribe({
             next: (res) => {
                 this._meals.update(list => [...list, res.data.mealEntry]);
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }
@@ -43,9 +37,6 @@ export class MealEntryState {
                 this._meals.update(list => list.map(meal =>
                     meal.id === id ? { ...meal, ...data } : meal
                 ));
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }
@@ -54,9 +45,6 @@ export class MealEntryState {
         this.api.delete(id, date).subscribe({
             next: () => {
                 this._meals.update(list => list.filter(meal => meal.id !== id));
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }

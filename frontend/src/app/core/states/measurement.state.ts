@@ -14,9 +14,6 @@ export class MeasurementState {
             this.api.getMeasurements().subscribe({
                 next: (res) => {
                     this._measurements.set(res.data.measurements);
-                },
-                error: (err) => {
-                    console.error(err.error.message);
                 }
             });
         }
@@ -26,9 +23,6 @@ export class MeasurementState {
         this.api.createMeasurement(data).subscribe({
             next: (res) => {
                 this._measurements.update(list => [...list, res.data.measurement]);
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }
@@ -39,9 +33,6 @@ export class MeasurementState {
                 this._measurements.update(list =>
                     list.map(m => m.id === id ? res.data.measurement : m)
                 );
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }
@@ -50,9 +41,6 @@ export class MeasurementState {
         this.api.deleteMeasurement(id).subscribe({
             next: () => {
                 this._measurements.update(list => list.filter(m => m.id !== id));
-            },
-            error: (err) => {
-                console.error(err.error.message);
             }
         });
     }

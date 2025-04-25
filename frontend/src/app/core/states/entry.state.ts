@@ -14,9 +14,6 @@ export class EntryState {
             this.api.get(date).subscribe({
                 next: (res) => {
                     this._entry.set(res.data.entries);
-                },
-                error: (err) => {
-                    console.error(err.error.message);
                 }
             });
         }

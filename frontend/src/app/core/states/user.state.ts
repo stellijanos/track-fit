@@ -4,7 +4,6 @@ import { User } from "../models/user.model";
 import { defaultUser } from "../models/model-defaults";
 import { AuthState } from "./auth.state";
 
-
 @Injectable({ providedIn: 'root' })
 export class UserState {
 
@@ -32,22 +31,16 @@ export class UserState {
 
     getMe() {
         this.apiService.getMe().subscribe({
-            next: (response) => {
-                this.setUser(response.data.user);
-            },
-            error: (response) => {
-                console.error(response.error.message);
+            next: (res) => {
+                this.setUser(res.data.user);
             }
         })
     }
 
     updateMe(data: User) {
         this.apiService.updateMe(data).subscribe({
-            next: (response) => {
-                this.setUser(response.data.user);
-            },
-            error: (response) => {
-                console.error(response.error.message);
+            next: (res) => {
+                this.setUser(res.data.user);
             }
         })
     }
@@ -57,30 +50,21 @@ export class UserState {
             next: () => {
                 this.clearUser();
             },
-            error: (response) => {
-                console.error(response.error.message);
-            }
         })
     }
 
     changeProfilePicture(data: FormData) {
         this.apiService.changeProfilePicture(data).subscribe({
-            next: (response) => {
-                this.setUser(response.data.user);
-            },
-            error: (response) => {
-                console.error(response.error.message);
+            next: (res) => {
+                this.setUser(res.data.user);
             }
         })
     }
 
     deleteProfilePicture() {
         this.apiService.deleteMe().subscribe({
-            next: (response) => {
-                this.setUser(response.data.user);
-            },
-            error: (response) => {
-                console.error(response.error.message);
+            next: (res) => {
+                this.setUser(res.data.user);
             }
         })
     }

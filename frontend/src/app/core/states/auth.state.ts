@@ -3,7 +3,6 @@ import { AuthApiService } from "../services/auth-api.service";
 import { ChangePassword, ForgotPassword, Login, Register, ResetPassword, ValidateResetPassword } from "../models/auth.model";
 import { Router } from "@angular/router";
 
-
 @Injectable({ providedIn: 'root' })
 export class AuthState {
 
@@ -35,12 +34,11 @@ export class AuthState {
 
     register(data: Register) {
         this.apiService.register(data).subscribe({
-            next: (response) => {
-                this.setToken(response.data.accessToken);
+            next: (res) => {
+                this.setToken(res.data.accessToken);
                 this.router.navigate(['/']);
             },
-            error: (response) => {
-                console.error(response.error.message)
+            error: (res) => {
                 this.clearToken();
             }
         });
@@ -48,35 +46,27 @@ export class AuthState {
 
     login(data: Login) {
         this.apiService.login(data).subscribe({
-            next: (response) => {
-                this.setToken(response.data.accessToken);
+            next: (res) => {
+                this.setToken(res.data.accessToken);
                 this.router.navigate(['/']);
             },
-            error: (response) => {
-                console.error(response.error.message)
+            error: (res) => {
+                console.error()
                 this.clearToken();
             }
         });
     }
 
     forgotPassword(data: ForgotPassword) {
-        this.apiService.forgotPassword(data).subscribe({
-            next: (response) => {
-
-            },
-            error: (response) => {
-                console.error(response.error.message)
-            }
-        });
+        this.apiService.forgotPassword(data);
     }
 
     validatePasswordResetCode(data: ValidateResetPassword) {
         this.apiService.validatePasswordResetCode(data).subscribe({
-            next: (response) => {
+            next: () => {
                 this.setResetPasswordCode(data.code);
             },
-            error: (response) => {
-                console.error(response.error.message);
+            error: () => {
                 this.clearResetPasswordCode();
             }
         });
@@ -84,33 +74,21 @@ export class AuthState {
 
     resetPassword(data: ResetPassword) {
         this.apiService.resetPassword(data).subscribe({
-            next: (response) => {
+            next: () => {
                 this.router.navigate(['/login']);
-            },
-            error: (response) => {
-                console.error(response.error.message)
             }
         });
     }
 
     changePassword(data: ChangePassword) {
-        this.apiService.changePassword(data).subscribe({
-            next: (response) => {
-
-            },
-            error: (response) => {
-                console.error(response.error.message)
-            }
-        });
+        this.apiService.changePassword(data);
     }
 
     refreshToken() {
         this.apiService.refreshToken().subscribe({
-            next: (response) => {
-
+            next: () => {
             },
-            error: (response) => {
-                console.error(response.error.message)
+            error: () => {
                 this.clearToken();
             }
         });
@@ -118,11 +96,8 @@ export class AuthState {
 
     logout() {
         this.apiService.logout().subscribe({
-            next: (response) => {
+            next: () => {
                 this.clearToken();
-            },
-            error: (response) => {
-                console.error(response.error.message)
             }
         });
     }
