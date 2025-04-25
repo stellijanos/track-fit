@@ -1,0 +1,9 @@
+.form {
+    max-width: 500px;
+    min-width: 300px;
+    margin: auto;
+}
+
+.form__navigate a {
+    color: #000;
+}

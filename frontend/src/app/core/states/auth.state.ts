@@ -8,8 +8,11 @@ import { Router } from "@angular/router";
 export class AuthState {
 
     private _accessToken = signal<string | null>(null);
+    private _resetPasswordCode = signal<string | null>(null);
 
-    readonly isLoggedIn = computed(() => !!this._accessToken())
+    readonly isLoggedIn = computed(() => !!this._accessToken());
+    readonly isValidResetPasswordCode = computed(() => !!this._resetPasswordCode());
+    readonly resetPasswordCode = computed(() => this._resetPasswordCode());
 
     constructor(private router: Router, private apiService: AuthApiService) { }
 
@@ -20,6 +23,14 @@ export class AuthState {
 
     private clearToken() {
         this._accessToken.set(null);
+    }
+
+    private setResetPasswordCode(code: string) {
+        this._resetPasswordCode.set(code);
+    }
+
+    private clearResetPasswordCode() {
+        this._resetPasswordCode.set(null);
     }
 
     register(data: Register) {
@@ -51,7 +62,7 @@ export class AuthState {
     forgotPassword(data: ForgotPassword) {
         this.apiService.forgotPassword(data).subscribe({
             next: (response) => {
-                this.setToken(response.message);
+
             },
             error: (response) => {
                 console.error(response.error.message)
@@ -62,10 +73,11 @@ export class AuthState {
     validatePasswordResetCode(data: ValidateResetPassword) {
         this.apiService.validatePasswordResetCode(data).subscribe({
             next: (response) => {
-                this.setToken(response.message);
+                this.setResetPasswordCode(data.code);
             },
             error: (response) => {
-                console.error(response.error.message)
+                console.error(response.error.message);
+                this.clearResetPasswordCode();
             }
         });
     }
@@ -73,7 +85,7 @@ export class AuthState {
     resetPassword(data: ResetPassword) {
         this.apiService.resetPassword(data).subscribe({
             next: (response) => {
-                this.setToken(response.message);
+                this.router.navigate(['/login']);
             },
             error: (response) => {
                 console.error(response.error.message)
@@ -84,7 +96,7 @@ export class AuthState {
     changePassword(data: ChangePassword) {
         this.apiService.changePassword(data).subscribe({
             next: (response) => {
-                this.setToken(response.message);
+
             },
             error: (response) => {
                 console.error(response.error.message)
@@ -95,7 +107,7 @@ export class AuthState {
     refreshToken() {
         this.apiService.refreshToken().subscribe({
             next: (response) => {
-                this.setToken(response.message);
+
             },
             error: (response) => {
                 console.error(response.error.message)
