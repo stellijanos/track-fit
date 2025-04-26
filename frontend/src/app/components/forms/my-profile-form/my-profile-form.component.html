@@ -1,0 +1,65 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form fade-in-down">
+    <h2 class="text-center">My Profile</h2>
+
+    <div class="mb-3">
+        <label for="firstName" class="form-label">First Name</label>
+        <input id="firstName" class="form-control" formControlName="firstName" placeholder="Enter your first name" />
+        <div *ngIf="form.get('firstName')?.invalid && form.get('firstName')?.touched">
+            <small class="error">First name is required.</small>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="lastName" class="form-label">Last Name</label>
+        <input id="lastName" class="form-control" formControlName="lastName" placeholder="Enter your last name" />
+        <div *ngIf="form.get('lastName')?.invalid && form.get('lastName')?.touched">
+            <small class="error">Last name is required.</small>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" class="form-control" formControlName="email" placeholder="Enter your email" />
+        <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+            <small class="error">Valid email is required.</small>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="phone" class="form-label">Phone</label>
+        <input id="phone" class="form-control" formControlName="phone" placeholder="Enter your phone number" />
+        <div *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
+            <small class="error">Phone number is required.</small>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="birthDate" class="form-label">Birth Date</label>
+        <input id="birthDate" class="form-control" type="date" formControlName="birthDate" />
+        <div *ngIf="form.get('birthDate')?.invalid && form.get('birthDate')?.touched">
+            <small class="error">Birth date is required.</small>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="gender" class="form-label">Gender</label>
+        <select id="gender" class="form-control" formControlName="gender">
+            <option value="">Select gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
+        <div *ngIf="form.get('gender')?.invalid && form.get('gender')?.touched">
+            <small class="error">Gender is required.</small>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="phone" class="form-label">Height</label>
+        <input id="phone" class="form-control" formControlName="phone" placeholder="Enter your height" />
+        <div *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
+        </div>
+    </div>
+
+    <button class="btn w-100 mb-5" type="submit" [disabled]="form.invalid">Update profile</button>
+</form>

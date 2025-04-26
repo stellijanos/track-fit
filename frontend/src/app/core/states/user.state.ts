@@ -7,18 +7,13 @@ import { AuthState } from "./auth.state";
 @Injectable({ providedIn: 'root' })
 export class UserState {
 
-    private _user = signal<User>(defaultUser());
+    private _user = signal(defaultUser());
+    private _userReady = signal(false);
 
     readonly user = computed(() => this._user())
+    readonly userReady = computed(() => this._userReady());
 
-    constructor(private apiService: UserApiService, private authState: AuthState) {
-        effect(() => {
-            if (this.authState.isLoggedIn()) {
-                this.getMe()
-            } else {
-                this.clearUser();
-            }
-        })
+    constructor(private apiService: UserApiService) {
     }
 
     private setUser(user: User) {
@@ -33,6 +28,10 @@ export class UserState {
         this.apiService.getMe().subscribe({
             next: (res) => {
                 this.setUser(res.data.user);
+                this._userReady.set(true);
+            },
+            error: () => {
+                this._userReady.set(true);
             }
         })
     }

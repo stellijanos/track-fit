@@ -1,13 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { GlobalMessageComponent } from "./shared/components/global-message/global-message.component";
+import { AuthState } from './core/states/auth.state';
 
 @Component({
-  selector: 'app-root',
-  imports: [RouterOutlet, GlobalMessageComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    selector: 'app-root',
+    imports: [RouterOutlet, GlobalMessageComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'Track-Fit';
+    title = 'Track-Fit';
+
+    private authState = inject(AuthState);
+
+    constructor() {
+        this.authState.initializeAuth();
+    }
 }
