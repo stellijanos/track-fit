@@ -1,0 +1,28 @@
+<nav class="bottom-nav navbar bg-light border-top fixed-bottom justify-content-around">
+
+    <!-- Left tab -->
+    <a class="nav-link text-center" routerLink="/home" routerLinkActive="active">
+        <i class="bi bi-house-fill fs-4"></i><br>
+        <small>Home</small>
+    </a>
+
+    <!-- Center quick-action -->
+    <div class="position-relative quick-action-container">
+        <button class="quick-action-btn" (click)="toggleQuickAction()" [class.rotated]="quickActionOpen"
+            aria-label="Quick Action">
+            <i class="bi bi-plus-lg"></i>
+        </button>
+
+        <div class="quick-modal" *ngIf="quickActionOpen">
+            <p class="m-0 p-2 text-white border-bottom">Create Post</p>
+            <p class="m-0 p-2 text-white border-bottom">Upload File</p>
+            <p class="m-0 p-2 text-white">New Event</p>
+        </div>
+    </div>
+
+    <!-- Right tab -->
+    <a class="nav-link text-center" routerLink="/profile" routerLinkActive="active">
+        <i class="bi bi-person-fill fs-4"></i><br>
+        <small>Account</small>
+    </a>
+</nav>
