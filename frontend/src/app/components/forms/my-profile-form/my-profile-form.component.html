@@ -55,11 +55,14 @@
     </div>
 
     <div class="mb-3">
-        <label for="phone" class="form-label">Height</label>
-        <input id="phone" class="form-control" formControlName="phone" placeholder="Enter your height" />
-        <div *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
+        <label for="height" class="form-label">Height</label>
+        <input id="height" class="form-control" formControlName="height" placeholder="Enter your height" />
+        <div *ngIf="form.get('height')?.invalid && form.get('height')?.touched">
         </div>
     </div>
 
-    <button class="btn w-100 mb-5" type="submit" [disabled]="form.invalid">Update profile</button>
+    <div class="d-flex flex-row gap-3">
+        <button class="btn w-100 mb-5" type="submit" [disabled]="form.invalid">Edit</button>
+        <button class="btn w-100 mb-5" type="submit" [disabled]="form.invalid">Update profile</button>
+    </div>
 </form>
