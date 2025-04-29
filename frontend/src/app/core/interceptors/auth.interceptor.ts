@@ -12,18 +12,20 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
     const isProtectedRoute = () => !req.url.includes('/auth') || req.url.includes('/change');
 
-    const clonedRequest = req.clone({
+    const cloneRequest = () => req.clone({
         withCredentials: true,
         ...(authState.isLoggedIn() && isProtectedRoute()
             ? { headers: req.headers.append('Authorization', `Bearer ${authState.accessToken()}`) }
             : {})
     });
 
-    if (!isProtectedRoute()) return next(clonedRequest).pipe(
+    if (!isProtectedRoute()) return next(cloneRequest()).pipe(
         tap(event => {
             if (event instanceof HttpResponse) {
                 const eventBody = event.body as ApiResponse<'', undefined>;
-                globalMessageState.show('success', eventBody.message);
+                if (!authState.isTokenRefreshing()) {
+                    globalMessageState.show('success', eventBody.message);
+                }
             }
         }),
         catchError((error: HttpErrorResponse) => {
@@ -37,12 +39,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const handle401Error = () => {
         return authState.refreshToken().pipe(
             switchMap(() => {
-                return next(clonedRequest);
+                return next(cloneRequest());
             })
         );
     }
 
-    return next(clonedRequest).pipe(
+    return next(cloneRequest()).pipe(
         tap(event => {
             if (event instanceof HttpResponse) {
                 const eventBody = event.body as ApiResponse<'', undefined>;

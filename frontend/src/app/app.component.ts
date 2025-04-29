@@ -13,9 +13,7 @@ import { BottomNavbarComponent } from "./shared/components/bottom-navbar/bottom-
 export class AppComponent {
     title = 'Track-Fit';
 
-    private authState = inject(AuthState);
-
-    constructor() {
+    constructor(private authState: AuthState) {
         this.authState.initializeAuth();
     }
 }
