@@ -8,6 +8,8 @@ import { MyProfileComponent } from './pages/user/my-profile/my-profile.component
 import { AccountComponent } from './pages/user/account/account.component';
 import { ChangePasswordComponent } from './pages/auth/change-password/change-password.component';
 import { MeasurementsComponent } from './pages/user/measurements/measurements.component';
+import { MeasurementFormComponent } from './components/forms/measurement-form/measurement-form.component';
+import { MeasurementListComponent } from './components/lists/measurement-list/measurement-list.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -16,7 +18,20 @@ export const routes: Routes = [
     { path: 'reset-password', component: ResetPasswordComponent },
     { path: 'account', component: AccountComponent },
     { path: 'account/me', component: MyProfileComponent },
-    { path: 'account/measurements', component: MeasurementsComponent },
+    {
+        path: 'account/measurements', component:MeasurementsComponent,
+        children: [
+            {
+                path: '', component: MeasurementListComponent
+            },
+            {
+                path: 'new', component: MeasurementFormComponent
+            },
+            {
+                path: ':id/edit', component: MeasurementFormComponent
+            },
+        ]
+    },
     { path: 'account/change-password', component: ChangePasswordComponent },
     { path: 'not-found', component: NotFoundComponent },
     { path: '**', redirectTo: 'not-found' }

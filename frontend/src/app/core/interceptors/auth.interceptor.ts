@@ -55,7 +55,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             if (event instanceof HttpResponse) {
                 const eventBody = event.body as ApiResponse<'', undefined>;
                 if (shouldNotify()) {
-                    globalMessageState.show('success', eventBody.message);
+                    globalMessageState.show('success', eventBody?.message || 'Successfully deleted.');
                 }
             }
         }),

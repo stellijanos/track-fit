@@ -12,7 +12,5 @@ import { RouterModule } from '@angular/router';
 export class TopNavbarComponent {
     @Input() pageTitle: string = '';
     @Input() backLink: string = '/';
-    @Input() rightText: string = '';
-    @Input() rightAction: () => void = () => { };
 
 }

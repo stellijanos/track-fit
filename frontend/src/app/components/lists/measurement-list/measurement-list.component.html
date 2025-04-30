@@ -1,0 +1,59 @@
+<div class="container py-3 measurements">
+    <div *ngIf="measurements.length > 0" class="mt-4">
+        <div class="list-group">
+            <div *ngFor="let m of measurements; let i = index" class="list-group-item list-group-item-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ m.date | date:'mediumDate' }}</strong>
+                        <div class="text-muted small">Recorded on {{ m.createdAt | date:'short' }}</div>
+                    </div>
+
+                    <div class="text-end">
+                        <div>Weight: {{ m.weight }} kg</div>
+                        <div>Body Fat: {{ m.bodyFatPercentage }}%</div>
+                        <div>SMM: {{ m.skeletalMuscleMass }} kg</div>
+                        <div *ngIf="i < measurements.length - 1" class="text-muted small mt-1">
+                            Δ Weight: {{ (m.weight - measurements[i + 1].weight) | number:'1.1-1' }} kg<br>
+                            Δ Body Fat: {{ (m.bodyFatPercentage - measurements[i + 1].bodyFatPercentage) |
+                            number:'1.1-1' }}%<br>
+                            Δ SMM: {{ (m.skeletalMuscleMass - measurements[i + 1].skeletalMuscleMass) | number:'1.1-1'
+                            }} kg
+                        </div>
+
+                        <div class="mt-2 d-flex gap-2 justify-content-end">
+                            <button class="btn btn-outline-primary btn-sm" (click)="onUpdate(m.id)">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" (click)="confirmDelete(m.id)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="measurements.length === 0" class="text-center text-muted mt-5">
+        No measurements available.
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade show d-block" tabindex="-1" *ngIf="deleteId" style="background: rgba(0, 0, 0, 0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" (click)="cancelDelete()"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this measurement?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+                    <button class="btn btn-danger" (click)="onDelete()">Yes, Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

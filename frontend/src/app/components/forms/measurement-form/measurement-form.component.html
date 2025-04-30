@@ -1,0 +1,25 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-3 border rounded bg-white shadow-sm">
+    <div class="mb-3">
+        <label class="form-label">Date</label>
+        <input type="datetime-local" class="form-control" formControlName="date">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Weight (kg)</label>
+        <input type="number" class="form-control" formControlName="weight">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Body Fat (%)</label>
+        <input type="number" class="form-control" formControlName="bodyFatPercentage">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Skeletal Muscle Mass (kg)</label>
+        <input type="number" class="form-control" formControlName="skeletalMuscleMass">
+    </div>
+
+    <button class="btn btn-primary w-100" [disabled]="form.invalid">
+        {{ measurement.id ? 'Update Measurement' : 'Add Measurement' }}
+    </button>
+</form>

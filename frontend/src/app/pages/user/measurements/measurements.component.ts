@@ -1,29 +1,43 @@
-import { Component, effect, OnInit } from '@angular/core';
-import { MeasurementState } from '../../../core/states/measurement.state';
-import { Measurement } from '../../../core/models/measurement.model';
-import { TopNavbarComponent } from "../../../shared/components/top-navbar/top-navbar.component";
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { filter } from 'rxjs';
+import { TopNavbarComponent } from "../../../shared/components/top-navbar/top-navbar.component";
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+
+type Mode = 'read' | 'create' | 'update';
 
 @Component({
     selector: 'app-measurements',
-    imports: [CommonModule, TopNavbarComponent],
+    standalone: true,
+    imports: [CommonModule, TopNavbarComponent, RouterOutlet],
     templateUrl: './measurements.component.html',
-    styleUrl: './measurements.component.css'
+    styleUrls: ['./measurements.component.css'],
 })
-export class MeasurementsComponent implements OnInit {
+export class MeasurementsComponent {
 
+    topNavBarContent = {
+        pageTitle: '',
+        backLink: '',
+    };
 
-    measurements: Measurement[] = [];
+    constructor(private router: Router, private route: ActivatedRoute) {
+        this.router.events
+            .pipe(filter(event => event instanceof NavigationEnd))
+            .subscribe(() => {
+                const currentRoute = this.router.url;
 
-    constructor(private measurementState: MeasurementState) {
-        effect(() => {
-            this.measurements = this.measurementState.measurements();
-            console.log(this.measurements);
-        })
-    }
-
-    ngOnInit(): void {
-
+                if (currentRoute.includes('/account/measurements') && (currentRoute.includes('/new') || currentRoute.includes('/edit'))) {
+                    this.topNavBarContent = {
+                        pageTitle: 'Add Measurement',
+                        backLink: '/account/measurements',
+                    };
+                } else if (currentRoute.includes('/account/measurements')) {
+                    this.topNavBarContent = {
+                        pageTitle: 'Measurements',
+                        backLink: '/account'
+                    };
+                }
+            });
     }
 
 }
