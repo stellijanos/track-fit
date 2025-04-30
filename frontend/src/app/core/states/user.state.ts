@@ -2,7 +2,6 @@ import { computed, effect, Injectable, signal } from "@angular/core";
 import { UserApiService } from "../services/user-api.service";
 import { User } from "../models/user.model";
 import { defaultUser } from "../models/model-defaults";
-import { AuthState } from "./auth.state";
 
 @Injectable({ providedIn: 'root' })
 export class UserState {

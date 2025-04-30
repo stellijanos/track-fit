@@ -29,6 +29,8 @@ app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 app.use(cookieParser());
 app.use(requestLoggerMiddleware);
 
+app.use('/api/images', express.static(path.join(__dirname, '../files/uploads/images/users')));
+
 app.use('/api', apiRoutes, successHandleMiddleware, errorHandleMiddleware, notFoundMiddleware);
 app.use('/', express.static(path.join(__dirname, '../public/frontend')));
 

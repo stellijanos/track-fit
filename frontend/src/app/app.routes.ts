@@ -5,12 +5,15 @@ import { ForgotPasswordComponent } from './pages/auth/forgot-password/forgot-pas
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ResetPasswordComponent } from './pages/auth/reset-password/reset-password.component';
 import { MyProfileComponent } from './pages/user/my-profile/my-profile.component';
+import { AccountComponent } from './pages/user/account/account.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
-    { path: '', component: MyProfileComponent },
-    { path: '**', component: NotFoundComponent }
+    { path: 'account', component: AccountComponent },
+    { path: 'account/me', component: MyProfileComponent },
+    { path: 'not-found', component: NotFoundComponent },
+    { path: '**', redirectTo: 'not-found' }
 ];

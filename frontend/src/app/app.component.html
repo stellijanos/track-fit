@@ -5,5 +5,5 @@
         <router-outlet></router-outlet>
     </main>
 
-    <app-bottom-navbar></app-bottom-navbar>
+    <app-bottom-navbar *ngIf="shouldShowNavbar()"></app-bottom-navbar>
 </div>

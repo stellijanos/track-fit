@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-bottom-navbar',
-    imports: [CommonModule],
+    imports: [CommonModule, RouterModule],
     templateUrl: './bottom-navbar.component.html',
     styleUrls: ['./bottom-navbar.component.css']
 })
