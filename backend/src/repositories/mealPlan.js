@@ -4,7 +4,7 @@ const create = async (data) => await MealPlan.create(data);
 
 const findAllPreviewByUserId = async (userId) =>
     await MealPlan.find({ user: userId }).select(
-        ' user name type preference mealsPerDay restrictions preferredFoods excludedFoods'
+        ' user name type preference mealsPerDay restrictions preferredFoods excludedFoods createdAt'
     );
 
 const findAllByUserId = async (userId) =>

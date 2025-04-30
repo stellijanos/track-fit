@@ -13,6 +13,8 @@ import { MeasurementListComponent } from './components/lists/measurement-list/me
 import { NavbarLayoutComponent } from './shared/layouts/navbar-layout/navbar-layout.component';
 import { CaloricTargetFormComponent } from './components/forms/caloric-target-form/caloric-target-form.component';
 import { CaloricTargetListComponent } from './components/lists/caloric-target-list/caloric-target-list.component';
+import { MealPlanListComponent } from './components/lists/meal-plan-list/meal-plan-list.component';
+import { MealPlanFormComponent } from './components/forms/meal-plan-form/meal-plan-form.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -34,7 +36,13 @@ export const routes: Routes = [
         children: [
             { path: '', component: CaloricTargetListComponent },
             { path: 'new', component: CaloricTargetFormComponent },
-            { path: ':id/edit', component: CaloricTargetFormComponent },
+        ]
+    },
+    {
+        path: 'meal-plans', component: NavbarLayoutComponent,
+        children: [
+            { path: '', component: MealPlanListComponent },
+            { path: 'new', component: MealPlanFormComponent },
         ]
     },
     { path: 'account/change-password', component: ChangePasswordComponent },

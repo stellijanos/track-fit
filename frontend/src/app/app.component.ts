@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { GlobalMessageComponent } from "./shared/components/global-message/global-message.component";
 import { AuthState } from './core/states/auth.state';
@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { UserState } from './core/states/user.state';
 import { MeasurementState } from './core/states/measurement.state';
 import { CaloricTargetState } from './core/states/caloric-target.state';
+import { MealPlanState } from './core/states/meal-plan.state';
 
 @Component({
     selector: 'app-root',
@@ -22,6 +23,7 @@ export class AppComponent {
         private userState: UserState,
         private measurementState: MeasurementState,
         private caloricTargetState: CaloricTargetState,
+        private mealPlanState: MealPlanState,
         private router: Router) {
         this.authState.initializeAuth();
 
@@ -30,6 +32,7 @@ export class AppComponent {
                 this.userState.getMe();
                 this.measurementState.loadMeasurements(true);
                 this.caloricTargetState.loadTargets(true);
+                this.mealPlanState.loadMealPlans(true);
             }
         });
     }
