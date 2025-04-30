@@ -85,7 +85,7 @@ export class AuthState {
     }
 
     changePassword(data: ChangePassword) {
-        this.apiService.changePassword(data);
+        this.apiService.changePassword(data).subscribe();
     }
 
     refreshToken(): Observable<void> {

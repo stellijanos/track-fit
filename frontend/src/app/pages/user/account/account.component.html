@@ -31,19 +31,30 @@
         </div>
     </div>
 
-    <!-- Sections -->
     <div class="mt-5">
-        <h5><i class="bi bi-rulers"></i> Measurements</h5>
-        <!-- measurements list here -->
+        <div class="list-group shadow-sm">
+            <div class="list-group-item d-flex align-items-center justify-content-between py-3 border-0 border-bottom">
+                <span><i class="bi bi-rulers me-2"></i> Measurements</span>
+            </div>
 
-        <h5 class="mt-4"><i class="bi bi-bullseye"></i> Caloric Targets</h5>
-        <!-- caloric targets display -->
+            <div class="list-group-item d-flex align-items-center justify-content-between py-3 border-0 border-bottom">
+                <span><i class="bi bi-bullseye me-2"></i> Caloric Targets</span>
+            </div>
 
-        <h5 class="mt-4"><i class="bi bi-calendar3"></i> Meal Plans</h5>
-        <!-- meal plans section -->
+            <div class="list-group-item d-flex align-items-center justify-content-between py-3 border-0 border-bottom">
+                <span><i class="bi bi-calendar3 me-2"></i> Meal Plans</span>
+            </div>
 
-        <button class="btn btn-danger mt-4" (click)="logout()">
-            <i class="bi bi-box-arrow-right"></i> Logout
-        </button>
+            <div class="list-group-item d-flex align-items-center justify-content-between py-3 border-0 border-bottom"
+                routerLink="/account/change-password">
+                <span><i class="bi bi-key me-2"></i> Change Password</span>
+            </div>
+
+            <button class="list-group-item btn btn-link text-danger d-flex align-items-center py-3 border-0"
+                (click)="logout()">
+                <i class="bi bi-box-arrow-right me-2"></i> Logout
+            </button>
+        </div>
     </div>
+
 </div>

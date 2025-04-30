@@ -1,3 +1,13 @@
 .img-thumbnail {
     width: 250px;
 }
+
+.list-group-item {
+    border-color: #eaeaea !important;
+    transition: background 0.2s ease;
+}
+
+.list-group-item:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}

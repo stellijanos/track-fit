@@ -10,6 +10,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const globalMessageState = inject(GlobalMessageState);
     const authState = inject(AuthState);
 
+
+    const shouldNotify = () => {
+        console.log(req.method, req.url);
+        return !authState.isTokenRefreshing() && req.method !== 'GET';
+    }
+
     const isProtectedRoute = () => !req.url.includes('/auth') || req.url.includes('/change');
 
     const cloneRequest = () => req.clone({
@@ -23,13 +29,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         tap(event => {
             if (event instanceof HttpResponse) {
                 const eventBody = event.body as ApiResponse<'', undefined>;
-                if (!authState.isTokenRefreshing()) {
+                if (shouldNotify()) {
                     globalMessageState.show('success', eventBody.message);
                 }
             }
         }),
         catchError((error: HttpErrorResponse) => {
-            if (!authState.isTokenRefreshing()) {
+            if (shouldNotify()) {
                 globalMessageState.show('error', error.error.message || 'An unknown error occured.');
             }
             return throwError(() => error);
@@ -48,7 +54,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         tap(event => {
             if (event instanceof HttpResponse) {
                 const eventBody = event.body as ApiResponse<'', undefined>;
-                globalMessageState.show('success', eventBody.message);
+                if (shouldNotify()) {
+                    globalMessageState.show('success', eventBody.message);
+                }
             }
         }),
         catchError((error: HttpErrorResponse) => {
