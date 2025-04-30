@@ -6,10 +6,11 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { calculateAge, calculateBMR, calculateIMC, calculateTDEE } from '../../../shared/functions/formulas';
 import { AuthState } from '../../../core/states/auth.state';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-account',
-    imports: [CommonModule],
+    imports: [CommonModule, RouterModule],
     templateUrl: './account.component.html',
     styleUrls: ['./account.component.css'],
 })
@@ -37,7 +38,6 @@ export class AccountComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.userState.getMe();
     }
 
     logout() {

@@ -20,12 +20,6 @@ export class MyProfileFormComponent implements OnInit {
 
     constructor(private fb: FormBuilder, private userState: UserState, private authState: AuthState) {
         effect(() => {
-            if (!this.authState.isTokenRefreshing() && this.authState.isLoggedIn()) {
-                this.userState.getMe();
-            }
-        });
-
-        effect(() => {
             if (this.userState.userReady()) {
                 this.user = this.userState.user();
                 this.initForm();
