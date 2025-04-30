@@ -26,7 +26,7 @@ export class MeasurementState {
         this.api.createMeasurement(data).subscribe({
             next: (res) => {
                 this._measurements.update(list => [...list, res.data.measurement]);
-                this.navigateTo('/account/measurements');
+                this.navigateTo('/measurements');
             }
         });
     }
@@ -37,7 +37,7 @@ export class MeasurementState {
                 this._measurements.update(list =>
                     list.map(m => m.id === id ? res.data.measurement : m)
                 );
-                this.navigateTo('/account/measurements');
+                this.navigateTo('/measurements');
             }
         });
     }

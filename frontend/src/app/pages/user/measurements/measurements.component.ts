@@ -18,6 +18,8 @@ export class MeasurementsComponent {
     topNavBarContent = {
         pageTitle: '',
         backLink: '',
+        rightText: '',
+        rightLink: '',
     };
 
     constructor(private router: Router, private route: ActivatedRoute) {
@@ -26,16 +28,30 @@ export class MeasurementsComponent {
             .subscribe(() => {
                 const currentRoute = this.router.url;
 
-                if (currentRoute.includes('/account/measurements') && (currentRoute.includes('/new') || currentRoute.includes('/edit'))) {
-                    this.topNavBarContent = {
-                        pageTitle: 'Add Measurement',
-                        backLink: '/account/measurements',
-                    };
-                } else if (currentRoute.includes('/account/measurements')) {
-                    this.topNavBarContent = {
-                        pageTitle: 'Measurements',
-                        backLink: '/account'
-                    };
+                if (currentRoute.includes('/measurements')) {
+
+                    if (currentRoute.includes('/new')) {
+                        this.topNavBarContent = {
+                            pageTitle: 'Add Measurement',
+                            backLink: '/measurements',
+                            rightText: '',
+                            rightLink: '',
+                        };
+                    } else if (currentRoute.includes('/edit')) {
+                        this.topNavBarContent = {
+                            pageTitle: 'Edit Measurement',
+                            backLink: '/measurements',
+                            rightText: '',
+                            rightLink: '',
+                        };
+                    } else {
+                        this.topNavBarContent = {
+                            pageTitle: 'Measurements',
+                            backLink: '/account',
+                            rightText: 'Add new',
+                            rightLink: '/measurements/new',
+                        };
+                    }
                 }
             });
     }

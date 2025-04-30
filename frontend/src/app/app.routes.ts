@@ -19,7 +19,7 @@ export const routes: Routes = [
     { path: 'account', component: AccountComponent },
     { path: 'account/me', component: MyProfileComponent },
     {
-        path: 'account/measurements', component:MeasurementsComponent,
+        path: 'measurements', component: MeasurementsComponent,
         children: [
             {
                 path: '', component: MeasurementListComponent

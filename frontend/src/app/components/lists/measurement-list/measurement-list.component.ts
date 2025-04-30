@@ -26,7 +26,7 @@ export class MeasurementListComponent {
     }
 
     onUpdate(id: string) {
-        this.router.navigate(['/account/measurements', id, 'edit']);
+        this.router.navigate(['/measurements', id, 'edit']);
     }
 
     confirmDelete(id: string) {
