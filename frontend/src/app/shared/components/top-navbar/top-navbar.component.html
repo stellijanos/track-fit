@@ -2,6 +2,10 @@
     <a [routerLink]="backLink" class="me-3 text-dark">
         <i class="bi bi-arrow-left" style="font-size: 1.4rem;"></i>
     </a>
+
     <h5 class="m-0 flex-grow-1 text-center">{{ pageTitle }}</h5>
-    <div style="width: 24px;"></div>
+
+    <span *ngIf="rightText" class="text-primary fw-medium" style="cursor: pointer;" (click)="rightAction()">
+        {{ rightText }}
+    </span>
 </nav>

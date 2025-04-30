@@ -41,7 +41,7 @@ const create = catchAsync(async (req, res, next) => {
  * @returns {void} - Responds with success message and the found measurements (200)
  */
 const getAllByUserId = catchAsync(async (req, res, next) => {
-    const measurements = await measurementService.getAllByUserId(req.userId);
+    const measurements = await measurementService.getAllByUserInRange(req.userId);
     next(
         new SuccessResponse(200, 'Measurements successfully retrieved.', {
             total: measurements.length,

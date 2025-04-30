@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { calculateAge, calculateBMR, calculateIMC, calculateTDEE } from '../../../shared/functions/formulas';
 import { AuthState } from '../../../core/states/auth.state';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-account',
@@ -24,7 +24,7 @@ export class AccountComponent implements OnInit {
     bmr = '';
     tdee = '';
 
-    constructor(private userState: UserState, private authState: AuthState) {
+    constructor(private userState: UserState, private authState: AuthState, private router: Router) {
         effect(() => {
             this.user = this.userState.user();
             console.log(this.user);

@@ -14,6 +14,7 @@ export class MeasurementState {
             this.api.getMeasurements().subscribe({
                 next: (res) => {
                     this._measurements.set(res.data.measurements);
+                    console.log(this.measurements());
                 }
             });
         }

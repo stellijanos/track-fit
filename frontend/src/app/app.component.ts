@@ -5,6 +5,7 @@ import { AuthState } from './core/states/auth.state';
 import { BottomNavbarComponent } from "./shared/components/bottom-navbar/bottom-navbar.component";
 import { CommonModule } from '@angular/common';
 import { UserState } from './core/states/user.state';
+import { MeasurementState } from './core/states/measurement.state';
 
 @Component({
     selector: 'app-root',
@@ -15,12 +16,13 @@ import { UserState } from './core/states/user.state';
 export class AppComponent {
     title = 'Track-Fit';
 
-    constructor(private authState: AuthState, private userState: UserState, private router: Router) {
+    constructor(private authState: AuthState, private userState: UserState, private measurementState: MeasurementState, private router: Router) {
         this.authState.initializeAuth();
 
         effect(() => {
             if (!this.authState.isTokenRefreshing() && this.authState.isLoggedIn()) {
                 this.userState.getMe();
+                this.measurementState.loadMeasurements(true);
             }
         });
     }
