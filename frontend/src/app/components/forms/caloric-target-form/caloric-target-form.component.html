@@ -1,0 +1,36 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-3 border rounded bg-white shadow-sm">
+    <div class="mb-4">
+        <label class="form-label d-block fw-bold">Activity Level</label>
+        <div class="form-check" *ngFor="let level of activityLevels">
+            <input class="form-check-input" type="radio" [value]="level" formControlName="activityLevel"
+                [id]="'activity-' + level">
+            <label class="form-check-label" [for]="'activity-' + level">
+                {{ level.replace('_', ' ').toLowerCase() | titlecase }}
+            </label>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label d-block fw-bold">Physical Goal</label>
+        <div class="form-check" *ngFor="let goal of physicalGoals">
+            <input class="form-check-input" type="radio" [value]="goal" formControlName="physicalGoal"
+                [id]="'goal-' + goal">
+            <label class="form-check-label" [for]="'goal-' + goal">
+                {{ goal.replace('_', ' ').toLowerCase() | titlecase }}
+            </label>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label d-block fw-bold">Goal Speed</label>
+        <div class="form-check" *ngFor="let speed of goalSpeeds">
+            <input class="form-check-input" type="radio" [value]="speed" formControlName="goalSpeed"
+                [id]="'speed-' + speed">
+            <label class="form-check-label" [for]="'speed-' + speed">
+                {{ speed.toLowerCase() | titlecase }}
+            </label>
+        </div>
+    </div>
+
+    <button class="btn btn-primary w-100" [disabled]="form.invalid">{{ formTexts.button || 'Submit' }}</button>
+</form>

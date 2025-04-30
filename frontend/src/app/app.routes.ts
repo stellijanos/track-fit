@@ -10,6 +10,9 @@ import { ChangePasswordComponent } from './pages/auth/change-password/change-pas
 import { MeasurementsComponent } from './pages/user/measurements/measurements.component';
 import { MeasurementFormComponent } from './components/forms/measurement-form/measurement-form.component';
 import { MeasurementListComponent } from './components/lists/measurement-list/measurement-list.component';
+import { NavbarLayoutComponent } from './shared/layouts/navbar-layout/navbar-layout.component';
+import { CaloricTargetFormComponent } from './components/forms/caloric-target-form/caloric-target-form.component';
+import { CaloricTargetListComponent } from './components/lists/caloric-target-list/caloric-target-list.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -21,15 +24,17 @@ export const routes: Routes = [
     {
         path: 'measurements', component: MeasurementsComponent,
         children: [
-            {
-                path: '', component: MeasurementListComponent
-            },
-            {
-                path: 'new', component: MeasurementFormComponent
-            },
-            {
-                path: ':id/edit', component: MeasurementFormComponent
-            },
+            { path: '', component: MeasurementListComponent },
+            { path: 'new', component: MeasurementFormComponent },
+            { path: ':id/edit', component: MeasurementFormComponent },
+        ]
+    },
+    {
+        path: 'caloric-targets', component: NavbarLayoutComponent,
+        children: [
+            { path: '', component: CaloricTargetListComponent },
+            { path: 'new', component: CaloricTargetFormComponent },
+            { path: ':id/edit', component: CaloricTargetFormComponent },
         ]
     },
     { path: 'account/change-password', component: ChangePasswordComponent },
