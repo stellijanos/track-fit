@@ -1,1 +1,81 @@
-<p>meal-plan-form works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-3 border rounded bg-white shadow-sm">
+    <div class="mb-3">
+        <label class="form-label">Daily Meal Prep Time (minutes)</label>
+        (<small class="form-text text-muted">
+            How much time (in minutes) you typically have available each day to prepare meals.
+        </small>)
+        <input type="number" class="form-control" formControlName="dailyMealPrepTime">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Meals Per Day</label>
+        (<small class="form-text text-muted">How many meals you prefer to eat each day.</small>)
+        <select class="form-select" formControlName="mealsPerDay">
+            <option *ngFor="let n of [1,2,3,4,5]" [value]="n">{{ n }}</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Meal Plan Type</label>
+        (<small class="form-text text-muted">Choose the duration of your meal plan (e.g., 3-day, 7-day).</small>)
+        <select class="form-select" formControlName="planType">
+            <option *ngFor="let type of planTypes" [value]="type">{{ type.replace('_',' ') | titlecase }}</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label d-flex align-items-center">
+            Dietary Preference
+            <i class="bi bi-question-circle ms-2 text-primary" role="button" data-bs-toggle="collapse"
+                data-bs-target="#preferenceHelp"></i>
+        </label>
+        <div class="collapse" id="preferenceHelp">
+            <small class="form-text text-muted d-block mb-2">
+                <ul class="small ps-3 mb-0">
+                    <li><strong>Omnivore</strong> - eats both plants and animal products</li>
+                    <li><strong>Vegetarian</strong> - no meat, but may include dairy/eggs</li>
+                    <li><strong>Vegan</strong> - excludes all animal products</li>
+                    <li><strong>Pescatarian</strong> - includes fish but no other meat</li>
+                    <li><strong>Keto</strong> - low carb, high fat diet</li>
+                    <li><strong>Low Carb</strong> - reduced carbohydrate intake</li>
+                    <li><strong>High Protein</strong> - focused on protein intake</li>
+                    <li><strong>Gluten Free</strong> - excludes gluten-containing foods</li>
+                    <li><strong>Mediterranean</strong> - plant-based with lean proteins and healthy fats</li>
+                    <li><strong>Paleo</strong> - unprocessed, whole foods diet</li>
+                </ul>
+            </small>
+        </div>
+        <select class="form-select" formControlName="preference">
+            <option *ngFor="let pref of dietaryPreferences" [value]="pref">{{ pref.replace('_',' ') | titlecase }}
+            </option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Dietary Restrictions</label>
+        (<small class="form-text text-muted">Select any ingredients or food categories you need to avoid.</small>)
+        <div class="form-check" *ngFor="let restriction of dietaryRestrictions; let i = index">
+            <input class="form-check-input" type="checkbox" [value]="restriction" [id]="'restriction-' + i"
+                (change)="onRestrictionChange($event)">
+            <label class="form-check-label" [for]="'restriction-' + i">{{ restriction.replace('_',' ') | titlecase
+                }}</label>
+        </div>
+    </div>
+
+
+    <div class="mb-3">
+        <label class="form-label">Preferred Foods</label>
+        (<small class="form-text text-muted">List specific foods you'd like included in your meal plan
+            (comma-separated)</small>)
+        <textarea rows="3" class="form-control" formControlName="preferredFoods"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Excluded Foods</label>
+        (<small class="form-text text-muted">List any specific foods you want to exclude from your meal plan
+            (comma-separated).</small>)
+        <textarea rows="3" class="form-control" formControlName="excludedFoods"></textarea>
+    </div>
+
+    <button class="btn btn-primary w-100" [disabled]="form.invalid">Generate Meal Plan</button>
+</form>

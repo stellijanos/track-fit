@@ -6,7 +6,7 @@ const mealPlanTypes = require('../enums/mealPlanTypes');
 const mealsPerDay = require('../enums/mealsPerDay');
 
 const create = Joi.object({
-    dailyMealPrepTime: Joi.string().required(),
+    dailyMealPrepTime: Joi.number().required(),
     mealsPerDay: Joi.number().valid(...mealsPerDay).required(),
     planType: Joi.string()
         .valid(...Object.values(mealPlanTypes))
@@ -15,7 +15,7 @@ const create = Joi.object({
         .valid(...Object.values(dietaryPreferences))
         .required(),
     restrictions: Joi.array().items(Joi.string().valid(...Object.values(dietaryRestrictions))),
-    preferredFoods: Joi.string(),
+    preferredFoods: Joi.string().allow('').optional(),
     excludedFoods: Joi.string(),
     otherAllergies: Joi.string(),
     notes: Joi.string(),

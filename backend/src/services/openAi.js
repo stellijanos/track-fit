@@ -26,7 +26,7 @@ const getActivityData = async (data) => {
     Correct the name and capitalize (if the case) and calculate the calories per hour of that activity based on user input.
     
     Return ONLY ${JSON.stringify(dataStructure)} as a valid JSON string.
-    Do not include any explanations, formatting, or markdown. Just pure JSON.
+    Do not include any explanations, formatting, or markdown or \`\`\`json \`\`\`. Just pure JSON.
     `;
 
     // 3. Retrieve response from OpenAI (Defined data structure at step 1. in JSON format)
@@ -59,7 +59,7 @@ const getCaloricTarget = async (data) => {
     Note: -1 values mean they were not provided. Use the most accurate formula.
 
     Return ONLY ${JSON.stringify(dataStructure)} as a valid JSON string.
-    Do not include any explanations, formatting, or markdown. Just pure JSON.
+    Do not include any explanations, formatting, or markdown or \`\`\`json \`\`\`. Just pure JSON
     `;
 
     // 3. Retrieve response from OpenAI (Defined data structure at step 1. in JSON format)
@@ -150,22 +150,24 @@ const getMealPlan = async (data) => {
 
     // 2. Define content (message) to OpenAI service
     const content = `
-    You are a JSON-only assistant that generates a structured meal plan object.
-
-    ### User Input:
+    You are a strict JSON generator.
+    
+    ### Input:
     ${JSON.stringify(data)}
-
+    
     ### Instructions:
-    - Generate a meal plan based on the provided input.
-    - If the input is not food/meal-related, return: \`{}\`
-    - Use only the following values for \`type\`: ${Object.values(mealPlanTypes).join(', ')}
+    - Based on the input, generate a meal plan as a JSON object.
+    - Do not return explanations, comments, markdown, or surrounding text.
+    - Return **only** valid JSON (no \`\`\`, no text before or after).
+    - Use only these allowed values for "type": ${Object.values(mealPlanTypes).join(', ')}.
     - Each day must include meals with nutritional values.
     - Return protein, carb, and fat in grams.
-    - Capitalize each meal name (e.g. "Grilled Chicken" instead of "grilled chicken").
-    - The response MUST be a valid pure JSON object. DO NOT include markdown, comments, or any text outside the JSON.
-    - Structure the JSON exactly like this:
-
-        ${JSON.stringify(dataStructure, null, 2)}
+    - Capitalize each meal name (e.g. "Grilled Chicken").
+    - The output MUST match this structure exactly:
+    
+    ${JSON.stringify(dataStructure, null, 2)}
+    
+    If the input is not food/meal-related, return: {}
     `;
 
     // 3. Retrieve response from OpenAI (Defined data structure at step 1. in JSON format)

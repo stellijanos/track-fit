@@ -1,6 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { MealPlan, MealPlanRequest } from '../models/meal-plan.model';
 import { MealPlanApiService } from '../services/meal-plan-api.service';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class MealPlanState {
@@ -10,7 +11,7 @@ export class MealPlanState {
     readonly mealPlans = computed(() => this._mealPlans());
     readonly selectedMealPlan = computed(() => this._selectedMealPlan());
 
-    constructor(private api: MealPlanApiService) { }
+    constructor(private api: MealPlanApiService, private router: Router) { }
 
     loadMealPlans(force = false) {
         if (force || this._mealPlans().length === 0) {
@@ -34,7 +35,7 @@ export class MealPlanState {
         this.api.create(data).subscribe({
             next: (res) => {
                 this._mealPlans.update(list => [...list, res.data.mealPlan]);
-                this._selectedMealPlan.set(res.data.mealPlan); // optional
+                this.navigateTo('/meal-plans');
             }
         });
     }
@@ -53,5 +54,9 @@ export class MealPlanState {
     clearMealPlans() {
         this._mealPlans.set([]);
         this._selectedMealPlan.set(null);
+    }
+
+    navigateTo(route: string) {
+        this.router.navigate([route]);
     }
 }

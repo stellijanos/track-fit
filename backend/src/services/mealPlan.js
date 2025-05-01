@@ -1,5 +1,6 @@
 const BadRequestError = require('../errors/BadRequest');
 const NotFoundError = require('../errors/NotFound');
+const UnprocessableEntityError = require('../errors/UnprocessableEntity');
 const mealPlanRepository = require('../repositories/mealPlan');
 const openAiService = require('./openAi');
 
@@ -51,6 +52,11 @@ const getUserInfo = (user, data) => ({
  * @returns {Mealplan} - Newly created meal plan.
  */
 const create = async (user, data) => {
+    console.info(user);
+
+    if (!user.lastMeasurement) {
+        throw new UnprocessableEntityError('Please enter your weight in order to generate meal plan.')
+    }
     // 1. Obtain the necessary user info to generate meal plan
     const info = getUserInfo(user, data);
 

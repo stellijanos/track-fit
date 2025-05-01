@@ -27,28 +27,30 @@ export class NavbarLayoutComponent {
                 if (currentRoute.includes('/caloric-targets')) {
 
                     if (currentRoute.includes('/new')) {
-                        this.topNavBarContent = {
-                            pageTitle: 'Add Target',
-                            backLink: '/caloric-targets',
-                            rightText: '',
-                            rightLink: '',
-                        };
+                        this.setTopNavbarContent('Add Target', '/caloric-targets');
                     } else if (currentRoute.includes('/edit')) {
-                        this.topNavBarContent = {
-                            pageTitle: 'Edit Target',
-                            backLink: '/caloric-targets',
-                            rightText: '',
-                            rightLink: '',
-                        };
+                        this.setTopNavbarContent('Edit Target', '/caloric-targets');
                     } else {
-                        this.topNavBarContent = {
-                            pageTitle: 'Caloric Targets',
-                            backLink: '/account',
-                            rightText: 'Add new',
-                            rightLink: '/caloric-targets/new',
-                        };
+                        this.setTopNavbarContent('Caloric Targets', '/account', 'Add new', '/caloric-targets/new');
+                    }
+                } else if (currentRoute.includes('/meal-plans')) {
+
+                    if (currentRoute.includes('/new')) {
+                        this.setTopNavbarContent('Genearte Meal Plan', '/meal-plans');
+                    } else {
+                        this.setTopNavbarContent('Meals', '/account', 'Add bew', '/meal-plans/new');
                     }
                 }
             });
+    }
+
+
+    setTopNavbarContent(pageTitle: string, backLink: string, rightText: string = '', rightLink: string = '') {
+        this.topNavBarContent = {
+            pageTitle,
+            backLink,
+            rightText,
+            rightLink,
+        }
     }
 }

@@ -80,10 +80,11 @@ export interface MealPlan {
 
 
 export interface MealPlanRequest {
-
-    dailyMealPrepTime: string,
+    dailyMealPrepTime: number,
     mealsPerDay: 1 | 2 | 3 | 4 | 5,
     planType: MealPlanType,
     preference: DietaryPreference,
-    restrictions: DietaryRestriction[]
+    restrictions: DietaryRestriction[],
+    preferredFoods: string,
+    excludedFoods: string,
 }
