@@ -30,11 +30,19 @@ export class WaterIntakeState {
 
     deleteEntry(entryId: string, date: string) {
         this.api.delete(entryId, date).subscribe({
-            next: (res) => {
-                this._intake.set(res.data.waterIntake)
+            next: () => {
+                this._intake.update(intake => {
+                    if (!intake) return intake;
+                    return {
+                        ...intake,
+                        entries: intake.entries.filter(e => e.id !== entryId)
+                    };
+                });
             }
         });
     }
+
+
 
     clearIntake() {
         this._intake.set(null);

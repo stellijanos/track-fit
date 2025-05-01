@@ -2,10 +2,11 @@ import { Component, effect, OnInit } from '@angular/core';
 import { CalendarWeekRowComponent } from "../../../components/other/calendar-week-row/calendar-week-row.component";
 import { UserState } from '../../../core/states/user.state';
 import { User } from '../../../core/models/user.model';
+import { WaterIntakeComponent } from "../../../components/other/water-intake/water-intake.component";
 
 @Component({
     selector: 'app-home',
-    imports: [CalendarWeekRowComponent],
+    imports: [CalendarWeekRowComponent, WaterIntakeComponent],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css'
 })

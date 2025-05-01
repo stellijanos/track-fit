@@ -1,0 +1,32 @@
+<div class="text-center mt-4">
+    <div class="position-relative mx-auto" style="width: 200px; height: 200px;">
+        <div class="rounded-circle border border-primary overflow-hidden position-relative"
+            style="width: 100%; height: 100%; border-width: 6px;">
+            <div class="position-absolute bottom-0 start-0 w-100 bg-info" [style.height.%]="fillLevel"
+                style="transition: height 0.5s ease-in-out;">
+            </div>
+            <div class="position-absolute top-50 start-50 translate-middle text-center" style="z-index: 1;">
+                <strong style="font-size: 1.5rem">{{ currentIntake }}</strong> / {{ dailyTarget }} ml
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button *ngFor="let option of entryOptions" class="btn btn-primary me-2" (click)="addWater(option)">
+            +{{option}} ml</button>
+    </div>
+    <div class="mt-4">
+        <div class="list-group">
+            <div *ngFor="let entry of waterIntake.entries"
+                class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ entry.quantity }} ml</strong>
+                    <small class="text-muted ms-2">{{ entry.date | date: 'HH:mm' }}</small>
+                </div>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteEntry(entry.id)">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

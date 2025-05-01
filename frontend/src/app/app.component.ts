@@ -8,6 +8,8 @@ import { UserState } from './core/states/user.state';
 import { MeasurementState } from './core/states/measurement.state';
 import { CaloricTargetState } from './core/states/caloric-target.state';
 import { MealPlanState } from './core/states/meal-plan.state';
+import { WaterIntakeState } from './core/states/water-intake.state';
+import { SelectedDateState } from './core/states/selected-date.state';
 
 @Component({
     selector: 'app-root',

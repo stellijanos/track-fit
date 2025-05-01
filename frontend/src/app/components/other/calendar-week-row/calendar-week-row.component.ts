@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { SelectedDateState } from '../../../core/states/selected-date.state';
 
 @Component({
     selector: 'app-calendar-week-row',
@@ -11,6 +12,8 @@ export class CalendarWeekRowComponent implements OnInit {
     currentDate = new Date();
     selectedDate: Date = new Date();
     week: Date[] = [];
+
+    constructor(private selectedDateState: SelectedDateState) {}
 
     ngOnInit(): void {
         this.updateWeek();
@@ -46,6 +49,7 @@ export class CalendarWeekRowComponent implements OnInit {
 
     selectDay(date: Date) {
         this.selectedDate = date;
+        this.selectedDateState.setDate(date);
     }
 
     goToPreviousWeek() {
