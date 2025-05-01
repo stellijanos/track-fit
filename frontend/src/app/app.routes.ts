@@ -16,6 +16,7 @@ import { CaloricTargetListComponent } from './components/lists/caloric-target-li
 import { MealPlanListComponent } from './components/lists/meal-plan-list/meal-plan-list.component';
 import { MealPlanFormComponent } from './components/forms/meal-plan-form/meal-plan-form.component';
 import { MealPlanPreviewComponent } from './components/previews/meal-plan-preview/meal-plan-preview.component';
+import { HomeComponent } from './pages/user/home/home.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -25,6 +26,7 @@ export const routes: Routes = [
     {
         path: '', component: BottomNavbarLayoutComponent,
         children: [
+            { path: '', component: HomeComponent },
             { path: 'account', component: AccountComponent }
         ]
     },
