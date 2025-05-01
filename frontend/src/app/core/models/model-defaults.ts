@@ -59,8 +59,23 @@ export const defaultMealEntry = (): MealEntry => ({
     date: new Date(),
     name: '',
     type: '',
-    per100: '',
-    totalConsumed: ''
+    per100: {
+        kcal: -1,
+        protein: -1,
+        carb: -1,
+        fat: -1,
+        fibre: -1,
+        salt: -1
+    },
+    totalConsumed: {
+        quantity: -1,
+        kcal: -1,
+        protein: -1,
+        carb: -1,
+        fat: -1,
+        fibre: -1,
+        salt: -1
+    }
 });
 
 

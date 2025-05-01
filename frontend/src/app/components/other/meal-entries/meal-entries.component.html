@@ -1,0 +1,37 @@
+<div class="container py-3">
+    <div class="row">
+        <div class="col-md-6 col-lg-4 mb-4" *ngFor="let type of groupedMealTypes">
+            <div class="card shadow-sm h-100">
+                <div class="card-header text-capitalize fw-bold">
+                    {{ type.type.replace('_', ' ') }}
+                </div>
+                <div class="card-body">
+                    <div *ngIf="type.meals.length > 0; else noMeals">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" *ngFor="let meal of type.meals">
+                                <div class="fw-semibold mb-1">{{ meal.name }}</div>
+                                <div class="small text-muted mb-2">{{ meal.totalConsumed.quantity }}g consumed</div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="badge bg-info text-dark">{{ meal.totalConsumed.kcal }} kcal</span>
+                                    <span class="badge bg-success">{{ meal.totalConsumed.protein }}g P</span>
+                                    <span class="badge bg-danger">{{ meal.totalConsumed.carb }}g C</span>
+                                    <span class="badge bg-warning text-dark">{{ meal.totalConsumed.fat }}g F</span>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <span class="badge bg-secondary">{{ meal.totalConsumed.fibre }}g Fibre</span>
+                                    <span class="badge bg-secondary">{{ meal.totalConsumed.salt }}g Salt</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <ng-template #noMeals>
+                        <p class="text-muted">No meals added.</p>
+                    </ng-template>
+                </div>
+                <div class="card-footer text-end">
+                    <button class="btn btn-sm btn-outline-primary">+ Add Meal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

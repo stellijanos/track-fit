@@ -11,8 +11,23 @@ export interface MealEntry {
     date: Date,
     name: string,
     type: string,
-    per100: string,
-    totalConsumed: string,
+    per100: {
+        kcal: number,
+        protein: number,
+        carb: number,
+        fat: number,
+        fibre: number,
+        salt: number
+    },
+    totalConsumed: {
+        quantity: number,
+        kcal: number,
+        protein: number,
+        carb: number,
+        fat: number,
+        fibre: number,
+        salt: number
+    }
 }
 
 export interface MealEntryRequest {

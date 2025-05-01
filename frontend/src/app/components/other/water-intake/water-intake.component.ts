@@ -26,7 +26,9 @@ export class WaterIntakeComponent {
     ) {
         effect(() => {
             this.date = this.selectedDateState.date();
-            this.waterIntakeState.loadIntake(this.date, true);
+            if (this.userState.userReady()) {
+                this.waterIntakeState.loadIntake(this.date, true);
+            }
             this.entryOptions = this.userState.user().currentWaterTarget.entryOptions;
             this.dailyTarget = this.userState.user().currentWaterTarget.value;
         });
