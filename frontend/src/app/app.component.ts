@@ -11,7 +11,7 @@ import { MealPlanState } from './core/states/meal-plan.state';
 
 @Component({
     selector: 'app-root',
-    imports: [CommonModule, RouterOutlet, GlobalMessageComponent, BottomNavbarComponent],
+    imports: [CommonModule, RouterOutlet, GlobalMessageComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css'
 })

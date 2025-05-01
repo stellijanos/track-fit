@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { TopNavbarComponent } from "../../components/top-navbar/top-navbar.component";
-import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
+import { TopNavbarComponent } from '../../components/top-navbar/top-navbar.component';
 
 @Component({
-    selector: 'app-navbar-layout',
-    imports: [RouterOutlet, TopNavbarComponent],
-    templateUrl: './navbar-layout.component.html',
-    styleUrl: './navbar-layout.component.css'
+    selector: 'app-top-navbar-layout',
+    imports: [RouterModule, TopNavbarComponent],
+    templateUrl: './top-navbar-layout.component.html',
+    styleUrl: './top-navbar-layout.component.css'
 })
-export class NavbarLayoutComponent {
+export class TopNavbarLayoutComponent {
 
     topNavBarContent = {
         pageTitle: '',
@@ -42,6 +42,15 @@ export class NavbarLayoutComponent {
                         this.setTopNavbarContent('Preview Meal Plan', '/meal-plans');
                     } else {
                         this.setTopNavbarContent('Meals', '/account', 'Add bew', '/meal-plans/new');
+                    }
+                } else if (currentRoute.includes('/measurements')) {
+
+                    if (currentRoute.includes('/new')) {
+                        this.setTopNavbarContent('Add Measurement', '/measurements');
+                    } else if (currentRoute.includes('/edit')) {
+                        this.setTopNavbarContent('Edit Measurement', '/measurements');
+                    } else {
+                        this.setTopNavbarContent('Measurements', '/account', 'Add new', '/measurements/new');
                     }
                 }
             });
