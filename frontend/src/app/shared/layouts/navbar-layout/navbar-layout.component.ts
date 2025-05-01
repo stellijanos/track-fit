@@ -18,7 +18,7 @@ export class NavbarLayoutComponent {
         rightLink: '',
     };
 
-    constructor(private router: Router, private route: ActivatedRoute) {
+    constructor(private router: Router) {
         this.router.events
             .pipe(filter(event => event instanceof NavigationEnd))
             .subscribe(() => {
@@ -33,10 +33,13 @@ export class NavbarLayoutComponent {
                     } else {
                         this.setTopNavbarContent('Caloric Targets', '/account', 'Add new', '/caloric-targets/new');
                     }
+
                 } else if (currentRoute.includes('/meal-plans')) {
 
                     if (currentRoute.includes('/new')) {
                         this.setTopNavbarContent('Genearte Meal Plan', '/meal-plans');
+                    } else if (!currentRoute.endsWith('/meal-plans')) {
+                        this.setTopNavbarContent('Preview Meal Plan', '/meal-plans');
                     } else {
                         this.setTopNavbarContent('Meals', '/account', 'Add bew', '/meal-plans/new');
                     }

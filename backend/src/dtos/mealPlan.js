@@ -5,7 +5,7 @@ const mealDto = (data) => ({
     type: data.type,
     kcal: data.kcal,
     protein: data.protein,
-    carb: data.carbs,
+    carb: data.carb,
     fat: data.fat,
     fibre: data.fibre,
     salt: data.salt,

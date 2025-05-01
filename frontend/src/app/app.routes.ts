@@ -15,6 +15,7 @@ import { CaloricTargetFormComponent } from './components/forms/caloric-target-fo
 import { CaloricTargetListComponent } from './components/lists/caloric-target-list/caloric-target-list.component';
 import { MealPlanListComponent } from './components/lists/meal-plan-list/meal-plan-list.component';
 import { MealPlanFormComponent } from './components/forms/meal-plan-form/meal-plan-form.component';
+import { MealPlanPreviewComponent } from './components/previews/meal-plan-preview/meal-plan-preview.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -43,6 +44,7 @@ export const routes: Routes = [
         children: [
             { path: '', component: MealPlanListComponent },
             { path: 'new', component: MealPlanFormComponent },
+            { path: ':id', component: MealPlanPreviewComponent }
         ]
     },
     { path: 'account/change-password', component: ChangePasswordComponent },

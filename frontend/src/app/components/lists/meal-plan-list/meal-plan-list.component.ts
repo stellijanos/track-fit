@@ -2,10 +2,11 @@ import { Component, effect } from '@angular/core';
 import { MealPlan } from '../../../core/models/meal-plan.model';
 import { MealPlanState } from '../../../core/states/meal-plan.state';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-meal-plan-list',
-    imports: [CommonModule],
+    imports: [CommonModule, RouterModule],
     templateUrl: './meal-plan-list.component.html',
     styleUrl: './meal-plan-list.component.css'
 })

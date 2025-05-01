@@ -52,8 +52,7 @@ const getUserInfo = (user, data) => ({
  * @returns {Mealplan} - Newly created meal plan.
  */
 const create = async (user, data) => {
-    console.info(user);
-
+    
     if (!user.lastMeasurement) {
         throw new UnprocessableEntityError('Please enter your weight in order to generate meal plan.')
     }
