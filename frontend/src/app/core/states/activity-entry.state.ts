@@ -1,5 +1,5 @@
 import { Injectable, signal, computed } from "@angular/core";
-import { ActivityEntry, ActivityEntryRequest } from "../models/activity-entry.model";
+import { ActivityEntry, ActivityEntryRequest, ActivityEntryUpdateRequest } from "../models/activity-entry.model";
 import { ActivityEntryApiService } from "../services/activity-entry-api.service";
 import { Router } from "@angular/router";
 
@@ -31,7 +31,7 @@ export class ActivityEntryState {
         });
     }
 
-    updateEntry(id: string, date: string, updatedData: ActivityEntry) {
+    updateEntry(id: string, date: string, updatedData: ActivityEntryUpdateRequest) {
         this.api.update(id, date, updatedData).subscribe({
             next: (res) => {
                 this._entries.update(list => list.map(entry =>

@@ -14,3 +14,8 @@ export interface ActivityEntryRequest {
     durationInM: number,
     additionalInfo: string
 }
+
+export interface ActivityEntryUpdateRequest {
+    name: string,
+    durationInM: number,
+}

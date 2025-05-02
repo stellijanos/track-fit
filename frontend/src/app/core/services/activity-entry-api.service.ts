@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../models/api-response.model';
-import { ActivityEntry, ActivityEntryRequest } from '../models/activity-entry.model';
+import { ActivityEntry, ActivityEntryRequest, ActivityEntryUpdateRequest } from '../models/activity-entry.model';
 import { Observable } from 'rxjs';
 
 type ActivityEntryResponse = ApiResponse<'activityEntry', ActivityEntry>;
@@ -27,7 +27,7 @@ export class ActivityEntryApiService {
         return this.http.get<ActivityEntriesResponse>(`${this.url}/${date}/activities`);
     }
 
-    update(id: string, date: string, data: ActivityEntry): Observable<ActivityEntryResponse> {
+    update(id: string, date: string, data: ActivityEntryUpdateRequest): Observable<ActivityEntryResponse> {
         return this.http.patch<ActivityEntryResponse>(`${this.url}/${date}/activities/${id}`, data);
     }
 

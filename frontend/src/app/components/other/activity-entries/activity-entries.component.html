@@ -12,22 +12,41 @@
         <li *ngFor="let entry of activityEntries"
             class="list-group-item d-flex justify-content-between align-items-center">
             <div class="flex-grow-1">
-                <h5 class="mb-1">{{ entry.name }}</h5>
-                <p class="mb-1 small text-muted">
-                    {{ entry.durationInM }} minutes • {{ entry.caloriesPerHour }} cal/hr • {{ entry.totalCalories }}
-                    total
-                </p>
+                <!-- Editable or read-only view based on editId -->
+                <div *ngIf="editId === entry.id; else readView">
+                    <div class="mb-2">
+                        <input [(ngModel)]="editName" class="form-control form-control-sm mb-2"
+                            placeholder="Activity name" />
+                        <input type="number" [(ngModel)]="editDuration" class="form-control form-control-sm"
+                            placeholder="Duration in minutes" />
+                    </div>
+                </div>
+
+                <ng-template #readView>
+                    <h5 class="mb-1">{{ entry.name }}</h5>
+                    <p class="mb-1 small text-muted">
+                        {{ entry.durationInM }} minutes • {{ entry.caloriesPerHour }} cal/hr • {{ entry.totalCalories }}
+                        total
+                    </p>
+                </ng-template>
             </div>
+
             <div class="ms-3 d-flex align-items-center">
-                <button class="btn btn-sm btn-outline-secondary me-2">
-                    Update
-                </button>
-                <button class="btn btn-sm btn-outline-danger" (click)="prepareDelete(entry.id)">
-                    Delete
-                </button>
+                <!-- Buttons based on edit state -->
+                <ng-container *ngIf="editId === entry.id; else defaultButtons">
+                    <button class="btn btn-sm btn-success me-2"
+                        (click)="onUpdateSave(entry.id, editName, editDuration)">Save</button>
+                    <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">Cancel</button>
+                </ng-container>
+
+                <ng-template #defaultButtons>
+                    <button class="btn btn-sm btn-outline-secondary me-2" (click)="startEdit(entry)">Update</button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="prepareDelete(entry.id)">Delete</button>
+                </ng-template>
             </div>
         </li>
     </ul>
+
 
     <!-- Confirm delete prompt -->
     <div *ngIf="deleteId" class="alert alert-warning mt-3 d-flex justify-content-between align-items-center">
