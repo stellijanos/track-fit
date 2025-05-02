@@ -14,7 +14,11 @@ export class WaterIntakeState {
         if (force || !this._intake()) {
             this.api.get(date).subscribe({
                 next: (res) => {
-                    this._intake.set(res.data.waterIntake);
+                    if (!res.data.waterIntake) {
+                        this.clearIntake();
+                    } else {
+                        this._intake.set(this.sortEntriesDescendingByDate(res.data.waterIntake));
+                    }
                 }
             });
         }
@@ -23,7 +27,7 @@ export class WaterIntakeState {
     addEntry(date: string, data: WaterEntryRequest) {
         this.api.create(date, data).subscribe({
             next: (res) => {
-                this._intake.set(res.data.waterIntake);
+                this._intake.set(this.sortEntriesDescendingByDate(res.data.waterIntake));
             }
         });
     }
@@ -42,9 +46,18 @@ export class WaterIntakeState {
         });
     }
 
-
-
     clearIntake() {
         this._intake.set(null);
     }
+
+
+    private sortEntriesDescendingByDate(intake: WaterIntake): WaterIntake {
+        return {
+            ...intake,
+            entries: [...intake.entries].sort(
+                (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+            )
+        };
+    }
+
 }
