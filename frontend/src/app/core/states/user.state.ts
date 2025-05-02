@@ -60,7 +60,7 @@ export class UserState {
     }
 
     deleteProfilePicture() {
-        this.apiService.deleteMe().subscribe({
+        this.apiService.deleteProfilePicture().subscribe({
             next: (res) => {
                 this.setUser(res.data.user);
             }
