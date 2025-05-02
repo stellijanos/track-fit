@@ -6,7 +6,7 @@ import { MealEntry, MealEntryRequest, MealEntryUpdateRequest } from '../models/m
 import { Observable } from 'rxjs';
 
 type MealEntryResponse = ApiResponse<'mealEntry', MealEntry>;
-type MealEntrysResponse = ApiResponse<'mealEntries', MealEntry[]>;
+type MealEntriesResponse = ApiResponse<'mealEntries', MealEntry[]>;
 type EmptyResponse = ApiResponse<'', undefined>;
 
 
@@ -19,12 +19,12 @@ export class MealEntryApiService {
 
     constructor(private http: HttpClient) { }
 
-    create(date: string, data: MealEntryRequest): Observable<MealEntryResponse> {
-        return this.http.post<MealEntryResponse>(`${this.url}/${date}/meals`, data);
+    create(date: string, data: MealEntryRequest): Observable<MealEntriesResponse> {
+        return this.http.post<MealEntriesResponse>(`${this.url}/${date}/meals`, data);
     }
 
-    getAll(date: String): Observable<MealEntrysResponse> {
-        return this.http.get<MealEntrysResponse>(`${this.url}/${date}/meals`);
+    getAll(date: String): Observable<MealEntriesResponse> {
+        return this.http.get<MealEntriesResponse>(`${this.url}/${date}/meals`);
     }
 
     update(id: string, date: string, data: MealEntryUpdateRequest): Observable<EmptyResponse> {

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { defaultMealEntry } from '../../../core/models/model-defaults';
 import { FormsModule } from '@angular/forms';
+import { SelectedDateState } from '../../../core/states/selected-date.state';
 
 @Component({
     selector: 'app-meal-entries',
@@ -23,10 +24,12 @@ export class MealEntriesComponent {
     }
 
     constructor(
-        private mealEntryState: MealEntryState
+        private mealEntryState: MealEntryState,
+        private selectedDateState: SelectedDateState
     ) {
 
         effect(() => {
+            this.date = this.selectedDateState.date();
             this.mealEntries = this.mealEntryState.meals();
         });
         console.log(this.mealEntries);
@@ -35,9 +38,27 @@ export class MealEntriesComponent {
     get groupedMealTypes() {
         return this.mealTypes().map(type => ({
             type,
-            meals: this.mealEntries.filter(m => m && m.type === type)
+            meals: this.mealEntries.filter(m => m.type === type)
         }));
     }
+
+
+    deleteId: string | null = null;
+
+    prepareDelete(mealId: string) {
+        this.deleteId = mealId;
+    }
+
+    cancelDelete() {
+        this.deleteId = null;
+    }
+
+    confirmDelete() {
+        if (!this.deleteId) return;
+        this.mealEntryState.deleteMeal(this.deleteId, this.date);
+        this.deleteId = null;
+    }
+
 
 }
 

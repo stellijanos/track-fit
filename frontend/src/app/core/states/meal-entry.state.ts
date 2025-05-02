@@ -29,7 +29,7 @@ export class MealEntryState {
     createMeal(date: string, data: MealEntryRequest) {
         this.api.create(date, data).subscribe({
             next: (res) => {
-                this._meals.update(list => [...list, res.data.mealEntry]);
+                this._meals.update(list => [...list, ...res.data.mealEntries]);
                 this.navigateTo('/');
             }
         });
