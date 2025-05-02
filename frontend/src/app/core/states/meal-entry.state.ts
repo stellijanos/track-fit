@@ -1,13 +1,15 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { MealEntry, MealEntryRequest } from '../models/meal-entry.model';
 import { MealEntryApiService } from '../services/meal-entry-api.service';
+import { defaultMealEntry } from '../models/model-defaults';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class MealEntryState {
     private _meals = signal<MealEntry[]>([]);
     readonly meals = computed(() => this._meals());
 
-    constructor(private api: MealEntryApiService) { }
+    constructor(private api: MealEntryApiService, private router: Router) { }
 
     clearMeals() {
         this._meals.set([]);
@@ -27,6 +29,7 @@ export class MealEntryState {
         this.api.create(date, data).subscribe({
             next: (res) => {
                 this._meals.update(list => [...list, res.data.mealEntry]);
+                this.router.navigate(['/']);
             }
         });
     }
@@ -47,6 +50,10 @@ export class MealEntryState {
                 this._meals.update(list => list.filter(meal => meal.id !== id));
             }
         });
+    }
+
+    findById(id: string): MealEntry {
+        return this._meals().find(m => m.id === id) || defaultMealEntry();
     }
 
 }

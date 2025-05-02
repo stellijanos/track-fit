@@ -4,6 +4,7 @@ export enum MealType {
     DINNER = 'dinner',
     SNACK_1 = 'snack1',
     SNACK_2 = 'snack2',
+    DEFAULT = '',
 }
 
 export interface MealEntry {

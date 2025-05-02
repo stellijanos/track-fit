@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
     styleUrls: ['./measurement-form.component.css']
 })
 export class MeasurementFormComponent implements OnInit {
-    @Input()
+
     measurement: Measurement = defaultMeasurement();
 
     form !: FormGroup;

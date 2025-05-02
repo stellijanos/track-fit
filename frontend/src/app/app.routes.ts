@@ -17,6 +17,7 @@ import { MealPlanListComponent } from './components/lists/meal-plan-list/meal-pl
 import { MealPlanFormComponent } from './components/forms/meal-plan-form/meal-plan-form.component';
 import { MealPlanPreviewComponent } from './components/previews/meal-plan-preview/meal-plan-preview.component';
 import { HomeComponent } from './pages/user/home/home.component';
+import { MealEntryFormComponent } from './components/forms/meal-entry-form/meal-entry-form.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -43,6 +44,7 @@ export const routes: Routes = [
             { path: 'measurements', component: MeasurementListComponent },
             { path: 'measurements/new', component: MeasurementFormComponent },
             { path: 'measurements/:id/edit', component: MeasurementFormComponent },
+            { path: 'meal-entries/new/:mealType', component: MealEntryFormComponent },
         ]
     },
     { path: 'not-found', component: NotFoundComponent },

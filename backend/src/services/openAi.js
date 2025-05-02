@@ -94,20 +94,28 @@ const getMealEntry = async (data) => {
 
     // 2. Define content (message) to OpenAI service
     const content = `
-    ## User Input:
+    You are a strict JSON generator.
+    
+    Your task is to extract structured meal entry data from the input. Use this exact format for each meal entry:
+    
+    ${JSON.stringify(dataStructure)}
+    
+    Rules:
+    - Extract meals or food items mentioned.
+    - If quantities are per item (like "3 bananas"), create separate entries.
+    - If only one quantity is given for the whole text, treat it as one meal.
+    - If the same food item appears more than once, combine into one entry and add the totalConsumed values.
+    - Use approximate grams for items like "1 apple", "1 egg", etc.
+    - For totalConsumed values, calculate each macro as: (per100Value * quantity) / 100
+    - Capitalize each meal name properly.
+    - Return only the JSON array. Do not include any comments, markdown, explanations, or code blocks.
+    
+    Input:
     ${JSON.stringify(data)}
-
-    ## Task:
-    - Extract all meals from the user input.
-    - If quantities are provided separately for each meal/food item, create separate meal entries.
-    - If only one quantity is provided for the whole list, treat it as one meal.
-    - If there is specified some other numeric data, take that in account please.
-    - Return 'protein', 'carb', and 'fat' in grams.
-    - Capitalize each meal name.
-    - Always return a list of JSON objects matching exactly this structure:
-    [${JSON.stringify(dataStructure)}]
-    - Please do not include any explanation, markdown, comments, or \`\`\`json \`\`\`
+    
+    Output:
     `;
+    
 
     // 3. Retrieve response from OpenAI (Defined data structure at step 1. in JSON format)
     const response = await openAi.generateMessage(content);

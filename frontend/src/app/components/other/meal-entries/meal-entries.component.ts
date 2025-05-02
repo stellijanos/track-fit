@@ -4,10 +4,11 @@ import { MealEntryState } from '../../../core/states/meal-entry.state';
 import { SelectedDateState } from '../../../core/states/selected-date.state';
 import { UserState } from '../../../core/states/user.state';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-meal-entries',
-    imports: [CommonModule],
+    imports: [CommonModule, RouterModule],
     templateUrl: './meal-entries.component.html',
     styleUrl: './meal-entries.component.css'
 })
@@ -17,7 +18,7 @@ export class MealEntriesComponent {
     mealEntries: MealEntry[] = [];
 
     mealTypes() {
-        return Object.values(MealType);
+        return Object.values(MealType).filter(type => type !== MealType.DEFAULT);
     }
 
     constructor(
@@ -42,7 +43,7 @@ export class MealEntriesComponent {
     get groupedMealTypes() {
         return this.mealTypes().map(type => ({
             type,
-            meals: this.mealEntries.filter(m => m.type === type)
+            meals: this.mealEntries.filter(m => m && m.type === type)
         }));
     }
 

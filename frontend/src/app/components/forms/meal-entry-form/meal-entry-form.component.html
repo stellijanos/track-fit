@@ -1,0 +1,15 @@
+<div class="container mt-4">
+    <h5 class="mb-3">Add {{mealType | titlecase}}</h5>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-3 border rounded bg-white shadow-sm">
+        <div class="mb-3">
+            <label class="form-label">Meal Description</label>
+            <small class="form-text text-muted d-block mb-2">
+                Include as many details as possible: exact quantities (in grams/ml), number of pieces, food names,
+                brands, preparation methods, sauces, and condiments. Example: "200g grilled chicken breast (CocoRico),
+                150g boiled basmati rice, 1 tbsp olive oil, 50g avocado".
+            </small>
+            <textarea rows="3" class="form-control" formControlName="description"></textarea>
+        </div>
+        <button class="btn btn-primary w-100" [disabled]="form.invalid">Add Meal</button>
+    </form>
+</div>
