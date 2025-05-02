@@ -4,10 +4,11 @@ import { UserState } from '../../../core/states/user.state';
 import { User } from '../../../core/models/user.model';
 import { WaterIntakeComponent } from "../../../components/other/water-intake/water-intake.component";
 import { MealEntriesComponent } from "../../../components/other/meal-entries/meal-entries.component";
+import { ActivityEntriesComponent } from "../../../components/other/activity-entries/activity-entries.component";
 
 @Component({
     selector: 'app-home',
-    imports: [CalendarWeekRowComponent, WaterIntakeComponent, MealEntriesComponent],
+    imports: [CalendarWeekRowComponent, WaterIntakeComponent, MealEntriesComponent, ActivityEntriesComponent],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css'
 })
