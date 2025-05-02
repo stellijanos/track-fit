@@ -13,5 +13,5 @@ export class TopNavbarComponent {
     @Input() pageTitle: string = '';
     @Input() backLink: string = '/';
     @Input() rightText: string = '';
-    @Input() rightLink: string = '/';
+    @Input() rightFunc: () => void = () => { };
 }

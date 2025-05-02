@@ -15,16 +15,20 @@ export class ExportApiService {
 
     constructor(private http: HttpClient) { }
 
-    getPdf(mealPlanId: string): Observable<EmptyResponse> {
-        return this.http.get<EmptyResponse>(`${this.url}/pdf/meal-plans/${mealPlanId}`);
+    getPdf(mealPlanId: string): Observable<Blob> {
+        return this.http.get(`${this.url}/pdf/meal-plans/${mealPlanId}`, {
+            responseType: 'blob'
+        });
     }
 
-    getCsv(subject: string, from?: string, until?: string): Observable<EmptyResponse> {
-        let url = `${this.url}/csv/${subject}`
+    getCsv(subject: string, from?: string, until?: string): Observable<Blob> {
+        let url = `${this.url}/csv/${subject}`;
         if (from && until) {
-            url = `${url}?from=${from}&until=${until}`
+            url = `${url}?from=${from}&until=${until}`;
         }
-        return this.http.get<EmptyResponse>(url);
+        return this.http.get(url, {
+            responseType: 'blob'
+        });
     }
 
 }

@@ -20,7 +20,7 @@ const SuccessResponse = require('../utils/classes/SuccessResponse');
  * @throws {BadRequestError} - Failed to update current caloric target (400)
  * @throws {BadRequestError} - Failed to set users current caloric target (400)
  */
-const create = async (req, res, next) => {
+const create = catchAsync(async (req, res, next) => {
     const { error, value } = caloricTargetValidator.create.validate(req.body);
     if (error) throw new UnprocessableEntityError(error.message);
 
@@ -30,7 +30,7 @@ const create = async (req, res, next) => {
             caloricTarget: caloricTargetDto(created),
         })
     );
-};
+});
 
 /**
  * Retrieve all caloric targets for the current authenticated user.

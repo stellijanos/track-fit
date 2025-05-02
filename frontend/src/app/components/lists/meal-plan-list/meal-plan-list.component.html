@@ -1,4 +1,7 @@
 <div class="container py-3 fade-in-down">
+
+
+
     <div *ngIf="mealPlans.length > 0" class="row g-3">
         <div *ngFor="let plan of mealPlans" class="col-12">
             <div class="card shadow-sm border border-light hover-shadow transition">
@@ -24,9 +27,6 @@
             </div>
         </div>
 
-        <div *ngIf="mealPlans.length === 0" class="text-center text-muted mt-5">
-            No meal plans available.
-        </div>
 
         <!-- Delete Confirmation Modal -->
         <div class="modal fade show d-block" tabindex="-1" *ngIf="deleteId" style="background: rgba(0, 0, 0, 0.5);">
@@ -47,3 +47,9 @@
             </div>
         </div>
     </div>
+
+    <div *ngIf="mealPlans.length === 0" class="text-center text-muted mt-5">
+        No meal plans available.
+    </div>
+
+</div>

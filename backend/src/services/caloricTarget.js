@@ -55,15 +55,18 @@ const create = async (user, data) => {
         fatPerKg: (fat / user.lastMeasurement.weight).toFixed(2),
     });
 
-    // 5. Unlock the current caloric target to be possible for deletion
-    const updated = await caloricTargetRepository.updateByIdAndUserId(
-        user.currentCaloricTarget,
-        user._id,
-        {
-            isLocked: false,
-        }
-    );
-    if (!updated) throw new BadRequestError('Failed to update current caloric target.');
+
+    if (user.caloricTarget) {   
+        // 5. Unlock the current caloric target to be possible for deletion
+        const updated = await caloricTargetRepository.updateByIdAndUserId(
+            user.currentCaloricTarget,
+            user._id,
+            {
+                isLocked: false,
+            }
+        );
+        if (!updated) throw new BadRequestError('Failed to update current caloric target.');
+    }
 
     // 6. Set the newly created caloric target as the users current caloric target
     const updatedUser = await userService.updateById(user._id, {

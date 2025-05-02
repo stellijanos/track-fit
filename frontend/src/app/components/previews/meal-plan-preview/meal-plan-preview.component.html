@@ -1,6 +1,9 @@
 <div class="container py-3">
     <div *ngIf="mealPlan">
-        <h3 class="mb-4">{{ mealPlan.name }}</h3>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="mb-0">{{ mealPlan.name }}</h3>
+            <button class="btn btn-link p-0" (click)="exportToPdf()">Export as PDF</button>
+        </div>
         <div class="mb-3">
             <p><strong>Type:</strong> {{ mealPlan.type.replace('_', ' ') | titlecase }}</p>
             <p><strong>Preference:</strong> {{ mealPlan.preference.replace('_', ' ') | titlecase }}</p>

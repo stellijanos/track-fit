@@ -56,6 +56,10 @@ const create = async (user, data) => {
     if (!user.lastMeasurement) {
         throw new UnprocessableEntityError('Please enter your weight in order to generate meal plan.')
     }
+    
+    if (!user.currentCaloricTarget) {
+        throw new UnprocessableEntityError('Please enter at least one caloric target in order to generate meal plan.')
+    }
     // 1. Obtain the necessary user info to generate meal plan
     const info = getUserInfo(user, data);
 
