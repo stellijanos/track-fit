@@ -1,0 +1,40 @@
+<div class="container mt-4">
+    <h5 class="mb-3">Update Meal</h5>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-3 border rounded bg-white shadow-sm">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" formControlName="name">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Quantity (grams)</label>
+            <input type="number" class="form-control" formControlName="quantity">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Meal Type</label>
+            <select class="form-select" formControlName="type">
+                <option value="" disabled>Select meal type</option>
+                <option *ngFor="let type of mealTypes" [value]="type">{{ type | titlecase }}</option>
+            </select>
+            <div *ngIf="form.get('type')?.invalid && form.get('type')?.touched" class="text-danger">
+                Meal type is required.
+            </div>
+        </div>
+
+
+        <div class="mb-3">
+            <label class="form-label">Nutritional Info (based on quantity)</label>
+            <ul class="list-group">
+                <li class="list-group-item">Kcal: {{ mealEntry.totalConsumed.kcal }}</li>
+                <li class="list-group-item">Protein: {{ mealEntry.totalConsumed.protein }} g</li>
+                <li class="list-group-item">Carbs: {{ mealEntry.totalConsumed.carb }} g</li>
+                <li class="list-group-item">Fat: {{ mealEntry.totalConsumed.fat }} g</li>
+                <li class="list-group-item">Fibre: {{ mealEntry.totalConsumed.fibre }} g</li>
+                <li class="list-group-item">Salt: {{ mealEntry.totalConsumed.salt }} g</li>
+            </ul>
+        </div>
+
+        <button class="btn btn-primary w-100" [disabled]="form.invalid">Update Meal</button>
+    </form>
+</div>

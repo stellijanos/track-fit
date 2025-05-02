@@ -10,6 +10,7 @@ import { CaloricTargetState } from './core/states/caloric-target.state';
 import { MealPlanState } from './core/states/meal-plan.state';
 import { WaterIntakeState } from './core/states/water-intake.state';
 import { SelectedDateState } from './core/states/selected-date.state';
+import { MealEntryState } from './core/states/meal-entry.state';
 
 @Component({
     selector: 'app-root',
@@ -19,6 +20,7 @@ import { SelectedDateState } from './core/states/selected-date.state';
 })
 export class AppComponent {
     title = 'Track-Fit';
+    date = '';
 
     constructor(
         private authState: AuthState,
@@ -26,6 +28,8 @@ export class AppComponent {
         private measurementState: MeasurementState,
         private caloricTargetState: CaloricTargetState,
         private mealPlanState: MealPlanState,
+        private mealEntryState: MealEntryState,
+        private selectedDateState: SelectedDateState,
         private router: Router) {
         this.authState.initializeAuth();
 
@@ -35,6 +39,8 @@ export class AppComponent {
                 this.measurementState.loadMeasurements(true);
                 this.caloricTargetState.loadTargets(true);
                 this.mealPlanState.loadMealPlans(true);
+                this.date = this.selectedDateState.date();
+                this.mealEntryState.loadMeals(this.date, true);
             }
         });
     }

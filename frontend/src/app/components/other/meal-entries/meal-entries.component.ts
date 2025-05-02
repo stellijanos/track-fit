@@ -1,14 +1,14 @@
 import { Component, effect } from '@angular/core';
-import { MealEntry, MealType } from '../../../core/models/meal-entry.model';
+import { MealEntry, MealEntryUpdateRequest, MealType } from '../../../core/models/meal-entry.model';
 import { MealEntryState } from '../../../core/states/meal-entry.state';
-import { SelectedDateState } from '../../../core/states/selected-date.state';
-import { UserState } from '../../../core/states/user.state';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { defaultMealEntry } from '../../../core/models/model-defaults';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-meal-entries',
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, FormsModule],
     templateUrl: './meal-entries.component.html',
     styleUrl: './meal-entries.component.css'
 })
@@ -16,23 +16,15 @@ export class MealEntriesComponent {
 
     date = '';
     mealEntries: MealEntry[] = [];
+    selectedMeal: MealEntry = defaultMealEntry();
 
     mealTypes() {
         return Object.values(MealType).filter(type => type !== MealType.DEFAULT);
     }
 
     constructor(
-        private userState: UserState,
-        private mealEntryState: MealEntryState,
-        private selectedDateState: SelectedDateState
+        private mealEntryState: MealEntryState
     ) {
-
-        effect(() => {
-            this.date = this.selectedDateState.date();
-            if (this.userState.userReady()) {
-                this.mealEntryState.loadMeals(this.date, true);
-            }
-        });
 
         effect(() => {
             this.mealEntries = this.mealEntryState.meals();

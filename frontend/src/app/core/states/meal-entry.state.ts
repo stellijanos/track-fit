@@ -1,5 +1,5 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { MealEntry, MealEntryRequest } from '../models/meal-entry.model';
+import { MealEntry, MealEntryRequest, MealEntryUpdateRequest } from '../models/meal-entry.model';
 import { MealEntryApiService } from '../services/meal-entry-api.service';
 import { defaultMealEntry } from '../models/model-defaults';
 import { Router } from '@angular/router';
@@ -20,6 +20,7 @@ export class MealEntryState {
             this.api.getAll(date).subscribe({
                 next: (res) => {
                     this._meals.set(res.data.mealEntries);
+                    console.log(res);
                 }
             });
         }
@@ -29,17 +30,18 @@ export class MealEntryState {
         this.api.create(date, data).subscribe({
             next: (res) => {
                 this._meals.update(list => [...list, res.data.mealEntry]);
-                this.router.navigate(['/']);
+                this.navigateTo('/');
             }
         });
     }
 
-    updateMeal(id: string, date: string, data: MealEntry) {
+    updateMeal(id: string, date: string, data: MealEntryUpdateRequest) {
         this.api.update(id, date, data).subscribe({
             next: () => {
                 this._meals.update(list => list.map(meal =>
                     meal.id === id ? { ...meal, ...data } : meal
                 ));
+                this.navigateTo('/');
             }
         });
     }
@@ -54,6 +56,10 @@ export class MealEntryState {
 
     findById(id: string): MealEntry {
         return this._meals().find(m => m.id === id) || defaultMealEntry();
+    }
+
+    navigateTo(route: string) {
+        this.router.navigate([route]);
     }
 
 }

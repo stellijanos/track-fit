@@ -1,7 +1,7 @@
 import { ActivityEntry } from "./activity-entry.model";
 import { CaloricTarget } from "./caloric-target.model";
 import { Entry } from "./entry.model";
-import { MealEntry } from "./meal-entry.model";
+import { MealEntry, MealType } from "./meal-entry.model";
 import { DietaryPreference, DietaryRestriction, MealPlan, MealPlanType } from "./meal-plan.model";
 import { Measurement } from "./measurement.model";
 import { User } from "./user.model";
@@ -58,7 +58,7 @@ export const defaultMealEntry = (): MealEntry => ({
     id: '',
     date: new Date(),
     name: '',
-    type: '',
+    type: MealType.DEFAULT,
     per100: {
         kcal: -1,
         protein: -1,

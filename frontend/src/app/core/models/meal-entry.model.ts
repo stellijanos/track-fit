@@ -11,7 +11,7 @@ export interface MealEntry {
     id: string,
     date: Date,
     name: string,
-    type: string,
+    type: MealType,
     per100: {
         kcal: number,
         protein: number,
@@ -34,4 +34,10 @@ export interface MealEntry {
 export interface MealEntryRequest {
     description: string,
     type: MealType
+}
+
+export interface MealEntryUpdateRequest {
+    name: string,
+    type: MealType,
+    quantity: number,
 }

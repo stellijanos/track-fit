@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../models/api-response.model';
-import { MealEntry, MealEntryRequest } from '../models/meal-entry.model';
+import { MealEntry, MealEntryRequest, MealEntryUpdateRequest } from '../models/meal-entry.model';
 import { Observable } from 'rxjs';
 
 type MealEntryResponse = ApiResponse<'mealEntry', MealEntry>;
@@ -27,7 +27,7 @@ export class MealEntryApiService {
         return this.http.get<MealEntrysResponse>(`${this.url}/${date}/meals`);
     }
 
-    update(id: string, date: string, data: MealEntry): Observable<EmptyResponse> {
+    update(id: string, date: string, data: MealEntryUpdateRequest): Observable<EmptyResponse> {
         return this.http.patch<EmptyResponse>(`${this.url}/${date}/meals/${id}`, data);
     }
 
