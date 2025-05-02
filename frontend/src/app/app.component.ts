@@ -11,6 +11,7 @@ import { MealPlanState } from './core/states/meal-plan.state';
 import { WaterIntakeState } from './core/states/water-intake.state';
 import { SelectedDateState } from './core/states/selected-date.state';
 import { MealEntryState } from './core/states/meal-entry.state';
+import { ActivityEntryState } from './core/states/activity-entry.state';
 
 @Component({
     selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent {
         private mealPlanState: MealPlanState,
         private mealEntryState: MealEntryState,
         private selectedDateState: SelectedDateState,
+        private activityEntryState: ActivityEntryState,
         private router: Router) {
         this.authState.initializeAuth();
 
@@ -40,7 +42,9 @@ export class AppComponent {
                 this.caloricTargetState.loadTargets(true);
                 this.mealPlanState.loadMealPlans(true);
                 this.date = this.selectedDateState.date();
+
                 this.mealEntryState.loadMeals(this.date, true);
+                this.activityEntryState.loadEntries(this.date);
             }
         });
     }

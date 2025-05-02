@@ -1,13 +1,14 @@
 import { Injectable, signal, computed } from "@angular/core";
 import { ActivityEntry, ActivityEntryRequest } from "../models/activity-entry.model";
 import { ActivityEntryApiService } from "../services/activity-entry-api.service";
+import { Router } from "@angular/router";
 
 @Injectable({ providedIn: 'root' })
 export class ActivityEntryState {
     private _entries = signal<ActivityEntry[]>([]);
     readonly entries = computed(() => this._entries());
 
-    constructor(private api: ActivityEntryApiService) { }
+    constructor(private api: ActivityEntryApiService, private router: Router) { }
 
     clearEntries() {
         this._entries.set([]);
@@ -25,6 +26,7 @@ export class ActivityEntryState {
         this.api.create(date, data).subscribe({
             next: (res) => {
                 this._entries.update(list => [...list, res.data.activityEntry]);
+                this.navigateTo('/');
             }
         });
     }
@@ -45,5 +47,9 @@ export class ActivityEntryState {
                 this._entries.update(list => list.filter(entry => entry.id !== id));
             }
         });
+    }
+
+    navigateTo(route: string) {
+        this.router.navigate([route]);
     }
 }

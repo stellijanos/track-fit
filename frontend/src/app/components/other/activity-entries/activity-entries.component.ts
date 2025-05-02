@@ -17,7 +17,7 @@ export class ActivityEntriesComponent {
     date = '';
     deleteId: string | null = null;
     activityEntries: ActivityEntry[] = [];
-    selectedMeal: ActivityEntry = defaultActivityEntry();
+    selectedEntry: ActivityEntry = defaultActivityEntry();
 
     constructor(
         private activityEntryState: ActivityEntryState,

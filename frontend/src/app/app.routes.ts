@@ -19,6 +19,7 @@ import { MealPlanPreviewComponent } from './components/previews/meal-plan-previe
 import { HomeComponent } from './pages/user/home/home.component';
 import { MealEntryFormComponent } from './components/forms/meal-entry-form/meal-entry-form.component';
 import { UpdateMealEntryFormComponent } from './components/forms/update-meal-entry-form/update-meal-entry-form.component';
+import { CreateActivityEntryFormComponent } from './components/forms/create-activity-entry-form/create-activity-entry-form.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -47,6 +48,7 @@ export const routes: Routes = [
             { path: 'measurements/:id/edit', component: MeasurementFormComponent },
             { path: 'meal-entries/new/:mealType', component: MealEntryFormComponent },
             { path: 'meal-entries/:id/edit', component: UpdateMealEntryFormComponent },
+            { path: 'activity-entries/new', component: CreateActivityEntryFormComponent },
         ]
     },
     { path: 'not-found', component: NotFoundComponent },
