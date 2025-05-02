@@ -2,3 +2,5 @@ node_modules/
 logs/
 .env
 files/
+
+!files/uploads/images/users/default.png
