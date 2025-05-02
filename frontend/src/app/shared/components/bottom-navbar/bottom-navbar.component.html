@@ -14,9 +14,15 @@
         </button>
 
         <div class="quick-modal" *ngIf="quickActionOpen">
-            <p class="m-0 p-2 text-white border-bottom">Create Post</p>
-            <p class="m-0 p-2 text-white border-bottom">Upload File</p>
-            <p class="m-0 p-2 text-white">New Event</p>
+            <h6 class="m-0 p-2 text-center">Quick add: </h6>
+            <p class="m-0 p-2 border-bottom" routerLink="/measurements/new">Measurement</p>
+            <p class="m-0 p-2 border-bottom" routerLink="/activity-entries/new">Activity</p>
+            <p class="m-0 p-2 border-bottom" routerLink="/meal-entries/new/breakfast">Breakfast</p>
+            <p class="m-0 p-2 border-bottom" routerLink="/meal-entries/new/lunch">Lunch</p>
+            <p class="m-0 p-2 border-bottom" routerLink="/meal-entries/new/dinner">Dinner</p>
+            <p class="m-0 p-2 border-bottom" routerLink="/meal-entries/new/snack1">Snack 1</p>
+            <p class="m-0 p-2 border-bottom" routerLink="/meal-entries/new/snack2">Snack 2</p>
+            <p class="m-0 p-2 border-bottom" routerLink="/meal-plans/new">Meal Plan</p>
         </div>
     </div>
 

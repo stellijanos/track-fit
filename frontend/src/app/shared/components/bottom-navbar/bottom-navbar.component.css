@@ -42,14 +42,35 @@
 .quick-modal {
     position: absolute;
     bottom: 80px;
-    background-color: #1e1e1e;
+    background-color: #ffffff;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    min-width: 160px;
-    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-width: 180px;
+    text-align: left;
     z-index: 1050;
     animation: fadeInUp 0.3s ease;
+    border: 1px solid #dee2e6;
+    overflow: hidden;
 }
+
+.quick-modal p {
+    margin: 0;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #212529 !important;
+    border-bottom: 1px solid #dee2e6;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.quick-modal p:last-child {
+    border-bottom: none;
+}
+
+.quick-modal p:hover {
+    background-color: #f1f3f5;
+}
+
 
 
 @keyframes fadeInUp {
