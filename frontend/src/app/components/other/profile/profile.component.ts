@@ -3,15 +3,21 @@ import { Component, effect, Input, OnInit } from '@angular/core';
 import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 import { UserState } from '../../../core/states/user.state';
 import { environment } from '../../../../environments/environment';
+import { User } from '../../../core/models/user.model';
+import { calculateAge, calculateBMR, calculateIMC, calculateTDEE } from '../../../shared/functions/formulas';
+import { defaultUser } from '../../../core/models/model-defaults';
 
 @Component({
     selector: 'app-profile-picture',
     standalone: true,
     imports: [CommonModule, ImageCropperComponent],
-    templateUrl: './profile-picture.component.html',
-    styleUrl: './profile-picture.component.css'
+    templateUrl: './profile.component.html',
+    styleUrl: './profile.component.css'
 })
-export class ProfilePictureComponent {
+export class ProfileComponent {
+
+
+    user: User = defaultUser();
 
     imageUrl = 'default-profile.png';
 
@@ -21,10 +27,20 @@ export class ProfilePictureComponent {
     isImageCropped = false;
     croppedBlob: Blob | null = null;
 
+    age = -1;
+    imc = '';
+    bmr = '';
+    tdee = '';
+
     constructor(private userState: UserState) {
         effect(() => {
-            this.imageUrl = `${environment.apiUrl}/images/${this.userState.user().profilePicture}`;
-        })
+            this.user = this.userState.user();
+            this.imageUrl = `${environment.apiUrl}/images/${this.user.profilePicture}`;
+            this.age = calculateAge(this.user.birthDate);
+            this.bmr = calculateBMR(this.user);
+            this.imc = calculateIMC(this.user);
+            this.tdee = calculateTDEE(this.user);
+        });
     }
 
     onFileChange(event: any): void {

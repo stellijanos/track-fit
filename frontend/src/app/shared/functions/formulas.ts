@@ -15,7 +15,7 @@ export function calculateIMC(user: User): string {
     const heightM = user.height / 100;
     const weightKg = user.lastMeasurement?.weight || 0;
     const imc = weightKg / (heightM * heightM);
-    return imc ? imc.toFixed(1) : 'N/A';
+    return imc ? `${imc.toFixed(1)} kcal` : 'N/A';
 }
 
 export function calculateBMR(user: User): string {

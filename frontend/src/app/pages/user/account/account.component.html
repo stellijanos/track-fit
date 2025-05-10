@@ -1,36 +1,6 @@
 <div class="container py-4">
-    <div class="row align-items-center">
-        <!-- Left: Profile Picture -->
-        <div class="col-md-3 text-center">
-            <app-profile-picture />
-        </div>
-
-        <!-- Right: Profile Info -->
-        <div class="col-md-9">
-            <h4>{{ user.firstName }} {{ user.lastName }}</h4>
-            <p class="text-muted">Age: {{ age }}</p>
-            <button class="btn btn-outline-primary btn-sm" routerLink="/account/me">
-                <i class="bi bi-pencil-square"></i> Edit Profile Details
-            </button>
-        </div>
-    </div>
-
-    <!-- Metrics: IMC, BMR, TDEE -->
-    <div class="row text-center mt-4">
-        <div class="col-md-4">
-            <h6>IMC</h6>
-            <p class="metric">{{ imc }}</p>
-        </div>
-        <div class="col-md-4">
-            <h6>BMR</h6>
-            <p class="metric">{{ bmr }}</p>
-        </div>
-        <div class="col-md-4">
-            <h6>TDEE</h6>
-            <p class="metric">{{ tdee }}</p>
-        </div>
-    </div>
-
+    <app-profile-picture></app-profile-picture>
+    
     <div class="mt-5">
         <div class="list-group shadow-sm">
             <div class="list-group-item d-flex align-items-center justify-content-between py-3 border-0 border-bottom"
