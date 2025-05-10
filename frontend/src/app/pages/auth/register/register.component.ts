@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthState } from '../../../core/states/auth.state';
 import { matchValidator } from '../../../core/validators/password-match.validator';
 import { Register } from '../../../core/models/auth.model';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-register',
@@ -16,7 +16,13 @@ export class RegisterComponent {
 
     form !: FormGroup;
 
-    constructor(private fb: FormBuilder, private authState: AuthState) {
+    constructor(private fb: FormBuilder, private authState: AuthState, private router: Router) {
+        effect(() => {
+            console.log(authState.isLoggedIn());
+            if (authState.isLoggedIn()) {
+                this.router.navigate(['/']);
+            }
+        })
     }
 
     ngOnInit(): void {

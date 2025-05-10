@@ -62,7 +62,7 @@ export class AuthState {
     }
 
     forgotPassword(data: ForgotPassword) {
-        this.apiService.forgotPassword(data);
+        this.apiService.forgotPassword(data).subscribe();
     }
 
     validatePasswordResetCode(data: ValidateResetPassword) {
@@ -96,7 +96,6 @@ export class AuthState {
             }),
             catchError((error) => {
                 this.clearToken();
-                this.router.navigate(['/login']);
                 return throwError(() => error);
             }),
             finalize(() => this._isTokenRefreshing.set(false)),

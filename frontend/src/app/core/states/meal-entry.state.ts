@@ -20,7 +20,7 @@ export class MealEntryState {
             this.api.getAll(date).subscribe({
                 next: (res) => {
                     this._meals.set(res.data.mealEntries);
-                    console.log(res);
+
                 }
             });
         }

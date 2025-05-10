@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthState } from '../../../core/states/auth.state';
 import { Login } from '../../../core/models/auth.model';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -15,9 +15,14 @@ export class LoginComponent implements OnInit {
 
     form !: FormGroup;
 
-    constructor(private fb: FormBuilder, private authState: AuthState) {
+    constructor(private fb: FormBuilder, private authState: AuthState, private router: Router) {
+        effect(() => {
+            console.log(authState.isLoggedIn());
+            if (authState.isLoggedIn()) {
+                this.router.navigate(['/']);
+            }
+        })
     }
-
 
     ngOnInit(): void {
         this.initForm();

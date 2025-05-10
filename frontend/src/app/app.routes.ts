@@ -20,6 +20,7 @@ import { HomeComponent } from './pages/user/home/home.component';
 import { MealEntryFormComponent } from './components/forms/meal-entry-form/meal-entry-form.component';
 import { UpdateMealEntryFormComponent } from './components/forms/update-meal-entry-form/update-meal-entry-form.component';
 import { CreateActivityEntryFormComponent } from './components/forms/create-activity-entry-form/create-activity-entry-form.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -27,28 +28,34 @@ export const routes: Routes = [
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'reset-password', component: ResetPasswordComponent },
     {
-        path: '', component: BottomNavbarLayoutComponent,
+        path: '',
+        canActivate: [authGuard],
         children: [
-            { path: '', component: HomeComponent },
-            { path: 'account', component: AccountComponent }
-        ]
-    },
-    {
-        path: '', component: TopNavbarLayoutComponent,
-        children: [
-            { path: 'account/me', component: MyProfileFormComponent },
-            { path: 'account/change-password', component: ChangePasswordFormComponent },
-            { path: 'caloric-targets', component: CaloricTargetListComponent },
-            { path: 'caloric-targets/new', component: CaloricTargetFormComponent },
-            { path: 'meal-plans', component: MealPlanListComponent },
-            { path: 'meal-plans/new', component: MealPlanFormComponent },
-            { path: 'meal-plans/:id', component: MealPlanPreviewComponent },
-            { path: 'measurements', component: MeasurementListComponent },
-            { path: 'measurements/new', component: MeasurementFormComponent },
-            { path: 'measurements/:id/edit', component: MeasurementFormComponent },
-            { path: 'meal-entries/new/:mealType', component: MealEntryFormComponent },
-            { path: 'meal-entries/:id/edit', component: UpdateMealEntryFormComponent },
-            { path: 'activity-entries/new', component: CreateActivityEntryFormComponent },
+            {
+                path: '', component: BottomNavbarLayoutComponent,
+                children: [
+                    { path: '', component: HomeComponent },
+                    { path: 'account', component: AccountComponent }
+                ]
+            },
+            {
+                path: '', component: TopNavbarLayoutComponent,
+                children: [
+                    { path: 'account/me', component: MyProfileFormComponent },
+                    { path: 'account/change-password', component: ChangePasswordFormComponent },
+                    { path: 'caloric-targets', component: CaloricTargetListComponent },
+                    { path: 'caloric-targets/new', component: CaloricTargetFormComponent },
+                    { path: 'meal-plans', component: MealPlanListComponent },
+                    { path: 'meal-plans/new', component: MealPlanFormComponent },
+                    { path: 'meal-plans/:id', component: MealPlanPreviewComponent },
+                    { path: 'measurements', component: MeasurementListComponent },
+                    { path: 'measurements/new', component: MeasurementFormComponent },
+                    { path: 'measurements/:id/edit', component: MeasurementFormComponent },
+                    { path: 'meal-entries/new/:mealType', component: MealEntryFormComponent },
+                    { path: 'meal-entries/:id/edit', component: UpdateMealEntryFormComponent },
+                    { path: 'activity-entries/new', component: CreateActivityEntryFormComponent },
+                ]
+            },
         ]
     },
     { path: 'not-found', component: NotFoundComponent },
