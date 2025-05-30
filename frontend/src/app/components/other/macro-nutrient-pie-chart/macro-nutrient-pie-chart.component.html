@@ -1,0 +1,42 @@
+<div class="container mt-4">
+    <div class="row justify-content-center align-items-start">
+
+        <!-- Chart Column -->
+        <div class="col-12 col-md-5 text-center mb-4 mb-md-0">
+            <div style="max-width: 220px; margin: 0 auto;">
+                <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions"
+                    [type]="pieChartType" height="220">
+                </canvas>
+            </div>
+        </div>
+
+        <!-- Table + Macro Bars Column -->
+        <div class="col-12 col-md-7">
+            <!-- Caloric Table -->
+            <ul class="list-group mb-4">
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>Caloric Target:</strong><span>2200 kcal</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>Total Consumed:</strong><span>1800 kcal</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>Total Burnt:</strong><span>500 kcal</span>
+                </li>
+            </ul>
+
+            <!-- Macronutrient Bars (Horizontal Row) -->
+            <div class="row text-center">
+                <div class="col-4" *ngFor="let macro of macros">
+                    <div class="fw-bold">{{ macro.name }}</div>
+                    <div class="progress my-2" style="height: 20px;">
+                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'background-color': macro.color }"
+                            [style.width.%]="macro.percent" [attr.aria-valuenow]="macro.percent" aria-valuemin="0"
+                            aria-valuemax="100"></div>
+                    </div>
+                    <div>{{ macro.consumed }} / {{ macro.total }} g</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
