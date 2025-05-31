@@ -18,7 +18,7 @@ export function calculateIMC(user: User): string {
     return imc ? `${imc.toFixed(1)} kcal` : 'N/A';
 }
 
-export function calculateBMR(user: User): string {
+export function calculateBMR(user: User): number {
     const weight = user.lastMeasurement?.weight || 0;
     const height = user.height;
     const age = calculateAge(user.birthDate);
@@ -32,12 +32,25 @@ export function calculateBMR(user: User): string {
         bmr = 10 * weight + 6.25 * height - 5 * age;
     }
 
-    return bmr ? bmr.toFixed(0) + ' kcal' : 'N/A';
+    return bmr;
 }
 
-export function calculateTDEE(user: User): string {
-    const bmr = parseFloat(calculateBMR(user));
+export function calculateTDEE(user: User): number {
+    const bmr = calculateBMR(user);
     const activityFactor = 1.55;
-    const tdee = bmr * activityFactor;
-    return tdee ? tdee.toFixed(0) + ' kcal' : 'N/A';
+    return bmr * activityFactor;
+}
+
+
+export function normalizeTimeOfDay(dateStr: string): number {
+    const today = new Date().toISOString().split('T')[0];
+
+    if (dateStr > today) return 0;
+    if (dateStr < today) return 1;
+
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    
+    return (hours + minutes / 60) / 24;
 }

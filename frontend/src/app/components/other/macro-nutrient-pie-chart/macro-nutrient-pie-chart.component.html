@@ -15,13 +15,13 @@
             <!-- Caloric Table -->
             <ul class="list-group mb-4">
                 <li class="list-group-item d-flex justify-content-between">
-                    <strong>Caloric Target:</strong><span>2200 kcal</span>
+                    <strong>Caloric Target:</strong><span>{{currentCaloricTarget.kcal}} kcal</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
-                    <strong>Total Consumed:</strong><span>1800 kcal</span>
+                    <strong>Total Consumed:</strong><span>{{totalConsumed | number}} kcal</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
-                    <strong>Total Burnt:</strong><span>500 kcal</span>
+                    <strong>Total Burnt:</strong><span>{{totalBurnt | number:'1.0-0'}} kcal</span>
                 </li>
             </ul>
 

@@ -94,28 +94,31 @@ const getMealEntry = async (data) => {
 
     // 2. Define content (message) to OpenAI service
     const content = `
-    You are a strict JSON generator.
-    
-    Your task is to extract structured meal entry data from the input. Use this exact format for each meal entry:
-    
-    ${JSON.stringify(dataStructure)}
-    
-    Rules:
-    - Extract meals or food items mentioned.
-    - If quantities are per item (like "3 bananas"), create separate entries.
-    - If only one quantity is given for the whole text, treat it as one meal.
-    - If the same food item appears more than once, combine into one entry and add the totalConsumed values.
-    - Use approximate grams for items like "1 apple", "1 egg", etc.
-    - For totalConsumed values, calculate each macro as: (per100Value * quantity) / 100
-    - Capitalize each meal name properly.
-    - Return only the JSON array. Do not include any comments, markdown, explanations, or code blocks.
-    
-    Input:
-    ${JSON.stringify(data)}
-    
-    Output:
-    `;
-    
+        You are a strict JSON generator.
+
+        Your task is to extract structured meal entry data from the input. Use this exact format for each meal entry.
+
+        Rules:
+        - Extract meals or food items mentioned.
+        - If quantities are per item (like "3 bananas"), create separate entries.
+        - If only one quantity is given for the whole text, treat it as one meal.
+        - If the same food item appears more than once, combine into one entry and add the totalConsumed values.
+        - Use approximate grams for items like "1 apple", "1 egg", etc.
+        - For totalConsumed values, calculate each macro as: (per100Value * quantity) / 100
+        - Capitalize each meal name properly.
+        - You must apply basic nutritional logic: for example, 20g of protein cannot result in 0 kcal.
+        - Always ensure kcal is realistically computed from macros: 
+            kcal = (protein * 4) + (carb * 4) + (fat * 9)
+        - When information is missing or unclear, estimate it based on real-world values by searching the web or using common nutritional databases (e.g. USDA, FatSecret).
+        - Return only the JSON array. Do not include any comments, markdown, explanations, or code blocks.
+        - Do not include any explanations, formatting, or markdown or \`\`\`json \`\`\`. Just pure JSON.
+
+        Input:
+        ${JSON.stringify(data)}
+
+        Output:
+        ${JSON.stringify(dataStructure)}
+        `;
 
     // 3. Retrieve response from OpenAI (Defined data structure at step 1. in JSON format)
     const response = await openAi.generateMessage(content);

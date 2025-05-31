@@ -37,9 +37,9 @@ export class ProfileComponent {
             this.user = this.userState.user();
             this.imageUrl = `${environment.apiUrl}/images/${this.user.profilePicture}`;
             this.age = calculateAge(this.user.birthDate);
-            this.bmr = calculateBMR(this.user);
+            this.bmr = `${calculateBMR(this.user)} kcal`;
             this.imc = calculateIMC(this.user);
-            this.tdee = calculateTDEE(this.user);
+            this.tdee = `${calculateTDEE(this.user)} kcal`;
         });
     }
 
