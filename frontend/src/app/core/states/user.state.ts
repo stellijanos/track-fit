@@ -54,6 +54,7 @@ export class UserState {
     changeProfilePicture(data: FormData) {
         this.apiService.changeProfilePicture(data).subscribe({
             next: (res) => {
+                console.log(res);
                 this.setUser(res.data.user);
             }
         })

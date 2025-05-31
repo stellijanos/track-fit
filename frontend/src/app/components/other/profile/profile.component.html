@@ -1,54 +1,52 @@
 <div class="container col-md-3 text-center w-100">
 
 
-    <div class="container">
-        <!-- Responsive wrapper: stacked on small, side-by-side on md+ -->
-        <div class="d-block d-md-flex gap-4 align-items-start mb-4">
-            <!-- Column 1: Profile Picture + Info -->
-            <div class="w-100 w-md-50 mb-3">
-                <div class="row align-items-center">
-                    <!-- Picture + Delete Button -->
-                    <div class="col-4 d-flex flex-column align-items-center">
-                        <img [src]="imageUrl" alt="Profile Picture" class="img-thumbnail rounded-circle mb-2"
-                            style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;"
+    <div class="container col-md-3 text-center w-100">
+        <div class="container">
+            <div class="d-block d-md-flex gap-4 align-items-start mb-4">
+                <!-- Column 1: Profile Picture and Remove Button -->
+                <div class="d-flex flex-column align-items-center align-items-md-start text-center text-md-start">
+                    <div class="position-relative">
+                        <img [src]="imageUrl" alt="Profile Picture" class="img-thumbnail rounded-circle"
+                            style="width: 160px; height: 160px; object-fit: cover; cursor: pointer;"
                             (click)="fileInput.click()" />
 
                         <input type="file" #fileInput accept="image/*" (change)="onFileChange($event)" hidden />
 
-                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        <!-- Remove button overlaid on bottom right of image -->
+                        <button class="btn btn-danger btn-sm position-absolute bottom-0 end-0 translate-middle"
+                            style="transform: translate(50%, 50%);" data-bs-toggle="modal"
                             data-bs-target="#confirmDeleteModal">
-                            Remove
+                            <i class="bi bi-trash"></i>
                         </button>
                     </div>
+                </div>
 
-                    <!-- User Info -->
-                    <div class="col-8 text-md-start text-center">
+                <!-- Column 2: Info + Stats -->
+                <div class="flex-grow-1 mt-3 mt-md-0">
+                    <div class="text-md-start text-center mb-3">
                         <h4>{{ user.firstName }} {{ user.lastName }}</h4>
                         <p class="text-muted">Age: {{ age }}</p>
                         <button class="btn btn-primary btn-sm" routerLink="/account/me">
                             <i class="bi bi-pencil-square"></i> Edit Profile Details
                         </button>
                     </div>
-                </div>
-            </div>
 
-            <!-- Column 2: Metrics -->
-            <div class="w-100 w-md-50">
-                <div class="row text-start">
-                    <div class="col-md-4 col-12 mb-2">
-                        <span>BMR: <strong>{{ bmr }}</strong></span>
-                    </div>
-                    <div class="col-md-4 col-12 mb-2">
-                        <span>TDEE: <strong>{{ tdee }}</strong></span>
-                    </div>
-                    <div class="col-md-4 col-12 mb-2">
-                        <span>IMC: <strong>{{ imc }}</strong></span>
+                    <div class="row text-md-start text-center">
+                        <div class="col-md-4 col-12 mb-2">
+                            <span>BMR: <strong>{{ bmr }}</strong></span>
+                        </div>
+                        <div class="col-md-4 col-12 mb-2">
+                            <span>TDEE: <strong>{{ tdee }}</strong></span>
+                        </div>
+                        <div class="col-md-4 col-12 mb-2">
+                            <span>IMC: <strong>{{ imc }}</strong></span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 
 

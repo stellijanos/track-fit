@@ -36,11 +36,16 @@ export class ProfileComponent {
         effect(() => {
             this.user = this.userState.user();
             this.imageUrl = `${environment.apiUrl}/images/${this.user.profilePicture}`;
-            this.age = calculateAge(this.user.birthDate);
-            this.bmr = `${calculateBMR(this.user)} kcal`;
-            this.imc = calculateIMC(this.user);
-            this.tdee = `${calculateTDEE(this.user)} kcal`;
+            this.age <= 0 && this.calculateData();
         });
+
+    }
+
+    calculateData() {
+        this.age = calculateAge(this.user.birthDate);
+        this.bmr = `${calculateBMR(this.user)} kcal`;
+        this.imc = calculateIMC(this.user);
+        this.tdee = `${calculateTDEE(this.user)} kcal`;
     }
 
     onFileChange(event: any): void {
@@ -70,6 +75,9 @@ export class ProfileComponent {
         this.imageChangedEvent = '';
         this.croppedImage = '';
         this.isImageCropped = false;
+
+        const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
+        if (fileInput) fileInput.value = '';
     }
 
     uploadCroppedImage(): void {
@@ -82,9 +90,9 @@ export class ProfileComponent {
         formData.append('image', this.croppedBlob, 'profile.png');
 
         this.userState.changeProfilePicture(formData);
-        this.imageUrl = this.croppedImage;
         this.cancelCrop();
     }
+
 
     deleteProfilePicture(): void {
         this.userState.deleteProfilePicture();
