@@ -1,0 +1,43 @@
+/* 🔵 Default: Large screens (≥768px) */
+.calendar-row {
+    flex-wrap: nowrap;
+    gap: 16px;
+    /* more space between bullets */
+}
+
+.calendar-day-wrapper {
+    width: 54px;
+}
+
+.calendar-day {
+    width: 42px;
+    height: 42px;
+    font-size: 0.85rem;
+}
+
+.calendar-day-label {
+    font-size: 0.75rem;
+}
+
+/* 📱 Small screens (<768px) */
+@media (max-width: 768px) {
+    .calendar-row {
+        flex-wrap: wrap;
+        gap: 5px;
+        /* tighter space on small screens */
+    }
+
+    .calendar-day-wrapper {
+        width: 34px;
+    }
+
+    .calendar-day {
+        width: 26px;
+        height: 26px;
+        font-size: 0.65rem;
+    }
+
+    .calendar-day-label {
+        font-size: 0.6rem;
+    }
+}
