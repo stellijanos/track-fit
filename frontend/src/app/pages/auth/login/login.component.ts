@@ -14,6 +14,7 @@ import { Router, RouterModule } from '@angular/router';
 export class LoginComponent implements OnInit {
 
     form !: FormGroup;
+    showPassword = false;
 
     constructor(private fb: FormBuilder, private authState: AuthState, private router: Router) {
         effect(() => {
@@ -40,5 +41,8 @@ export class LoginComponent implements OnInit {
         this.authState.login(this.form.value as Login);
     }
 
+    togglePasswordVisibility(): void {
+        this.showPassword = !this.showPassword;
+    }
 
 }

@@ -15,6 +15,8 @@ import { Router, RouterModule } from '@angular/router';
 export class RegisterComponent {
 
     form !: FormGroup;
+    showPassword = false;
+
 
     constructor(private fb: FormBuilder, private authState: AuthState, private router: Router) {
         effect(() => {
@@ -47,5 +49,10 @@ export class RegisterComponent {
     onSubmit() {
         if (!this.form.valid) return;
         this.authState.register(this.form.value as Register);
+    }
+
+
+    togglePasswordVisibility(): void {
+        this.showPassword = !this.showPassword;
     }
 }
