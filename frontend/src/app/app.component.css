@@ -13,7 +13,5 @@ body {
 
 .app-content {
     flex: 1;
-    padding-bottom: 70px;
-    /* height of bottom navbar */
     overflow-y: auto;
 }

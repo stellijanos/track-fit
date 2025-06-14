@@ -14,6 +14,7 @@ import { matchValidator } from '../../../core/validators/password-match.validato
 })
 export class ResetPasswordFormComponent implements OnInit {
     form !: FormGroup;
+    showPassword = false;
 
     constructor(private fb: FormBuilder, private authState: AuthState) { }
 
@@ -35,5 +36,10 @@ export class ResetPasswordFormComponent implements OnInit {
         console.log(this.form.value);
         if (!this.form.valid) return;
         this.authState.resetPassword(this.form.value as ResetPassword);
+    }
+
+
+    togglePasswordVisibility(): void {
+        this.showPassword = !this.showPassword;
     }
 }

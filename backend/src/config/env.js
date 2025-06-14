@@ -8,6 +8,9 @@ module.exports = {
         env: process.env.NODE_ENV,
         name: process.env.APP_NAME,
     },
+    frontend: {
+        uri: process.env.FRONTEND_URI,
+    },
     auth: {
         bcrypt: {
             saltRounds: process.env.BCRYPT_SALTROUNDS || 10,

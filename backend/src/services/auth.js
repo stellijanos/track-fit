@@ -28,7 +28,7 @@ const REFRESH_TOKEN_EXPIRES_IN = env.auth.jwt.expiresIn.refreshToken;
 
 const RESET_PASSWORD_CODE_EXPIRES_IN_M = env.auth.resetPasswordCode.expiresInM;
 const RESET_PASSWORD_CODE_LENGTH = env.auth.resetPasswordCode.length;
-const APP_URI = env.app.uri;
+const FRONTEND_URI = env.frontend.uri;
 
 /**
  * Helper functions
@@ -265,7 +265,7 @@ const forgotPassword = async (credential) => {
     const data = {
         userName: existingUser.firstName,
         sendTo: credential,
-        resetLink: `${APP_URI}/reset-password?code=${newReset.code}`,
+        resetLink: `${FRONTEND_URI}/reset-password?code=${newReset.code}`,
         validFor: `${RESET_PASSWORD_CODE_EXPIRES_IN_M} minutes`,
     };
 
