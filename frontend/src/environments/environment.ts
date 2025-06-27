@@ -1,4 +1,4 @@
 export const environment = {
-    apiUrl: 'https://track-fit.stellijanos.com/api',
+    apiUrl: 'https://trackfit.stellijanos.com/api',
     production: true
 };

@@ -90,7 +90,7 @@ const updateById = async (id, data) => {
  * @returns {void} - Return nothing.
  */
 const deleteMe = async (id) => {
-    await userRepository.findByIdAndDelete(id);
+    // await userRepository.findByIdAndDelete(id);
 };
 
 /**
