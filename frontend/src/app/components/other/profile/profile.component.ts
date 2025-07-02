@@ -6,11 +6,12 @@ import { environment } from '../../../../environments/environment';
 import { User } from '../../../core/models/user.model';
 import { calculateAge, calculateBMR, calculateIMC, calculateTDEE } from '../../../shared/functions/formulas';
 import { defaultUser } from '../../../core/models/model-defaults';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-profile-picture',
     standalone: true,
-    imports: [CommonModule, ImageCropperComponent],
+    imports: [CommonModule, ImageCropperComponent, RouterModule],
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.css'
 })
